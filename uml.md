@@ -1,5 +1,7 @@
 <!--- Class Diagram for GMMR Systems -->
 
+<!-- TODO: Finish and check about using defined object type for classes like trainingclass? -->
+
 # GMMR Systems
 ````mermaid
 ---
@@ -35,12 +37,6 @@ classDiagram
 	-String Description
 	-Date Date
 	}
-	class Lecturer{
-	-String ID
-	-String Name
-	-String PhoneNo
-	-String Email
-	}
 	class Trainee{
 	-String ID
 	-String Name
@@ -52,4 +48,12 @@ classDiagram
 	-String password
 	-String email
 	}
+	class TrainingClass{
+	-String code
+	-Volunteer ID
+	-String name
+	-Enum type
+	-Date date 
+	}
+	
 	
