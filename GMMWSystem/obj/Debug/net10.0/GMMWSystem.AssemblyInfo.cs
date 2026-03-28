@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GMMWSystem")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ae3ef5cc5bdf974a94f77dda58c46a96b094ae4e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e307f6533d8aa27ed5298b77a92e8c83cdad42b8")]
 [assembly: System.Reflection.AssemblyProductAttribute("GMMWSystem")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GMMWSystem")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
