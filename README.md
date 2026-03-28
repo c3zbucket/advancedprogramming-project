@@ -1,5 +1,7 @@
 # advancedprogramming-project
-![License](https://img.shields.io/badge/license-MIT-blue.svg) ![GitHub top language](https://img.shields.io/github/languages/top/c3zbucket/advancedprogramming-project)
+
+![License](https://img.shields.io/github/license/c3zbucket/advancedprogramming-project)
+![GitHub top language](https://img.shields.io/github/languages/top/c3zbucket/advancedprogramming-project)
 
 Repository for the project for Advanced Programming (COM5401) 
 
