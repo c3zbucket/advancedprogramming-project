@@ -93,5 +93,31 @@ This can have the values of - `Automatic`, `Manual` or `Semi-Auto`. For this rea
 
 In UML class diagrams an Enum is declared with the tags of `<<Enumeration>>`; thus leading to the additional classes for `Transmission`, FuelType, now named `Engine` and `Type` for `type` in `TrainingClass`
 
+````mermaid
+classDiagram
+    class Transmission {
+    <<Enumeration>>
+    MANUAL
+    AUTOMATIC
+    SEMI-AUTO
+    }
+    class Engine {
+    <<Enumeration>>
+    PETROL
+    DIESEL
+    SEMI-AUTO
+    }
+    class Type {
+        <<Enumeration>>
+        MAINTENANCE
+        ADVANCED REPAIR
+        RESTORATION & CARE
+    }
+````
+
+### Defining Custom Types
+
+For further enforcement of SOLID principles we can define a data type from a class.
+
 
 ## Flowcharts
