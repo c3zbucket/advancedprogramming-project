@@ -66,7 +66,7 @@ classDiagram
     }
     class TrainingClass{
     -code : String
-    -ID : Volunteer
+    -ID : String
     -name : String
     -type : String
     -date : Date
@@ -80,9 +80,18 @@ classDiagram
     }
 ````
 
-As seen - multiple changes were made from the classic previous ERD diagram 
+As this concept developed, multiple changes were made from the classic previous ERD diagram 
+
+### Handling 'Foreign' Values
 
 Lookup tables created were dropped from this implementation as the logic with shared attributes that otherwise would be 'foreign keys' in other classes would be abstracted in the SQL implementation.
+
+### Changing Data Types
+
+Some entities were intended to hold a preset of values. One example would be the property `Transmission` which stored the transmission of the car.
+This can have the values of - `Automatic`, `Manual` or `Semi-Auto`. For this reason, such properties when translated to attributes in the class diagram were chosen to be **enumerations** to define a strict set of constants that transmissions can be, nothing else.
+
+In UML class diagrams an Enum is declared with the tags of `<<Enumeration>>`; thus leading to the additional classes for `Transmission`, FuelType, now named `Engine` and `Type` for `type` in `TrainingClass`
 
 
 ## Flowcharts
