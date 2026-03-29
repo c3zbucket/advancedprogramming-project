@@ -152,14 +152,11 @@ Finally, an additional `Repair` class was created to allow for greater granulari
 
 Leading to a relationship between `Booking`, `Repair` and `Part` as shown
 
-    Repair "0..*" *--o "*..1" Booking
-
 ````mermaid
 classDiagram
     Booking "*..1" *--o "0..*" Repair
     Repair "*..1" <--* "1..*" Part
     Vehicle "*..1" *..> "1..*" Booking
-    
     class Vehicle{
         -id : String
         -plate : String
@@ -170,14 +167,14 @@ classDiagram
         -year : String
     }
     class Booking{
-        -ID : String
-        -BookedVehicle : Vehicle
-        -Owner : Visitor
-        -Cost : Decimal
-        -Time : String
-        -Description : String
-        -Date : Date
-        -Cost : Decimal
+        -id : String
+        -bookedVehicle : Vehicle
+        -owner : Visitor
+        -cost : Decimal
+        -time : String
+        -description : String
+        -date : Date
+        -cost : Decimal
     }
     class Repair {
         -ascBooking : Booking
@@ -193,5 +190,126 @@ classDiagram
         -date : Date
     }
 ```` 
+### Final Diagram
+
+With all the amendments implemented that are specified above - the final diagram composed is shown below:
+
+````mermaid
+classDiagram
+    class Volunteer{
+        <<Interface>>
+        -id : String
+        -name : String
+        -phoneNo : String
+        -email : String
+        +updateRecord() Integer, String
+    }
+    class Student{
+    }
+    class Lecturer{
+    }
+    class Visitor {
+        -id : String
+        -Name : String
+        -phoneNo : String
+        -email : String
+    }
+    class ClassType {
+        <<Enumeration>>
+        MAINTENANCE
+        ADVANCED REPAIR
+        RESTORATION & CARE
+    }
+    ClassType --> "1..1" TrainingClass
+    class TrainingClass{
+        -code : String
+        -ID : String
+        -name : String
+        -type : ClassType
+        -attendees : List~Visitor~
+        -date : Date
+        +register() String
+        +remove() String
+        +reschedule() String
+    }
+    class Transmission {
+        <<Enumeration>>
+        MANUAL
+        AUTOMATIC
+        SEMI-AUTO
+    }
+    class Engine {
+        <<Enumeration>>
+        PETROL
+        DIESEL
+        ELECTRIC
+    }
+    class PartType {
+        <<Enumeration>>
+        ENGINE
+        ELECTRICAL
+        SUSPENSION
+        DRIVETRAIN
+        BODY
+    }
+    Visitor "*..1" *--o "1..*" Vehicle
+    Transmission --> "1..1" Vehicle
+    Engine --> "1..1" Vehicle
+    class Vehicle{
+        -id : String
+        -owner : Visitor
+        -plate : String
+        -make : String
+        -model : String
+        -transmission : Enum
+        -engine : Enum
+        -year : String
+        +ToString() String
+    }
+    Vehicle "*..1" *..> "1..*" Booking
+    class Booking{
+        -id : String
+        -bookedVehicle : Vehicle
+        -owner : Visitor
+        -cost : Decimal
+        -time : String
+        -description : String
+        -repairs : List<Repair>
+        -date : Date
+        -totalLab : Decimal
+        -totalParts : Decimal
+        -totalCost : Decimal
+        +addRepair() void
+        +removeRepair() void
+        +updateTotal() void
+        +remove() bool
+        +ToString() String
+    }
+    Booking "*..1" *--o "0..*" Repair
+    class Repair {
+        -ascBooking : Booking
+        -description : String
+        -repairer : Volunteer
+        -parts : List~Part~
+        -partsCost : Decimal
+        -totalCost : Decimal
+        -labCost : Decimal
+        +removePart() Decimal
+        +addPart() Decimal
+        +updateLab() void
+        +updateCost() void
+        +ToString() String
+    }
+    Repair "*..1" <--* "1..*" Part
+    PartType --> "1..1" Part
+    class Part {
+        -id : String
+        -make : String
+        -type : Enum
+        -cost : Decimal
+    }
+````
+
+
 
 ## Flowcharts
