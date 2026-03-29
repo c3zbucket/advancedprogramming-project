@@ -119,5 +119,23 @@ classDiagram
 
 For further enforcement of SOLID principles we can define a data type from a class.
 
+For example - `Booking` requires a vehicle registration plate. Initially this was simply assigned as a string - a future problem was identified where atomicity would not be as enforced as a registration plate could be entered without a `Vehicle` entry it came from. Therefore introducing the scenario of mismatched or even no `Vehicle` entry being present with the entered plate. 
+
+Leading to the correction below, where rather than the 
+
+````mermaid
+classDiagram
+    class Booking{
+        -ID : String
+        -Plate : String
+        -OwnerID : String
+        -Cost : Decimal
+        -Time : String
+        -Description : String
+        -Date : Date
+        -Cost : Decimal
+        }
+```` 
+
 
 ## Flowcharts
