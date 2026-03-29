@@ -159,8 +159,7 @@ classDiagram
     Vehicle "*..1" *..> "1..*" Booking
     class Vehicle{
         -id : String
-        -plate : String
-        -make : String
+        -plate : String -make : String
         -model : String
         -transmission : Enum
         -fuelType : Enum
@@ -190,6 +189,29 @@ classDiagram
         -date : Date
     }
 ```` 
+
+### Adding Interfaces
+
+Additionally, it was identified that Dependency Inversion could be more strictly enforced with the creation of a `Volunteer` interface that has concrete implementations either as the class `Student` or `Lecturer` as they are near-identical in attributes. 
+This `Volunteer`interface will now hold the abstract attributes and methods shared by both implementations.
+
+````mermaid
+classDiagram
+    class Volunteer{
+        <<Interface>>
+        -id : String
+        -name : String
+        -phoneNo : String
+        -email : String
+        +updateRecord() Integer, String
+    }
+    class Student{
+    }
+    class Lecturer{
+    }
+````
+
+
 ### Final Diagram
 
 With all the amendments implemented that are specified above - the final diagram composed is shown below:
