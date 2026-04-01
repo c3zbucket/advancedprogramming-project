@@ -212,13 +212,81 @@ In this case, the method `updateRecord()` will allow for an editable field like 
 
 This was improved further modifying the `User` class to require a Volunteer generic type in construction. With this change, users on the system would have a more simplified and robust connection to their actual records with their 'volunteer ID' being required for login rather than an additional username. 
 
-As a result, other attributes like `email` can be dropped as the users would already have a linked one to their record, thus leaving only the password as the remaining additional attribute. Thus preventing inconsistency between a person's system 'user' and 'record' in the workshop.
+As a result, other attributes like `email` can be dropped as the users would already have a linked one to their record, thus leaving only the password as the remaining additional attribute. Thus preventing inconsistency between a person's system 'user' and 'record' in the workshop:
+
+````mermaid
+classDiagram
+    class Volunteer{
+        <<Interface>>
+        -id : String
+        -name : String
+        -phoneNo : String
+        -email : String
+        +updateRecord() Integer, String
+    }
+    Student ..|> Volunteer
+    Lecturer ..|> Volunteer
+    SystemUser --* Volunteer
+    class Student{ }
+    class Lecturer{ }
+    class SystemUser {
+    -volunteer : Volunteer
+    -password : String
+    }
+````
 
 Additionally, it would provide benefits in:
 * **User Experience** - it would overall improve the UX when implemented as 'volunteers' will only need to update their contact info once to see it applied on both ends 
 * **Security** - To change more sensitive information like that, a user would need to request an admin to manually change it for them using the object's implementation of `updateRecord()`. Preventing malicious abuse or accidental modification that can put the system at risk
 
 It was later realised this could be taken further as the question arose on how the 'Admin User' would be implemented.
+
+The brief implies that both students and lecturers involved in the workshop can be admin users in this extract:
+
+> *"it is possible that an 
+admin user may not actually be a volunteer who repairs vehicles or delivers classes......
+> so they may equally be one 
+of the lecturers or a student."*
+
+In this case the brief previously states that volunteers include the students who actually repair vehicles while lecturers do, implying that both can become 'admin users'. 
+
+Initially it was thought therefore, an `AdminUser` entity alongside the `SystemUser`, now renamed to `VolUser` representing a standard user can be another composite class containing a field requiring an entry of the `Volunteer` type, like below:
+
+````mermaid
+classDiagram
+    class Volunteer{
+        <<Interface>>
+        -id : String
+        -name : String
+        -phoneNo : String
+        -email : String
+        +updateRecord() Integer, String
+    }
+    Student ..|> Volunteer
+    Lecturer ..|> Volunteer
+    VolUser --* Volunteer
+    AdminUser --* Volunteer
+    class Student{ }
+    class Lecturer{ }
+    class VolUser {
+    -volunteer : Volunteer
+    -password : String
+    }
+    class AdminUser {
+        -volunteer : Volunteer
+        -password : String
+    }
+````
+However it also specifies that 'admin users' can be people whose sole role is to administer the system - as shown here:
+
+> *".... but someone whose role is purely to administer the system on behalf of those who do"*
+
+Ergo, an individual who is not involved in repairs in anyway. This individual would therefore not fit. 
+
+The initial thought then was to have a child interface inheriting from `Volunteer` that would have an `AdminUser` class that relies on it
+
+
+TODO: think back on admin/standard user privs being in enum of general systemuser implementation
 
 ````mermaid
 classDiagram
