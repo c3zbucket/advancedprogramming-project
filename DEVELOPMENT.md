@@ -281,12 +281,9 @@ However it also specifies that 'admin users' can be people whose sole role is to
 
 > *".... but someone whose role is purely to administer the system on behalf of those who do"*
 
-Ergo, an individual who is not involved in repairs in anyway. This individual would therefore not fit. 
+Ergo, an individual who is not involved in repairs in anyway. This individual would therefore not fit as they'd also need their own contact details in the system.
 
-The initial thought then was to have a child interface inheriting from `Volunteer` that would have an `AdminUser` class that relies on it
-
-
-new TODO: think back on admin/standard user privs being in enum of general systemuser implementation
+The initial thought then was to have a child interface called `SystemUser` inheriting from `Volunteer` that would have`AdminUser` and `VolUser` as implementations. 
 
 ````mermaid
 classDiagram
@@ -296,20 +293,57 @@ classDiagram
         -name : String
         -phoneNo : String
         -email : String
-        +updateRecord() Integer, String
+    }
+    class SystemUser{
+    <<Interface>>
+    +updateRecord() Integer, String
     }
     Student ..|> Volunteer
     Lecturer ..|> Volunteer
-    SystemUser --* Volunteer
+    SystemUser --|> Volunteer
     class Student{ }
     class Lecturer{ }
     class SystemUser {
     -volunteer : Volunteer
     -password : String
     }
+    VolUser ..|> SystemUser
+    AdminUser ..|> SystemUser
+    class VolUser { }
+    class AdminUser { }
 ````
 
+After pondering, it was changed to instead the only have the `SystemUser` class inheriting with an enum type that stores the individual's 'role' on a system. 
 
+````mermaid
+classDiagram
+    class Volunteer{
+        <<Interface>>
+        -id : String
+        -name : String
+        -phoneNo : String
+        -email : String
+    }
+    class SystemUser{
+        <<Interface>>
+        +updateRecord() Integer, String
+    }
+    Student ..|> Volunteer
+    Lecturer ..|> Volunteer
+    SystemUser --|> Volunteer
+    class Student{ }
+    class Lecturer{ }
+    class Lecturer{
+        <<Enumeration>>
+        VOLUNTEER
+        ADMIN
+    }
+    class SystemUser {
+        -volunteer : Volunteer
+        -password : String
+        -role : Role
+    }
+````
 
 ### Final Diagram
 
