@@ -193,7 +193,7 @@ classDiagram
 ### Adding Interfaces
 
 Additionally, it was identified that Dependency Inversion could be more strictly enforced with the creation of a `Volunteer` interface that has concrete implementations either as the class `Student` or `Lecturer` as they are near-identical in attributes. 
-This `Volunteer`interface will now hold the abstract attributes and methods shared by both implementations.
+This `Volunteer`interface will now hold the abstract attributes and methods shared by both implementations. In the UML - this would be represented by the two implementations not containing attributes or methods they realise.
 
 ````mermaid
 classDiagram
@@ -205,16 +205,55 @@ classDiagram
         -email : String
         +updateRecord() Integer, String
     }
-    class Student{
+    class Student{ }
+    class Lecturer{ }
+````
+In this case, the method `updateRecord()` will allow for an editable field like phoneno or email to be updated by providing a number argument to specify which field to update
+
+This was improved further modifying the `User` class to require a Volunteer generic type in construction. With this change, users on the system would have a more simplified and robust connection to their actual records with their 'volunteer ID' being required for login rather than an additional username. 
+
+As a result, other attributes like `email` can be dropped as the users would already have a linked one to their record, thus leaving only the password as the remaining additional attribute. Thus preventing inconsistency between a person's system 'user' and 'record' in the workshop.
+
+Additionally, it would provide benefits in:
+* **User Experience** - it would overall improve the UX when implemented as 'volunteers' will only need to update their contact info once to see it applied on both ends 
+* **Security** - To change more sensitive information like that, a user would need to request an admin to manually change it for them using the object's implementation of `updateRecord()`. Preventing malicious abuse or accidental modification that can put the system at risk
+
+It was later realised this could be taken further as the question arose on how the 'Admin User' would be implemented.
+
+````mermaid
+classDiagram
+    class Volunteer{
+        <<Interface>>
+        -id : String
+        -name : String
+        -phoneNo : String
+        -email : String
+        +updateRecord() Integer, String
     }
-    class Lecturer{
+    Student ..|> Volunteer
+    Lecturer ..|> Volunteer
+    SystemUser --* Volunteer
+    class Student{ }
+    class Lecturer{ }
+    class SystemUser {
+    -volunteer : Volunteer
+    -password : String
     }
 ````
 
 
+
 ### Final Diagram
 
-With all the amendments implemented that are specified above - the final diagram composed is shown below:
+With all the amendments implemented that are specified above, alongside additional rectifications listed below, including:
+
++ Adding a `Lecturer` field called `supervisor` to `Booking` which will display the lecturer(s) who were involved in supervising the repair
++ Rectifying the `repairers` field to *only* take Student entries rather than Lecturer ones as the brief implies they are involved in actual repairs
++ Rectifying the `repairers` field to accept multiple students in the form of a list if they were involved in the same singular repair as the brief does not declare 
+ 
+ 
+ 
+The final diagram composed was as follows:
 
 ````mermaid
 classDiagram
@@ -226,10 +265,15 @@ classDiagram
         -email : String
         +updateRecord() Integer, String
     }
-    class Student{
+    class Student{ }
+    class Lecturer{ }
+    class SystemUser {
+        -volunteer : Volunteer 
+        -password : String
     }
-    class Lecturer{
-    }
+    Student "realises" ..|>  Volunteer
+    Lecturer "realises" ..|> Volunteer
+    SystemUser "1..1" --* "1..1" Volunteer
     class Visitor {
         -id : String
         -Name : String
@@ -296,7 +340,8 @@ classDiagram
         -cost : Decimal
         -time : String
         -description : String
-        -repairs : List<Repair>
+        -supervisor : List~Lecturer~
+        -repairs : List~Repair~
         -date : Date
         -totalLab : Decimal
         -totalParts : Decimal
@@ -311,7 +356,7 @@ classDiagram
     class Repair {
         -ascBooking : Booking
         -description : String
-        -repairer : Volunteer
+        -repairers : List~Student~
         -parts : List~Part~
         -partsCost : Decimal
         -totalCost : Decimal
