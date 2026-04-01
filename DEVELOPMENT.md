@@ -286,7 +286,7 @@ Ergo, an individual who is not involved in repairs in anyway. This individual wo
 The initial thought then was to have a child interface inheriting from `Volunteer` that would have an `AdminUser` class that relies on it
 
 
-TODO: think back on admin/standard user privs being in enum of general systemuser implementation
+new TODO: think back on admin/standard user privs being in enum of general systemuser implementation
 
 ````mermaid
 classDiagram
