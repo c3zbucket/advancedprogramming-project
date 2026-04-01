@@ -313,7 +313,9 @@ classDiagram
     class AdminUser { }
 ````
 
-After pondering, it was changed to instead the only have the `SystemUser` class inheriting with an enum type that stores the individual's 'role' on a system. 
+After pondering, it was finalised to instead only have the `SystemUser` class inheriting with an enum type that stores the individual's 'role' on a system. This way if a standard 'volunteer' user is promoted to also handle administration, only their role would need to be changed rather than remove their existing user on the system and re-register as an admin there.
+
+Furthermore it would also result in a more robust and thus secure implementation of authorisation as only a single `role' value would be referred to when handling users login rather than implementing logic for object identification for such as system.
 
 ````mermaid
 classDiagram
@@ -333,7 +335,7 @@ classDiagram
     SystemUser --|> Volunteer
     class Student{ }
     class Lecturer{ }
-    class Lecturer{
+    class Role{
         <<Enumeration>>
         VOLUNTEER
         ADMIN
@@ -343,8 +345,8 @@ classDiagram
         -password : String
         -role : Role
     }
+    SystemUser ..> Role
 ````
-
 ### Final Diagram
 
 With all the amendments implemented that are specified above, alongside additional rectifications listed below, including:
@@ -352,8 +354,6 @@ With all the amendments implemented that are specified above, alongside addition
 + Adding a `Lecturer` field called `supervisor` to `Booking` which will display the lecturer(s) who were involved in supervising the repair
 + Rectifying the `repairers` field to *only* take Student entries rather than Lecturer ones as the brief implies they are involved in actual repairs
 + Rectifying the `repairers` field to accept multiple students in the form of a list if they were involved in the same singular repair as the brief does not declare 
- 
- 
  
 The final diagram composed was as follows:
 
@@ -365,14 +365,21 @@ classDiagram
         -name : String
         -phoneNo : String
         -email : String
-        +updateRecord() Integer, String
     }
     class Student{ }
     class Lecturer{ }
-    class SystemUser {
-        -volunteer : Volunteer 
-        -password : String
+    class Role{
+        <<Enumeration>>
+        VOLUNTEER
+        ADMIN
     }
+    class SystemUser {
+        -volunteer : Volunteer
+        -password : String
+        -role : Role
+        +updateRecord() Integer, String
+    }
+    SystemUser ..> Role
     Student "realises" ..|>  Volunteer
     Lecturer "realises" ..|> Volunteer
     SystemUser "1..1" --* "1..1" Volunteer
@@ -478,7 +485,5 @@ classDiagram
         -cost : Decimal
     }
 ````
-
-
 
 ## Flowcharts
