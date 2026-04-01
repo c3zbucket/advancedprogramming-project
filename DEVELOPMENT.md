@@ -354,12 +354,13 @@ With all the amendments implemented that are specified above, alongside addition
 + Adding a `Lecturer` field called `supervisor` to `Booking` which will display the lecturer(s) who were involved in supervising the repair
 + Rectifying the `repairers` field to *only* take Student entries rather than Lecturer ones as the brief implies they are involved in actual repairs
 + Rectifying the `repairers` field to accept multiple students in the form of a list if they were involved in the same singular repair as the brief does not declare 
++ Changing the name of the `Volunteer` interface to `Staff` to better reflect the types of users for the system.
  
 The final diagram composed was as follows:
 
 ````mermaid
 classDiagram
-    class Volunteer{
+    class Staff{
         <<Interface>>
         -id : String
         -name : String
@@ -374,15 +375,15 @@ classDiagram
         ADMIN
     }
     class SystemUser {
-        -volunteer : Volunteer
+        -member : Staff
         -password : String
         -role : Role
         +updateRecord() Integer, String
     }
     SystemUser ..> Role
-    Student "realises" ..|>  Volunteer
-    Lecturer "realises" ..|> Volunteer
-    SystemUser "1..1" --* "1..1" Volunteer
+    Student "realises" ..|>  Staff
+    Lecturer "realises" ..|> Staff
+    SystemUser "1..1" --* "1..1" Staff
     class Visitor {
         -id : String
         -Name : String
@@ -487,3 +488,38 @@ classDiagram
 ````
 
 ## Flowcharts
+
+### Initial Page
+The next stage was to devise a flowchart to mainly display the flow of program logic. 
+
+Analysing the brief, it was decided that the best method of approaching the display of the training classes was to have it be the default page and always display unless a staff member chooses to select the 'login' option. 
+
+This way the system will display all the essential information visitors need by default, there would ideally be no method of getting 'lost' in this side of the system. While retaining functionality for staff to perform any quick changes at the scene if needed.
+
+````mermaid
+---
+title: Default interface page
+---
+flowchart TD 
+    n1([Start])
+    --> n2[/Current training classes/]
+        --> n3{Login selected?}
+            -- yes --> n4[[Login Page]]
+            -- no --> n2
+````
+
+### Login Page
+
+### 'Garage Menu'
+
+#### Booking Menu
+
+#### Repair Menu
+
+### Training Class Menu
+
+### Lecturer Panel
+
+### Admin Panel
+
+
