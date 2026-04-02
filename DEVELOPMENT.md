@@ -550,6 +550,9 @@ flowchart TD
 This page would simply tell the staff user to get into contact with an administrator if they want to create an account, it could list general contact information such as an email associated with that user group. The only other option on this page would be to return to the home default page or to the login page.
 
 ### 'Garage Menu'
+
+This menu would manage 'bookings' made for repairs at the workshop
+
 ```mermaid
 ---
 title: Garage Menu
