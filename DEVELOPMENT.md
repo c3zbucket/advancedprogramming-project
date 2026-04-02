@@ -17,7 +17,7 @@ I conceptualised a basic layout without relationships based on my ERD of the sce
 
 <!--- Class Diagram for GMMR Systems -->
 
-````mermaid
+```mermaid
 ---
 title: Basic Layout
 ---
@@ -78,7 +78,7 @@ classDiagram
     -cost : Decimal
     -date : Date
     }
-````
+```
 
 As this concept developed, multiple changes were made from the classic previous ERD diagram 
 
@@ -93,7 +93,7 @@ This can have the values of - `Automatic`, `Manual` or `Semi-Auto`. For this rea
 
 In UML class diagrams an Enum is declared with the tags of `<<Enumeration>>`; thus leading to the additional classes for `Transmission`, FuelType, now named `Engine` and `Type` for `type` in `TrainingClass`
 
-````mermaid
+```mermaid
 classDiagram
     class Transmission {
     <<Enumeration>>
@@ -113,7 +113,7 @@ classDiagram
         ADVANCED REPAIR
         RESTORATION & CARE
     }
-````
+```
 
 ### Defining Custom Types
 
@@ -123,7 +123,7 @@ For example - `Booking` requires a vehicle registration plate. Initially this wa
 
 Leading to the correction below, where rather than a constant string holding the reg plate of the booking, an entire `Vehicle` project is held. Ergo, **dependency injection** can be implemented where a booking requires a previously registered `BookedVehicle` Vehicle record or a new one. 
 
-````mermaid
+```mermaid
 classDiagram
     class Booking{
         -ID : String
@@ -135,11 +135,11 @@ classDiagram
         -Date : Date
         -Cost : Decimal
         }
-```` 
+``` 
 
 Additionally, as seen above -  the owner ID associated with the booking has been changed to an instance of the new generic `Visitor` type that will encompass motorists that visit GMMW for any reason. Eliminating the need for separate `Trainee` and `Owner` classes. 
 
-````mermaid
+```mermaid
 classDiagram
     class Visitor {
         -ID : String
@@ -147,12 +147,12 @@ classDiagram
         -phoneNo : String
         -email : String
     }
-```` 
+``` 
 Finally, an additional `Repair` class was created to allow for greater granularity in tracking what was done in a booking. `Repair` required a booking to be created that it was linked to. This way, bookings that involved multiple individual repairs could be listed, satisfying the condition of them being able to be 'drilled down' to in the interface. Parts would be stored in a strictly defined **list** for them, meaning a repair can use multiple parts. The cost will then calculate the total of the individual cost of each item.
 
 Leading to a relationship between `Booking`, `Repair` and `Part` as shown
 
-````mermaid
+```mermaid
 classDiagram
     Booking "*..1" *--o "0..*" Repair
     Repair "*..1" <--* "1..*" Part
@@ -188,14 +188,14 @@ classDiagram
         -cost : Decimal
         -date : Date
     }
-```` 
+``` 
 
 ### Adding Interfaces
 
 Additionally, it was identified that Dependency Inversion could be more strictly enforced with the creation of a `Volunteer` interface that has concrete implementations either as the class `Student` or `Lecturer` as they are near-identical in attributes. 
 This `Volunteer`interface will now hold the abstract attributes and methods shared by both implementations. In the UML - this would be represented by the two implementations not containing attributes or methods they realise.
 
-````mermaid
+```mermaid
 classDiagram
     class Volunteer{
         <<Interface>>
@@ -207,14 +207,14 @@ classDiagram
     }
     class Student{ }
     class Lecturer{ }
-````
+```
 In this case, the method `updateRecord()` will allow for an editable field like phoneno or email to be updated by providing a number argument to specify which field to update
 
 This was improved further modifying the `User` class to require a Volunteer generic type in construction. With this change, users on the system would have a more simplified and robust connection to their actual records with their 'volunteer ID' being required for login rather than an additional username. 
 
 As a result, other attributes like `email` can be dropped as the users would already have a linked one to their record, thus leaving only the password as the remaining additional attribute. Thus preventing inconsistency between a person's system 'user' and 'record' in the workshop:
 
-````mermaid
+```mermaid
 classDiagram
     class Volunteer{
         <<Interface>>
@@ -233,7 +233,7 @@ classDiagram
     -volunteer : Volunteer
     -password : String
     }
-````
+```
 
 Additionally, it would provide benefits in:
 * **User Experience** - it would overall improve the UX when implemented as 'volunteers' will only need to update their contact info once to see it applied on both ends 
@@ -252,7 +252,7 @@ In this case the brief previously states that volunteers include the students wh
 
 Initially it was thought therefore, an `AdminUser` entity alongside the `SystemUser`, now renamed to `VolUser` representing a standard user can be another composite class containing a field requiring an entry of the `Volunteer` type, like below:
 
-````mermaid
+```mermaid
 classDiagram
     class Volunteer{
         <<Interface>>
@@ -276,7 +276,7 @@ classDiagram
         -volunteer : Volunteer
         -password : String
     }
-````
+```
 However it also specifies that 'admin users' can be people whose sole role is to administer the system - as shown here:
 
 > *".... but someone whose role is purely to administer the system on behalf of those who do"*
@@ -285,7 +285,7 @@ Ergo, an individual who is not involved in repairs in anyway. This individual wo
 
 The initial thought then was to have a child interface called `SystemUser` inheriting from `Volunteer` that would have`AdminUser` and `VolUser` as implementations. 
 
-````mermaid
+```mermaid
 classDiagram
     class Volunteer{
         <<Interface>>
@@ -311,13 +311,13 @@ classDiagram
     AdminUser ..|> SystemUser
     class VolUser { }
     class AdminUser { }
-````
+```
 
 After pondering, it was finalised to instead only have the `SystemUser` class inheriting with an enum type that stores the individual's 'role' on a system. This way if a standard 'volunteer' user is promoted to also handle administration, only their role would need to be changed rather than remove their existing user on the system and re-register as an admin there.
 
 Furthermore it would also result in a more robust and thus secure implementation of authorisation as only a single `role' value would be referred to when handling users login rather than implementing logic for object identification for such as system.
 
-````mermaid
+```mermaid
 classDiagram
     class Volunteer{
         <<Interface>>
@@ -346,7 +346,7 @@ classDiagram
         -role : Role
     }
     SystemUser ..> Role
-````
+```
 ### Final Diagram
 
 With all the amendments implemented that are specified above, alongside additional rectifications listed below, including:
@@ -358,7 +358,7 @@ With all the amendments implemented that are specified above, alongside addition
  
 The final diagram composed was as follows:
 
-````mermaid
+```mermaid
 classDiagram
     class Staff{
         <<Interface>>
@@ -485,7 +485,7 @@ classDiagram
         -type : Enum
         -cost : Decimal
     }
-````
+```
 
 ## Flowcharts
 
@@ -496,7 +496,7 @@ Analysing the brief, it was decided that the best method of approaching the disp
 
 This way the system will display all the essential information visitors need by default, there would ideally be no method of getting 'lost' in this side of the system. While retaining functionality for staff to perform any quick changes at the scene if needed.
 
-````mermaid
+```mermaid
 ---
 title: Default interface page
 ---
@@ -506,20 +506,125 @@ flowchart TD
         --> n3{Login selected?}
             -- yes --> n4[[Login Page]]
             -- no --> n2
-````
+```
 
-### Login Page
+### User Authentication
+
+#### Login Page
+
+This would be presented immediately after clicking the Login button. 
+
+At the start - the staff member would be provided an option to sign up - bringing them to a separate page that is elaborated further below.
+
+For the logic in taking the user's input - the best method identified was through only allowing the input of numbers in the staffID field, continuously parsing entered characters until the set limit of the length of the entry was reached, which in this case for now 4 was chosen.
+
+> [INFO]
+> T
+
+```mermaid
+---
+title: Login Page
+---
+flowchart TD 
+    n1@{shape: stadium, label: "Start"}
+    --> n2@{shape: lean-r, label: "Login form"}
+        --> n3@{shape: diamond, label: "Sign up selected?"}
+            n3 -- yes ---> n4@{shape: subproc, label: "Signup Page"}
+            n3 -- no ---> n5@{shape: process, label: "Take userID Input"}
+            n5 --> n6@{shape: manual-input, label: "Parse next input character"}
+            n6 --> n7@{shape: diamond, label: "Character is integer?"}
+                n7 -- yes --> n8@{shape: diamond, label: "User input length = 4?"}
+                    n8 -- no --> n6
+                    n8 -- yes --> n10@{shape: lean-r, label: "Enter password:"}
+                        n10 --> n11@{shape: diamond, label: "Password length > 7?"}
+                            n11 -- yes --> n12@{shape: process, label: "Enable login button"}
+                                n12 --> n13@{shape: lean-r, label: "Login button pressed"}
+                                    n13 --> n14@{shape: subproc, label: "Staff Portal"}
+                            n11 -- no --> n10
+            n7 -- no --> n9@{shape: lean-r, label: "Warning: UserID only contains numbers"}
+                n9 --> n6
+```
+
+#### Signup Page
+
+This page would simply tell the staff user to get into contact with an administrator if they want to create an account, it could list general contact information such as an email associated with that user group. The only other option on this page would be to return to the home default page or to the login page.
 
 ### 'Garage Menu'
+```mermaid
+---
+title: Garage Menu
+---
+flowchart TD 
+    n1([Start])
+    --> n2[/Current training classes/]
+        --> n3{Login selected?}
+            -- yes --> n4[[Login Page]]
+            -- no --> n2
+```
 
 #### Booking Menu
+```mermaid
+---
+title: Booking Menu
+---
+flowchart TD 
+    n1([Start])
+    --> n2[/Current training classes/]
+        --> n3{Login selected?}
+            -- yes --> n4[[Login Page]]
+            -- no --> n2
+```
 
 #### Repair Menu
+```mermaid
+---
+title: Repair Menu
+---
+flowchart TD 
+    n1([Start])
+    --> n2[/Current training classes/]
+        --> n3{Login selected?}
+            -- yes --> n4[[Login Page]]
+            -- no --> n2
+```
 
 ### Training Class Menu
+```mermaid
+---
+title: Training Class Menu
+---
+flowchart TD 
+    n1([Start])
+    --> n2[/Current training classes/]
+        --> n3{Login selected?}
+            -- yes --> n4[[Login Page]]
+            -- no --> n2
+```
 
 ### Lecturer Panel
+```mermaid
+---
+title: Lecturer Panel
+---
+flowchart TD 
+    n1([Start])
+    --> n2[/Current training classes/]
+        --> n3{Login selected?}
+            -- yes --> n4[[Login Page]]
+            -- no --> n2
+```
 
 ### Admin Panel
+```mermaid
+---
+title: Admin Panel
+---
+flowchart TD 
+    n1([Start])
+    --> n2[/Current training classes/]
+        --> n3{Login selected?}
+            -- yes --> n4[[Login Page]]
+            -- no --> n2
+```
 
 
