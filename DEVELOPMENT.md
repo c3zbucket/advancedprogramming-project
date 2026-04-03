@@ -551,18 +551,26 @@ This page would simply tell the staff user to get into contact with an administr
 
 ### 'Garage Menu'
 
-This menu would manage 'bookings' made for repairs at the workshop
+This menu would manage 'bookings' made for repairs at the workshop. Operated by both student and lecturer volunteers.
+
+This is probably the most expansive part of the implementation which means it will be split up into multiple sections which will be further elaborated with respectively
+
+#### 'Welcome Page'
 
 ```mermaid
 ---
-title: Garage Menu
+title: Garage Menu - Welcome Page
 ---
-flowchart TD 
-    n1([Start])
-    --> n2[/Current training classes/]
-        --> n3{Login selected?}
-            -- yes --> n4[[Login Page]]
-            -- no --> n2
+flowchart LR 
+    n1@{shape: stadium, label: "Start"}
+        n1 --> n2@{shape: lean-r, label: "Menu options"}
+            n2 --> n3@{shape: comment, label: "Options: \n 1 - New Booking \n 2 - Current Bookings \n 3 - Motorist Record \n 4 - Vehicle Record \n 0 - Return"}
+            n2 --> n4@{shape: diamond, label: "Option selected:"}
+                n4 -- '0' --> n5@{shape: subproc, label: "Staff Portal"}
+                n4 -- '1' --> n6@{shape: subproc, label: "Create Booking"}
+                n4 -- '2' --> n7@{shape: subproc, label: "Manage Bookings"}
+                n4 -- '3' --> n8@{shape: subproc, label: "Motorist Records"}
+                n4 -- '4' --> n9@{shape: subproc, label: "Vehicle Records"}
 ```
 
 #### Booking Menu
