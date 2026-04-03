@@ -643,6 +643,17 @@ flowchart TD
 
 #### 'Manage Bookings'
 
+In this sub-menu - users would be greeted with a list of bookings they can manage. At the very least - in compliance with the requirements of the brief, the system should allow staff, including student and lecturer volunteers to:
++ Add or modify existing repairs 'added' to the booking - which would include their associated information (elaborated in ![Manage Booking Repairs]) 
++ Add or modify existing lecturer(s) 'assigned' to supervise the repairs in the booking.
++ Automatically calculate the final cost of the booking from the repairs associated with this (elaborated further in ![Manage Booking Repairs])
++ Change motorist(owner) details associated with the booking, if necessary
++ Change vehicle details associated with the booking, if necessary
++ 
+
+##### Manage Repairs
+
+
 #### 'Manage Motorists'
 
 #### 'Manage Motorists'
