@@ -686,6 +686,24 @@ flowchart TD
 ```
 
 ### Training Class Menu
+
+This is another menu that would only be accessible by student users. 
+
+Upon clicking the menu entry, they will be greeted with a 'timetable' of the classes every given Saturday, with an option to advance it to the next or previous ones. This would likely presented through an embedded scheduler or day calender component in the web implementation.
+
+Below would be the list of training classes created. These entries will be in a table-like format including columns for important data such as their type, date and student delivering the class.
+
+The table format should therefore in theory allow the list to be easily filterable by date alongside the student 'delivering' the class as the brief states.
+
+Beyond the list, there would be an option of 'all attendees' where they can view a filterable list of all motorists attending classes including details associated with them such as classes they attended as well as their calculated attendance rate from classes they attended prior from which additional functionality can be introduced such as sending emails to attendees whose attendance drops below a certain threshold and obtain feedback why they don't attend the classes anymore.
+
+If they want to perform an action to an existing class they must first click it where they'll be greeted with a details page and the management actions that can be done including:
++ Modifying the attendee list of the class, including:
+  + 'Enrolling' a new student to the class, either assigning one from an existing 'visitor' or creating a new one
+  + 'De-enrolling' an existing one.
++ Modifying the date of the class 
++ Modifying the student volunteer assigned to teach the class
+
 ```mermaid
 ---
 title: Training Class Menu
