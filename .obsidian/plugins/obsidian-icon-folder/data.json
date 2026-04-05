@@ -1,0 +1,86 @@
+{
+  "settings": {
+    "migrated": 6,
+    "iconPacksPath": ".obsidian/icons",
+    "fontSize": 20,
+    "emojiStyle": "native",
+    "iconColor": null,
+    "recentlyUsedIcons": [
+      "TiReport",
+      "SiSpringsecurity",
+      "SiCyberdefenders",
+      "LiCpu",
+      "LiAlarmClockCheck"
+    ],
+    "recentlyUsedIconsSize": 5,
+    "rules": [],
+    "extraMargin": {
+      "top": 0,
+      "right": 4,
+      "bottom": 0,
+      "left": 0
+    },
+    "iconInTabsEnabled": false,
+    "iconInTitleEnabled": false,
+    "iconInTitlePosition": "above",
+    "iconInFrontmatterEnabled": false,
+    "iconInFrontmatterFieldName": "icon",
+    "iconColorInFrontmatterFieldName": "iconColor",
+    "iconsBackgroundCheckEnabled": false,
+    "iconsInNotesEnabled": true,
+    "iconsInLinksEnabled": true,
+    "iconIdentifier": ":",
+    "lucideIconPackType": "native",
+    "debugMode": false,
+    "useInternalPlugins": false
+  },
+  "Year 1/{SWE4303} Computing Infrastructure": "FasServer",
+  "Year 1/{SWE4305} Object Oriented Programming": {
+    "iconName": "FabJava",
+    "iconColor": "#ff0000"
+  },
+  "Year 2/{COM5401} Advanced Programming": {
+    "iconName": "TiBrandCSharp",
+    "iconColor": "#8468e2"
+  },
+  "Year 2/{COM5402} Data Structures & Algorithms": {
+    "iconName": "TiStack3",
+    "iconColor": "#fff700"
+  },
+  "Year 2/{COM5405} Big Data Analytics": {
+    "iconName": "SiPowerbi",
+    "iconColor": "#ff6600"
+  },
+  "Year 2/{COM5404} System Analysis & Design": {
+    "iconName": "FasMagnifyingGlass",
+    "iconColor": "#0bd0c3"
+  },
+  "Year 2/{COM5404} System Analysis & Design/Assignments": {
+    "iconName": "TiReport",
+    "iconColor": "#0bd0c3"
+  },
+  "Year 2/{COM5405} Big Data Analytics/Assignments": {
+    "iconName": "TiReport",
+    "iconColor": "#ff6600"
+  },
+  "Year 2/{COM5407} Computer Systems Architecture": {
+    "iconName": "LiCpu",
+    "iconColor": "#329a43"
+  },
+  "Year 2/{COM5406} Cyber Security": {
+    "iconName": "SiSpringsecurity",
+    "iconColor": "#3b97de"
+  },
+  "Year 2/{COM5406} Cyber Security/Assignments": {
+    "iconName": "TiReport",
+    "iconColor": "#3b97de"
+  },
+  "Year 2/{COM5407} Computer Systems Architecture/Assignments": {
+    "iconName": "TiReport",
+    "iconColor": "#329a43"
+  },
+  "Year 2/{COM5401} Advanced Programming/Assignments": {
+    "iconName": "TiReport",
+    "iconColor": "#8368e1"
+  }
+}

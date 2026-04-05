@@ -1,0 +1,134 @@
+{
+  "callouts": {
+    "custom": [
+      "output",
+      "code",
+      "history",
+      "task",
+      "reading",
+      "maths",
+      "tutorial"
+    ],
+    "settings": {
+      "output": [
+        {
+          "changes": {
+            "icon": "lucide-chevron-right-square"
+          }
+        },
+        {
+          "condition": {
+            "colorScheme": "light"
+          },
+          "changes": {
+            "color": "238, 107, 255"
+          }
+        },
+        {
+          "condition": {
+            "colorScheme": "dark"
+          },
+          "changes": {
+            "color": "238, 107, 255"
+          }
+        }
+      ],
+      "code": [
+        {
+          "changes": {
+            "icon": "lucide-code-2",
+            "color": "187, 0, 255"
+          }
+        }
+      ],
+      "history": [
+        {
+          "changes": {
+            "icon": "lucide-history",
+            "color": "255, 149, 0"
+          }
+        }
+      ],
+      "attention": [
+        {
+          "changes": {
+            "icon": "lucide-pencil-line"
+          }
+        },
+        {
+          "condition": {
+            "colorScheme": "light"
+          },
+          "changes": {
+            "color": "233, 151, 63"
+          }
+        },
+        {
+          "condition": {
+            "colorScheme": "dark"
+          },
+          "changes": {
+            "color": "233, 151, 63"
+          }
+        }
+      ],
+      "task": [
+        {
+          "changes": {
+            "icon": "lucide-pencil-line",
+            "color": "0, 213, 255"
+          }
+        }
+      ],
+      "reading": [
+        {
+          "changes": {
+            "icon": "lucide-book-open"
+          }
+        }
+      ],
+      "maths": [
+        {
+          "changes": {
+            "icon": "math"
+          }
+        },
+        {
+          "condition": {
+            "colorScheme": "light"
+          },
+          "changes": {}
+        },
+        {
+          "condition": {
+            "colorScheme": "dark"
+          },
+          "changes": {
+            "color": "245, 245, 245"
+          }
+        }
+      ],
+      "summary": [
+        {
+          "changes": {
+            "icon": "lucide-notepad-text",
+            "color": "0, 17, 255"
+          }
+        }
+      ],
+      "tutorial": [
+        {
+          "changes": {
+            "icon": "lucide-notepad-text",
+            "color": "0, 51, 255"
+          }
+        }
+      ]
+    }
+  },
+  "calloutDetection": {
+    "obsidian": true,
+    "theme": true,
+    "snippet": true
+  }
+}

@@ -599,7 +599,7 @@ flowchart TD
                                 n8b -- yes --> n4b
                                 n8b -- no --> n9b@{shape: diamond, label: "Valid mandatory fields entered?"}
                                     n9b -- yes -->  n10a@{shape: curv-trap, label: "Enable 'Next' button"}
-                                        n10b --> n11b{shape: das, label: "Selected vehicle object reference"}
+                                        n10b --> n11b{shape: lin-cyk, label: "Selected vehicle object reference"}
                                             n11b --> n12b@{shape: manual-input, label: "Enter motorist details"}                                   
                                                 n11b --> n12b@{shape: diamond, label: "Back button pressed?"}                                   
                                                 n12b -- no --> n7b

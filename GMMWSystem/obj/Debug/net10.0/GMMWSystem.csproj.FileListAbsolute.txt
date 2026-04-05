@@ -1,0 +1,15 @@
+/home/c3z/Documents/Projects/advancedprogramming-project/GMMWSystem/bin/Debug/net10.0/GMMWSystem
+/home/c3z/Documents/Projects/advancedprogramming-project/GMMWSystem/bin/Debug/net10.0/GMMWSystem.deps.json
+/home/c3z/Documents/Projects/advancedprogramming-project/GMMWSystem/bin/Debug/net10.0/GMMWSystem.runtimeconfig.json
+/home/c3z/Documents/Projects/advancedprogramming-project/GMMWSystem/bin/Debug/net10.0/GMMWSystem.dll
+/home/c3z/Documents/Projects/advancedprogramming-project/GMMWSystem/bin/Debug/net10.0/GMMWSystem.pdb
+/home/c3z/Documents/Projects/advancedprogramming-project/GMMWSystem/obj/Debug/net10.0/GMMWSystem.GeneratedMSBuildEditorConfig.editorconfig
+/home/c3z/Documents/Projects/advancedprogramming-project/GMMWSystem/obj/Debug/net10.0/GMMWSystem.AssemblyInfoInputs.cache
+/home/c3z/Documents/Projects/advancedprogramming-project/GMMWSystem/obj/Debug/net10.0/GMMWSystem.AssemblyInfo.cs
+/home/c3z/Documents/Projects/advancedprogramming-project/GMMWSystem/obj/Debug/net10.0/GMMWSystem.csproj.CoreCompileInputs.cache
+/home/c3z/Documents/Projects/advancedprogramming-project/GMMWSystem/obj/Debug/net10.0/GMMWSystem.sourcelink.json
+/home/c3z/Documents/Projects/advancedprogramming-project/GMMWSystem/obj/Debug/net10.0/GMMWSystem.dll
+/home/c3z/Documents/Projects/advancedprogramming-project/GMMWSystem/obj/Debug/net10.0/refint/GMMWSystem.dll
+/home/c3z/Documents/Projects/advancedprogramming-project/GMMWSystem/obj/Debug/net10.0/GMMWSystem.pdb
+/home/c3z/Documents/Projects/advancedprogramming-project/GMMWSystem/obj/Debug/net10.0/GMMWSystem.genruntimeconfig.cache
+/home/c3z/Documents/Projects/advancedprogramming-project/GMMWSystem/obj/Debug/net10.0/ref/GMMWSystem.dll

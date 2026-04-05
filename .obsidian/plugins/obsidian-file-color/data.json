@@ -1,0 +1,75 @@
+{
+  "cascadeColors": true,
+  "colorBackground": true,
+  "palette": [
+    {
+      "id": "5RxkdYpffX_gd5PwVA63i",
+      "name": "Teal",
+      "value": "#0bd0c3"
+    },
+    {
+      "id": "8L7t03-poAhzS9sKPsxuP",
+      "name": "Orange",
+      "value": "#ff6600"
+    },
+    {
+      "id": "J0XXM4utntMfj798-wULL",
+      "name": "Yellow",
+      "value": "#fff700"
+    },
+    {
+      "id": "uL7oh-ZkKv2q4-wk8SAbn",
+      "name": "Year 2",
+      "value": "#f07511"
+    },
+    {
+      "id": "KJWk1sqB9OthtCGYIJBcc",
+      "name": "Year 1",
+      "value": "#e83f28"
+    },
+    {
+      "id": "XRAuc5RKd3KHmlQagvmD-",
+      "name": "Green",
+      "value": "#17de2e"
+    },
+    {
+      "id": "f8z5HbBAIif0O5bc8Qi_G",
+      "name": "Purple",
+      "value": "#3700ff"
+    }
+  ],
+  "fileColors": [
+    {
+      "path": "Year 2/{COM5404} System Analysis & Design/Assignments",
+      "color": "5RxkdYpffX_gd5PwVA63i"
+    },
+    {
+      "path": "Year 2/{COM5404} System Analysis & Design",
+      "color": "5RxkdYpffX_gd5PwVA63i"
+    },
+    {
+      "path": "Year 2/{COM5405} Big Data Analytics",
+      "color": "8L7t03-poAhzS9sKPsxuP"
+    },
+    {
+      "path": "Year 2/{COM5402} Data Structures & Algorithms",
+      "color": "J0XXM4utntMfj798-wULL"
+    },
+    {
+      "path": "Year 2",
+      "color": "uL7oh-ZkKv2q4-wk8SAbn"
+    },
+    {
+      "path": "Year 1",
+      "color": "KJWk1sqB9OthtCGYIJBcc"
+    },
+    {
+      "path": "Year 2/{COM5407} Computer Systems Architecture",
+      "color": "XRAuc5RKd3KHmlQagvmD-"
+    },
+    {
+      "path": "Year 2/{COM5401} Advanced Programming",
+      "color": "f8z5HbBAIif0O5bc8Qi_G"
+    }
+  ]
+}
