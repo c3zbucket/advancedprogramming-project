@@ -401,6 +401,7 @@ classDiagram
         -ID : String
         -name : String
         -type : ClassType
+        -description : String
         -attendees : List~Visitor~
         -date : Date
         +register() String
@@ -734,17 +735,60 @@ flowchart TD
 ```
 
 
-#### Enrolling to a class
+#### Managing Enrolment
 
+This feature is one of the functions that are presented to users when they click on a class in the list - bringing them to it's dedicated details page. 
+
+Managing Enrolment will include both enrolling attendees to created classes as well as de-enrolling them. 
+
+The concept is that after clicking the 'Add' button at the top of the list component, volunteers can simply enter the first few letters of a name to receive suggestions matching that, greatly streamlining the process. 
+
+When de-enrolling the user will be offered an option to remove the selected attendee from the motorist record entirely if they wish to not attend any further classes in compliance with GDPR.
+
+```mermaid
+---
+title: Training Class - Managing Enrolment
+---
+flowchart TD 
+    n1([Start])
+    --> menu[/Create Class form/]
+            --> newclass[/Current Attendee list for selected class/]
+	        newclass --> choice{User choice}
+		        choice -- '+' clicked --> add[/Enter existing motorist/] 
+			        add --> exist{Motorist exists?}
+				        exist -- yes --> update[Append attendance list] --> newdb[(Updated class attendance list)]
+					    exist -- no --> notexist[/Error: Entered motorist does not exist/] --> add
+		        choice -- '-' clicked --> del[/Enter existing motorist/] 
+				del --> exist2{Motorist exists?}
+				exist2 -- yes --> update2[Subtract attendance list] --> newdb
+				exist2 -- no --> notexist2[/Error: Entered motorist does not exist/] --> del
+```
 
 
 #### Modifying a Class 
 
-The 'Modify' button 
+The 'Modify' button is another feature that is available when a class's detailed page is accessed. Here volunteers can make quick changes to classes where needed: including their name, description, date without needing to recreate them.
+
+```mermaid
+---
+title: Training Class - Modifying a Class
+---
+flowchart TD 
+    start([Start])
+    --> menu[/Modifiable Class fields/]
+			--> filled{Required fields are filled?}
+					filled -- no --> menu
+					filled -- yes --> enable-btn[Highlight 'Save' button]
+						--> valid{New entries are valid?}
+							valid -- no --> invalid[/Error: Invalid data entered/] --> menu 
+							valid -- yes --> update[Update class's fields]
+								--> success[/"Fields for class updated"/] --> db[(New fields for class)]
+								 --> return[[Training Class Main Menu]]
+```
+
 
 ### Lecturer Panel
 
+The lecturer panel is a specific page for  
+
 ### Admin Panel
-
-
-
