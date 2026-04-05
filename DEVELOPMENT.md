@@ -687,36 +687,64 @@ title: Training Class Menu
 ---
 flowchart TD 
     n1([Start])
-    --> n2[/Current training classes/]
-        --> n3{Login selected?}
-            -- yes --> n4[[Login Page]]
-            -- no --> n2
+    --> menu[/Timetable and list of classes/]
+        --> prompt1{Selected option}
+            prompt1 -- Class selected --> details[/Class details/]
+            prompt1 -- 'Create New Class' selected --> newclass@{shape: manual-input, label: "New class details"}
+	        newclass --> back{'Back' selected?}
+		        back -- yes --> menu
+		        back -- no --> filled{Essential fields filled?}
+			        filled -- yes --> enablebtn[Highlight 'Next' button]
+				        enablebtn --> valid{Data entry valid?}
+						valid -- no --> error[/Error: Invalid entry/] --> newclass
+			            valid -- yes --> overview[/Overview of entered class/]
+				            overview --> confirm{User action}
+					            confirm -- 'Back' selected --> newclass
+					            confirm -- 'Confirm' selected --> idgen[Generate ID for class from given type]
+						            idgen --> store[(Created class)]
+							            store --> success[Training class added] --> menu
 ```
+
+#### Creating a Class
+
+Upon clicking the create class button, the user would be brought to a form where they can enter the details about the class. Essential fields would include the name, obvious valid date on a Saturday set,  duration, set class type from a predefined list in a dropdown alongside an assigned student volunteer. If those fields are filled, the 'Next' button will be highlighted. After which if clicked will only present the summary page if the input data is valid. 
+
+The summary page offers the user another chance to look over their entered data and return to make any amendments if needed. From there they can confirm where a suitable ID depending on the type assigned to the class will be generated and assigned to it. Thus finally creating it's entry in the training class table.
+
+```mermaid
+---
+title: Training Class - Creating a CLass
+---
+flowchart TD 
+    n1([Start])
+    --> menu[/Create Class form/]
+            --> newclass@{shape: manual-input, label: "New class details"}
+	        newclass
+		         --> filled{Essential fields filled?}
+					filled -- no --> newclass
+			        filled -- yes --> enablebtn[Highlight 'Next' button]
+				        enablebtn --> valid{Data entry valid?}
+						valid -- no --> error[/Error: Invalid entry/] --> newclass
+			            valid -- yes --> overview[/Overview of entered class/]
+				            overview --> confirm{User action}
+					            confirm -- 'Back' selected --> newclass
+					            confirm -- 'Confirm' selected --> idgen[Generate ID for class from given type]
+						            idgen --> store[(Created class)]
+							            store --> success[Training class added] --> return[[Training Class Main Menu]]
+```
+
+
+#### Enrolling to a class
+
+
+
+#### Modifying a Class 
+
+The 'Modify' button 
 
 ### Lecturer Panel
-```mermaid
----
-title: Lecturer Panel
----
-flowchart TD 
-    n1([Start])
-    --> n2[/Current training classes/]
-        --> n3{Login selected?}
-            -- yes --> n4[[Login Page]]
-            -- no --> n2
-```
 
 ### Admin Panel
-```mermaid
----
-title: Admin Panel
----
-flowchart TD 
-    n1([Start])
-    --> n2[/Current training classes/]
-        --> n3{Login selected?}
-            -- yes --> n4[[Login Page]]
-            -- no --> n2
-```
+
 
 
