@@ -517,7 +517,7 @@ At the start - the staff member would be provided an option to sign up - bringin
 
 For the logic in taking the user's input - the best method identified was through only allowing the input of numbers in the staffID field, continuously parsing entered characters until the set limit of the length of the entry was reached, which in this case for now 4 was chosen.
 
-> [INFO]
+>[!INFO]
 > T
 
 ```mermaid
@@ -572,74 +572,51 @@ flowchart LR
                 n4 -- '4' --> n9@{shape: subproc, label: "Vehicle Records"}
 ```
 #### 'Create Booking'
+
 ```mermaid
 ---
 title: Garage Menu - Create Booking
 ---
-flowchart TD 
-    n1@{shape: stadium, label: "Start"}
-        n1 --> n2@{shape: lean-r, label: "Menu options"}
-            n2 --> n3@{shape: comment, label: "Options: \n 1 - Register with existing motorist/vehicle \n 2 - Register with new details \n 0 - Return"}
-                n3 -- '0' --> n4a@{shape: subproc, label: "Staff Portal"}
-                n3 -- '1' --> n4b@{shape: lean-r, label: "What do you want to register with?"}
-                    n4b --> n5@{shape: comment, label: "Options: \n 1 - Existing motorist only \n 2 - Existing vehicle only \n 3 - Existing motorist and vehicle \n 0 - Return"}
-                    n4b--> n6@{shape: diamond, label: "Option selected:"}
-                        n6 -- '1' --> n7a@{shape: lean-r, label: "Select existing registered motorist"}
-                            n7a --> n8a@{shape: diamond, label: "Back button pressed?"}
-                                n8a -- yes --> n4b
-                                n8a -- no --> n9a@{shape: diamond, label: "Valid mandatory fields entered?"}
-                                    n9a -- yes -->  n10a@{shape: curv-trap, label: "Enable 'Next' button"}
-                                        n10a --> n11a@{shape: manual-input, label: "Enter vehicle details"}
-                                            n11a --> n12a@{shape: diamond, label: "Valid mandatory fields entered?"}
-                                                n12a -- no --> n11a
-                                                n12a -- yes --> nBooking@{shape: subproc, label: "Enter booking details"}
-                                    n9b -- no --> n7a
-                        n6 -- '2' --> n7b@{shape: lean-r, label: "Select existing registered vehicle"}
-                            n7b --> n8b@{shape: diamond, label: "Back button pressed?"}
-                                n8b -- yes --> n4b
-                                n8b -- no --> n9b@{shape: diamond, label: "Valid mandatory fields entered?"}
-                                    n9b -- yes -->  n10a@{shape: curv-trap, label: "Enable 'Next' button"}
-                                        n10b --> n11b{shape: lin-cyl, label: "Selected vehicle object reference"}
-                                            n11b --> n12b@{shape: manual-input, label: "Enter motorist details"}                                   
-                                                n11b --> n12b@{shape: diamond, label: "Back button pressed?"}                                   
-                                                n12b -- no --> n7b
-                                                n12b -- yes --> n13b@{shape: diamond, label: "Valid mandatory fields entered?"}
-                                                n12b -- no --> n12b
-                                                n12b -- yes --> n13b{shape: curv-trap, label: "Enable 'Next' button"}
-                                                    n13b --> nBooking
-                                                    
-                        n6 -- '3' --> n7c@{shape: lean-r, label: "Select existing registered vehicle and motorist"}
-                            n7c --> n8c@{shape: diamond, label: "Back button pressed?"}
-                                n8c -- yes --> n4b
-                                n8c -- no --> n9c@{shape: diamond, label: "Existing vehicle and motorist selected?"}
-                                    n9c -- yes -->  n10c@{shape: curv-trap, label: "Enable 'Next' button"}
-                                        n10c --> n11c{shape: das, label: "Selected vehicle and motorist object references"}
-                                                n11c --> n13c{shape: curv-trap, label: "Enable 'Next' button"}
-                                                    n13c --> nBooking
-                                    
-                        n6 -- '2' --> n7d@{shape: manual-input, label: "Enter Motorist details"}
-                            n7d --> 8b@{shape: diamond, label: "Back button pressed?"}
-                                n8d -- yes --> n4b
-                                n8d -- no --> n9b@{shape: diamond, label: "Valid mandatory fields entered?"}
-                                    n9b -- yes --> n10d@{shape: curv-trap, label: "Enable 'Next' button"}
-                                        n10d --> n11d{shape: das, label: "Entered vehicle object reference"}
-                                        n10b --> n11a
-                                    n9b -- no --> n7b
-                                n8b -- Valid entry for  --> n9b{shape: das, label: "Selected vehicle object reference"}
-                                    n9b --> n10@{shape: subproc, label: "Create Booking"}
-                                        
-                            n4 --> n5b@{shape: manual-input, label: "Enter Motorist details"}
-                        n6 -- '3' --> n7c@{shape: diamond, label: "Option selected:"}
-                            n4 --> n5b@{shape: manual-input, label: "Enter Motorist details"}
-                n3 -- '2' --> 
-                    n6 --> n5c@{shape: manual-input, label: "Enter Vehicle details"}
-                    
-                    n6 --> n7@{shape: manual-input, label: "Enter Vehicle details"}
-                    
-                n3 -- '2' --> n4@{shape: lean-r, label: "What do you want to register with?"}
-                    n4 -- '3' --> n8@{shape: subproc, label: "Motorist Records"}
-                    n4 -- '4' --> n9@{shape: subproc, label: "Vehicle Records"}
+flowchart TD
+
+n1([Start])
+n1 --> n2[/Menu options/]
+n2 --> options@{shape: braces, label: "Options: \n 1 - Create with existing vehicle/motorist \n 2 - Create with new vehicle/motorist \n 0 - Return"}
+n2 --> n3{Option selected}
+n3 -- "0" --> n4a[[Staff Portal]]
+n3 -- "1" --> n4b[/What do you want to register with?/]
+n4b --> optp@{shape: comment, label: "Options: \n 1 - Existing motorist only \n 2 - Existing vehicle only \n 3 - Existing motorist and vehicle \n 0 - Return"}
+optp --> n6{Option selected:}
+n6 -- "1" --> n7a[/Select an existing motorist/]
+n7a --> n8a{"Back selected?"}
+n8a -- yes --> n4b
+n8a -- no --> n9a{Valid input?}
+n9a -- yes --> n10a[/Enable Next button/]
+n10a --> n11a[/Select an existing vehicle/]
+n11a --> n12a{Valid input?}
+n12a -- yes --> nBooking[[Enter booking details]]
+n12a -- no --> n11a
+n9a -- no --> n7a
+n6 -- "2" --> n7b[/Select an existing vehicle/]
+n7b --> n8b{Back selected?}
+n8b -- yes --> n4b
+n8b -- no --> n9b{Valid input?}
+n9b -- yes --> n10b[/Enable Next button/]
+n10b --> n12b[/Select an existing motorist/]
+n12b --> n13b{Valid input?}
+n13b -- yes --> nBooking
+n13b -- no --> n12b
+n9b -- no --> n7b
+n6 -- "3" --> n7c[/Select existing motorist and vehicle/]
+n7c --> n8c{Back selected?}
+n8c -- yes --> n4b
+n8c -- no --> n9c{Valid input?}
+n9c -- yes --> nBooking
+n3 -- "2" --> n4store[/Enter new motorist and vehicle details/]
+n4store --> n5store@{shape: cyl, label: "Entered Motorist & Vehicle record"}
+n5store --> nBooking
 ```
+
 
 #### 'Manage Bookings'
 

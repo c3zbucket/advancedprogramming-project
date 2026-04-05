@@ -6,6 +6,7 @@
       {
         "id": "c1a0aa97cad5af11",
         "type": "tabs",
+        "dimension": 52.188328912466844,
         "children": [
           {
             "id": "a3b84c9fd021742d",
@@ -15,7 +16,7 @@
               "state": {
                 "file": "DEVELOPMENT.md",
                 "mode": "source",
-                "source": false
+                "source": true
               },
               "icon": "lucide-file",
               "title": "DEVELOPMENT"
@@ -24,11 +25,12 @@
         ]
       },
       {
-        "id": "41773ebf98f89635",
+        "id": "7975e45a6452e80f",
         "type": "tabs",
+        "dimension": 47.811671087533156,
         "children": [
           {
-            "id": "d2022c0449177a70",
+            "id": "8d9db7e6c5d28adb",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -243,7 +245,7 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "d2022c0449177a70",
+  "active": "a3b84c9fd021742d",
   "lastOpenFiles": [
     "Year 2/{COM5401} Advanced Programming/Week 1/Session 2/UML Overview.md",
     "Year 2/{COM5401} Advanced Programming/Week 1/Session 2/LINQ.md",
