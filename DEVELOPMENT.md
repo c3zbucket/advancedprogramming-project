@@ -629,20 +629,77 @@ In this sub-menu - users would be greeted with a list of bookings they can manag
 + Change vehicle details associated with the booking, if necessary
 + 
 
+#### 'Vehicle Management'
+Alongside a list of booked repairs, users will be able to oversee a list of vehicles currently booked for repair in accordance to the requirements of the brief. This can be filtered via search bar with a given license plate - which acts as a unique ID for the vehicle as specified earlier in the UML implementation of the class. 
+
+If an entry is clicked on - the usual details page for the specific vehicle is shown, containing it's features alongside the linked owner to it with their contact details. Furthermore the currently assigned bookings to it will be shown where you can update the repair list(s) for them - this will immediately bring you to the 'Manage Repair' form for the booking for the vehicle pre-selected. 
+
 ### 'Motorist Management'
-In this sub-menu users will be able to oversee a list of motorists and be able to manage them - including adding new motorists and linking them to a vehicle or removing them. The intention of offering this as a separate menu is so users can quickly add multiple new motorists as is without worrying about linking them to vehicles or repairs or assigning them to a training class.
+This acts as a separate menu as motorists can not only be at the workshop for repairs, but also for training classes. In some cases it may even be both, necessitating a common menu where both repair and teaching volunteers can manage motorists.
+
+Users will be able to oversee a list of motorists and be able to manage them - including adding new motorists and linking them to a vehicle or removing multiple of them. The intention of offering this as a separate menu is so users can quickly add multiple new motorists as is without worrying about linking them to vehicles or repairs or assigning them to a training class.
+
+In the specific case of repair volunteers specifically as well, they'll be able to manage vehicles associated with them.
+
 ```mermaid
 ---
 title: Motorist Management
 ---
 flowchart TD 
-    n1([Start])
-    --> n2[/Current training classes/]
-        --> n3{Login selected?}
-            -- yes --> n4[[Login Page]]
-            -- no --> 
+    start([Start])
+    --> menu[/Motorist List/] --> prompt1{User action}
+	    prompt1 -- Motorist searched for in search bar --> exist{Motorist matches with search?} 
+		exist -- no --> nomatch[/"No matches for entereed motorists"/] --> menu
+	    exist -- yes --> match[/Matching Motorists/] --> details
+	    prompt1 -- Motorist entry clicked  --> details[/Details page for Motorist/]
+		    details --> prompt2{User action}
+			    prompt2 -- '+' clicked --> addition
+			    prompt2 -- '-' clicked --> removal
+	    prompt1 -- '+' clicked  --> addition[[Motorist Addition]]
+	    prompt1 -- '-' clicked  --> removal[[Motorist Removal]]
 ```
 
+
+#### Adding a Motorist
+```mermaid
+---
+title: Motorist Management - Motorist Addition
+---
+flowchart TD 
+start([Start])
+ --> new[/Enter motorist details/]
+	 --> filled{Essential fields filled?}
+			filled -- no --> new
+			filled -- yes --> enable-add[Highlight 'Add' button]
+				enable-add --> valid{"Entry valid?"}
+					valid -- no --> invalid[/Error: Entry is invalid/] --> new
+					valid -- yes --> gen[Generate ID for motorist]
+						--> update[Create motorist entry] --> db[(Updated motorist list)]
+							update --> link-vehicle{'Link existing vehicle' selected?}
+								link-vehicle -- yes --> veh-list[/List of vehicles/] 
+									veh-list --> veh-exist{Entered vehicle exists?}
+										veh-exist -- no --> invalid2[/Entered vehicle does not exist/] --> veh-list
+										veh-exist -- yes --> link[Link to specified vehicle record] --> db2[(Updated vehicle record)]  --> return[[Motorist Menu]] --> finish[(End)]
+```
+
+####  Removing a Motorist
+
+```mermaid
+---
+title: Motorist Management - Motorist Removal
+---
+flowchart TD
+start([Start])
+ --> del[/Enter motorists to remove/]
+		del --> exist2{Entered motorists exist?}
+			exist2 -- no --> error[/Error: Entered motorist doesn't exist/] --> del
+			exist2 -- yes --> enable2[Highlight 'Confirm']
+				enable2 --> confirm[/Confirmation Screen/]
+					confirm --> prompt2{User choice}
+						prompt2 -- 'Back' selected --> del
+						prompt2 -- 'Remove' selected --> remove[Remove specified motorist entries, linked vehicle and attendance from class] 
+						--> db3[(Updated motorist list and references in vehicle and class lists)] --> return[[Motorist Menu]] --> finish[(End)]
+```
 ### 'Vehicle Management'
 
 ### Booking Menu
@@ -683,7 +740,7 @@ flowchart TD
 	            new --> filled2{Essential fields filled?}
 		            filled2 -- no --> new
 		            filled2 -- yes --> enable-add[Highlight 'Add' button]
-			            enable-add --> valid2{"Entry and linked booking valid?"}
+			            enable-add --> valid2{Entry and linked booking valid?}
 				            valid2 -- no --> invalid2[/Error: Entry is invalid or booking doesn't exist/] --> new
 				            valid2 -- yes --> gen[Generate ID for repair & Link to booking entry]
 					            --> update2[Create repair entry]
