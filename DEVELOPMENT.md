@@ -629,14 +629,23 @@ In this sub-menu - users would be greeted with a list of bookings they can manag
 + Change vehicle details associated with the booking, if necessary
 + 
 
-##### Manage Repairs
+### 'Motorist Management'
+In this sub-menu users will be able to oversee a list of motorists and be able to manage them - including adding new motorists and linking them to a vehicle or removing them. The intention of offering this as a separate menu is so users can quickly add multiple new motorists as is without worrying about linking them to vehicles or repairs or assigning them to a training class.
+```mermaid
+---
+title: Motorist Management
+---
+flowchart TD 
+    n1([Start])
+    --> n2[/Current training classes/]
+        --> n3{Login selected?}
+            -- yes --> n4[[Login Page]]
+            -- no --> 
+```
 
+### 'Vehicle Management'
 
-#### 'Manage Motorists'
-
-#### 'Manage Motorists'
-
-#### Booking Menu
+### Booking Menu
 
 ```mermaid
 ---
@@ -647,20 +656,43 @@ flowchart TD
     --> n2[/Current training classes/]
         --> n3{Login selected?}
             -- yes --> n4[[Login Page]]
-            -- no --> n2
+            -- no --> 
 ```
 
-#### Repair Menu
+### Repair Menu
 ```mermaid
 ---
 title: Repair Menu
 ---
 flowchart TD 
-    n1([Start])
-    --> n2[/Current training classes/]
-        --> n3{Login selected?}
-            -- yes --> n4[[Login Page]]
-            -- no --> n2
+    start([Start])
+    --> menu[/List of current repairs/]
+        --> prompt1{User action}
+            prompt1 -- Repair in list clicked --> details[/Repair details/]
+			    details --> prompt2{User action}
+				    prompt2 -- 'Edit' clicked --> edit[/Update repair entry/]
+						edit --> filled{Essential fields filled?}
+				            filled -- no --> edit
+				            filled -- yes --> enable-update[Highlight 'Update' button]
+					            enable-update --> valid{"Entry valid?"}
+								valid -- no --> invalid[/Error: Entry is invalid/] --> edit
+								valid -- yes --> update[Create repair entry]
+								    --> db[(Updated repair entry)] --> return[[Repair Main Menu]]
+				    prompt2 -- 'Back' clicked --> return
+            prompt1 -- '+' clicked --> new[/Enter details of repair/]
+	            new --> filled2{Essential fields filled?}
+		            filled2 -- no --> new
+		            filled2 -- yes --> enable-add[Highlight 'Add' button]
+			            enable-add --> valid2{"Entry and linked booking valid?"}
+				            valid2 -- no --> invalid2[/Error: Entry is invalid or booking doesn't exist/] --> new
+				            valid2 -- yes --> gen[Generate ID for repair & Link to booking entry]
+					            --> update2[Create repair entry]
+							    --> db2[(Updated repair list and booking entry)] --> return
+            prompt1 -- '-' clicked --> del[/Enter repair to remove/]
+	            del --> exist{Repair exists?}
+		            exist -- no --> invalid3[/Error: repair does not exist/] --> del
+		            exist -- yes --> update3[Remove repair from list]
+			            --> db3[(Updated repair list and booking entry)] --> return --> finish([End])
 ```
 
 ### Training Class Menu
@@ -714,7 +746,7 @@ The summary page offers the user another chance to look over their entered data 
 
 ```mermaid
 ---
-title: Training Class - Creating a CLass
+title: Training Class - Creating a Class
 ---
 flowchart TD 
     n1([Start])
