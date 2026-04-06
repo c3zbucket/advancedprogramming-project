@@ -630,16 +630,40 @@ In this sub-menu - users would be greeted with a list of bookings they can manag
 + 
 
 #### 'Vehicle Management'
-Alongside a list of booked repairs, users will be able to oversee a list of vehicles currently booked for repair in accordance to the requirements of the brief. This can be filtered via search bar with a given license plate - which acts as a unique ID for the vehicle as specified earlier in the UML implementation of the class. 
+Alongside a list of booked repairs, on the same page users will be able to oversee a list of vehicles currently booked for repair in accordance to the requirements of the brief. This can be filtered via search bar with a given license plate - which acts as a unique ID for the vehicle as specified earlier in the UML implementation of the class. 
+
+Upon clicking a vehicle entry, they'll be presented with a details page listing associated bookings with it including repairs, which they can add/remove from, taking them to the [[#Repair Menu]] for the specific vehicle.
+
+Furthermore, they'll be able to view the details of the linked owner to the car, which click and jump to the entry details in the separate [[#'Motorist Management']] page if they want to manage anything regarding that.
+
+
+```mermaid
+---
+title: Vehicle Management
+---
+flowchart TD 
+    start([Start])
+    --> menu[/Vehicle List/] --> prompt1{User action}
+	    prompt1 -- Vehicle license plate searched for in search bar --> exist{Vehicle matches with search?} 
+		exist -- no --> nomatch[/"No matches for entered vehicle"/] --> menu
+	    exist -- yes --> match[/Matching Vehicles/] --> details
+	    prompt1 -- Vehicle entry clicked  --> details[/Details page for Vehicle/]
+		    details --> prompt2{User action}
+			    prompt2 -- 'Manage Repairs' clicked --> repairs[[Repair Menu]]
+			    prompt2 -- 'Back' clicked --> menu
+```
+
 
 If an entry is clicked on - the usual details page for the specific vehicle is shown, containing it's features alongside the linked owner to it with their contact details. Furthermore the currently assigned bookings to it will be shown where you can update the repair list(s) for them - this will immediately bring you to the 'Manage Repair' form for the booking for the vehicle pre-selected. 
 
 ### 'Motorist Management'
-This acts as a separate menu as motorists can not only be at the workshop for repairs, but also for training classes. In some cases it may even be both, necessitating a common menu where both repair and teaching volunteers can manage motorists.
+This acts as a separate menu in contrast to the vehicle one as motorists can not only be at the workshop for repairs, but also for training classes. In some cases it may even be both, necessitating a common menu where both repair and teaching volunteers can manage motorists.
 
 Users will be able to oversee a list of motorists and be able to manage them - including adding new motorists and linking them to a vehicle or removing multiple of them. The intention of offering this as a separate menu is so users can quickly add multiple new motorists as is without worrying about linking them to vehicles or repairs or assigning them to a training class.
 
 In the specific case of repair volunteers specifically as well, they'll be able to manage vehicles associated with them.
+
+Due to the complexity in the logic of the motorist menu, it has been split into multiple flowcharts.
 
 ```mermaid
 ---
@@ -648,13 +672,22 @@ title: Motorist Management
 flowchart TD 
     start([Start])
     --> menu[/Motorist List/] --> prompt1{User action}
-	    prompt1 -- Motorist searched for in search bar --> exist{Motorist matches with search?} 
-		exist -- no --> nomatch[/"No matches for entereed motorists"/] --> menu
+	    prompt1 -- Motorist entered for in search bar --> exist{Motorist matches with search?} 
+		exist -- no --> nomatch[/'No matches for entered motorists'/] --> menu
 	    exist -- yes --> match[/Matching Motorists/] --> details
 	    prompt1 -- Motorist entry clicked  --> details[/Details page for Motorist/]
-		    details --> prompt2{User action}
-			    prompt2 -- '+' clicked --> addition
-			    prompt2 -- '-' clicked --> removal
+		    details --> prompt2{'Back' clicked?}
+			    -- no --> linked-veh{Vehicles linked to motorist?}
+				    linked-veh -- no --> no-link[/No vehicles linked to user/]
+					    no-link --> add[/Add Vehicle/] --> addveh[[Vehicle Management]]
+				    linked-veh -- yes --> yes-link[/Linked vehicle list/]
+						yes-link -- 'Linked Vehicle' in list clicked --> details2[[Vehicle Details]]
+				prompt2 -- no --> enrol-class{Motorist enrolled in classes?}
+					enrol-class -- no --> no-class[/Motorist isn't enrolled in any classes/]
+					    no-class --> add-class[/Enrol to class/] --> addclass[[Class Management]]
+				    enrol-class -- yes --> yes-class[/Enrolled class list/]
+						yes-class -- 'Enrolled Class' in list clicked --> details3[[Class Details]]
+			    prompt2 -- yes --> menu
 	    prompt1 -- '+' clicked  --> addition[[Motorist Addition]]
 	    prompt1 -- '-' clicked  --> removal[[Motorist Removal]]
 ```
@@ -697,11 +730,9 @@ start([Start])
 				enable2 --> confirm[/Confirmation Screen/]
 					confirm --> prompt2{User choice}
 						prompt2 -- 'Back' selected --> del
-						prompt2 -- 'Remove' selected --> remove[Remove specified motorist entries, linked vehicle and attendance from class] 
+						prompt2 -- 'Remove' selected --> remove[Remove specified motorist entries, linked vehicle and enrolment to classes] 
 						--> db3[(Updated motorist list and references in vehicle and class lists)] --> return[[Motorist Menu]] --> finish[(End)]
 ```
-### 'Vehicle Management'
-
 ### Booking Menu
 
 ```mermaid
@@ -877,7 +908,54 @@ flowchart TD
 
 
 ### Lecturer Panel
+The lecturer panel is a specific page lecturers are greeted when logging in, their experience differs from student volunteers in that they will only be presented with options relating to bookings made as well as repairs due to the brief specifying that they merely take a supervisory role during repairs. 
 
-The lecturer panel is a specific page for  
+Similar to student volunteers, not every lecturer would be given an account, this is implemented in the case a lecturer would like access to the system.
+
+```mermaid
+---
+title: Lecturer Panel 
+---
+flowchart LR 
+start([Start])
+    --> menu[/Menu Options/]
+		    --> prompt{Option selected}
+			    prompt -- 'Manage Bookings' --> booking[[Booking Menu]]
+			    prompt -- 'Manage Repairs' --> repair[[Repair Menu]]
+			    prompt -- 'Logout' --> logout[Logout user] --> return[[Default Menu]]
+```
 
 ### Admin Panel
+The admin panel is similar in nature to the lecturer one - they will exclusively be presented with administration-related options including user management, allowing for:
++ User addition or removal with their linked Staff ID
++ Staff entry removal 
++ Manually reset passwords for users
++ User access control and assigning privileges, which will affect their panel experience.
+
+Due to their role being the most specialised, they will be greeted with the user list and management controls upfront after logging in
+```mermaid
+---
+title: Admin Panel 
+---
+flowchart TD
+start([Start])
+	--> menu[/User List and Management Controls/]
+		--> choice{User choice}
+				choice -- User in User list clicked --> usr-details[/User detail page/] 
+					usr-details --> choice2{User choice}
+						choice2 -- 'Edit User' clicked --> edit[/Edit form/]
+							edit --> filled{Essential fields filled?} 
+								filled -- no --> edit
+								filled -- yes --> priv{User role changed?}
+									priv -- yes --> newrole[(Updated role for user)] --> update
+									priv -- no --> update[(Updated )]
+						choice2 -- 'Remove User' clicked --> confirm{Removal confirmed?}
+						confirm -- no --> usr-details
+						confirm -- yes --> rem1[Remove User entry] --> db[(Updated user list)] 
+						--> staffrem{Remove linked staff entry too?} 
+							staffrem -- no --> menu
+							staffrem -- yes --> del2[Remove Linked Staff entry] --> db2[(Updated staff list)] --> menu
+				choice -- Staff in Staff list clicked --> staff-details[/Staff detail page/]
+					
+```
+
