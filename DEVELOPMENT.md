@@ -549,17 +549,34 @@ flowchart TD
 
 This page would simply tell the staff user to get into contact with an administrator if they want to create an account, it could list general contact information such as an email associated with that user group. The only other option on this page would be to return to the home default page or to the login page.
 
-### 'Garage Menu'
+### 'Booking Menu'
 
 This menu would manage 'bookings' made for repairs at the workshop. Operated by both student and lecturer volunteers.
 
 This is probably the most expansive part of the implementation which means it will be split up into multiple sections which will be further elaborated with respectively
 
+```mermaid
+---
+title: Booking Menu - Main Menu
+---
+flowchart TD 
+    start([Start])
+    --> menu[/Booking List/]
+        --> prompt1{User Choice}
+	        prompt1 -- Booking is searched for in search bar --> exists{Entry matches found in booking list?}
+			    exists -- no --> nomatch[/"`*No matches found*`"/] --> prompt1
+			    exists -- yes --> match[/Matches with entry/] -- entry selected --> details[[Booking Management]]
+	        prompt1 -- Booking in list is selected --> details
+	        prompt1 -- "`*+ Booking* selected`"  --> add[[Create Booking]]
+	        prompt1 -- "`*- Booking* selected`"  --> rem[[Remove Booking]]
+```
+
+
 #### 'Welcome Page'
 
 ```mermaid
 ---
-title: Garage Menu - Welcome Page
+title: Booking Menu - Welcome Page
 ---
 flowchart LR 
     n1@{shape: stadium, label: "Start"}
@@ -572,7 +589,7 @@ flowchart LR
                 n4 -- '3' --> n8@{shape: subproc, label: "Motorist Records"}
                 n4 -- '4' --> n9@{shape: subproc, label: "Vehicle Records"}
 ```
-#### 'Create Booking'
+#### **Create** Booking
 
 ```mermaid
 ---
@@ -619,6 +636,9 @@ n5store --> nBooking
 ```
 
 
+#### **Remove** Booking
+
+
 #### 'Manage Bookings'
 
 In this sub-menu - users would be greeted with a list of bookings they can manage. At the very least - in compliance with the requirements of the brief, the system should allow staff, including student and lecturer volunteers to:
@@ -655,6 +675,44 @@ flowchart TD
 
 
 If an entry is clicked on - the usual details page for the specific vehicle is shown, containing it's features alongside the linked owner to it with their contact details. Furthermore the currently assigned bookings to it will be shown where you can update the repair list(s) for them - this will immediately bring you to the 'Manage Repair' form for the booking for the vehicle pre-selected. 
+
+### Repair Menu
+```mermaid
+---
+title: Repair Menu
+---
+flowchart TD 
+    start([Start])
+    --> menu[/List of current repairs/]
+        --> prompt1{User action}
+            prompt1 -- Repair in list clicked --> details[/Repair details/]
+			    details --> prompt2{User action}
+				    prompt2 -- 'Edit' clicked --> edit[/Update repair entry/]
+						edit --> filled{Essential fields filled?}
+				            filled -- no --> edit
+				            filled -- yes --> enable-update[Highlight 'Update' button]
+					            enable-update --> valid{"Entry valid?"}
+								valid -- no --> invalid[/Error: Entry is invalid/] --> edit
+								valid -- yes --> update[Create repair entry]
+								    --> db[(Updated repair entry)] --> return[[Repair Main Menu]]
+				    prompt2 -- 'Back' clicked --> return
+            prompt1 -- '+' clicked --> new[/Enter details of repair/]
+	            new --> filled2{Essential fields filled?}
+		            filled2 -- no --> new
+		            filled2 -- yes --> enable-add[Highlight 'Add' button]
+			            enable-add --> valid2{Entry and linked booking valid?}
+				            valid2 -- no --> invalid2[/Error: Entry is invalid or booking doesn't exist/] --> new
+				            valid2 -- yes --> gen[Generate ID for repair & Link to booking entry]
+					            --> update2[Create repair entry]
+							    --> db2[(Updated repair list and booking entry)] --> return
+            prompt1 -- '-' clicked --> del[/Enter repair to remove/]
+	            del --> exist{Repair exists?}
+		            exist -- no --> invalid3[/Error: repair does not exist/] --> del
+		            exist -- yes --> update3[Remove repair from list]
+			            --> db3[(Updated repair list and booking entry)] --> return --> finish([End])
+```
+
+
 
 ### 'Motorist Management'
 This acts as a separate menu in contrast to the vehicle one as motorists can not only be at the workshop for repairs, but also for training classes. In some cases it may even be both, necessitating a common menu where both repair and teaching volunteers can manage motorists.
@@ -732,55 +790,6 @@ start([Start])
 						prompt2 -- 'Back' selected --> del
 						prompt2 -- 'Remove' selected --> remove[Remove specified motorist entries, linked vehicle and enrolment to classes] 
 						--> db3[(Updated motorist list and references in vehicle and class lists)] --> return[[Motorist Menu]] --> finish[(End)]
-```
-### Booking Menu
-
-```mermaid
----
-title: Booking Menu
----
-flowchart TD 
-    n1([Start])
-    --> n2[/Current training classes/]
-        --> n3{Login selected?}
-            -- yes --> n4[[Login Page]]
-            -- no --> 
-```
-
-### Repair Menu
-```mermaid
----
-title: Repair Menu
----
-flowchart TD 
-    start([Start])
-    --> menu[/List of current repairs/]
-        --> prompt1{User action}
-            prompt1 -- Repair in list clicked --> details[/Repair details/]
-			    details --> prompt2{User action}
-				    prompt2 -- 'Edit' clicked --> edit[/Update repair entry/]
-						edit --> filled{Essential fields filled?}
-				            filled -- no --> edit
-				            filled -- yes --> enable-update[Highlight 'Update' button]
-					            enable-update --> valid{"Entry valid?"}
-								valid -- no --> invalid[/Error: Entry is invalid/] --> edit
-								valid -- yes --> update[Create repair entry]
-								    --> db[(Updated repair entry)] --> return[[Repair Main Menu]]
-				    prompt2 -- 'Back' clicked --> return
-            prompt1 -- '+' clicked --> new[/Enter details of repair/]
-	            new --> filled2{Essential fields filled?}
-		            filled2 -- no --> new
-		            filled2 -- yes --> enable-add[Highlight 'Add' button]
-			            enable-add --> valid2{Entry and linked booking valid?}
-				            valid2 -- no --> invalid2[/Error: Entry is invalid or booking doesn't exist/] --> new
-				            valid2 -- yes --> gen[Generate ID for repair & Link to booking entry]
-					            --> update2[Create repair entry]
-							    --> db2[(Updated repair list and booking entry)] --> return
-            prompt1 -- '-' clicked --> del[/Enter repair to remove/]
-	            del --> exist{Repair exists?}
-		            exist -- no --> invalid3[/Error: repair does not exist/] --> del
-		            exist -- yes --> update3[Remove repair from list]
-			            --> db3[(Updated repair list and booking entry)] --> return --> finish([End])
 ```
 
 ### Training Class Menu
@@ -907,6 +916,27 @@ flowchart TD
 ```
 
 
+### Student Panel
+The main users of the system, they will be greeted with a dashboard upon login with components of bookings and thus repairs assigned to them upfront alongside a list of created classes. 
+
+Clicking any of the entries in these components will bring the user to the respective details page of them as a shortcut. Otherwise, they can select any entry in the menubar, which is what the flowchart below displays.
+
+```mermaid
+---
+title: Lecturer Panel 
+---
+flowchart LR 
+start([Start])
+    --> menu[/Menubar Options/]
+		    --> prompt{Option selected}
+			    prompt -- 'Bookings' --> booking[[Booking Menu]]
+			    prompt -- 'Assigned Repairs' --> repair[[Repair Menu]]
+			    prompt -- 'Training Classes' --> clas[[Training Class Menu]]
+			    prompt -- 'Registered Motorists' --> motorist[[Motorist Management]]
+			    prompt -- 'Registered Vehicles' --> vehicle[[Vehicle Management]]
+			    prompt -- 'Logout' --> logout[Logout user] --> return[[Default Menu]]
+```
+
 ### Lecturer Panel
 The lecturer panel is a specific page lecturers are greeted when logging in, their experience differs from student volunteers in that they will only be presented with options relating to bookings made as well as repairs due to the brief specifying that they merely take a supervisory role during repairs. 
 
@@ -935,27 +965,68 @@ The admin panel is similar in nature to the lecturer one - they will exclusively
 Due to their role being the most specialised, they will be greeted with the user list and management controls upfront after logging in
 ```mermaid
 ---
-title: Admin Panel 
+title: Admin Panel - Main Menu
 ---
 flowchart TD
 start([Start])
 	--> menu[/User List and Management Controls/]
 		--> choice{User choice}
-				choice -- User in User list clicked --> usr-details[/User detail page/] 
-					usr-details --> choice2{User choice}
-						choice2 -- 'Edit User' clicked --> edit[/Edit form/]
-							edit --> filled{Essential fields filled?} 
-								filled -- no --> edit
-								filled -- yes --> priv{User role changed?}
-									priv -- yes --> newrole[(Updated role for user)] --> update
-									priv -- no --> update[(Updated )]
-						choice2 -- 'Remove User' clicked --> confirm{Removal confirmed?}
-						confirm -- no --> usr-details
-						confirm -- yes --> rem1[Remove User entry] --> db[(Updated user list)] 
-						--> staffrem{Remove linked staff entry too?} 
-							staffrem -- no --> menu
-							staffrem -- yes --> del2[Remove Linked Staff entry] --> db2[(Updated staff list)] --> menu
-				choice -- Staff in Staff list clicked --> staff-details[/Staff detail page/]
-					
+				choice -- User in User list clicked --> usr-menu[[User Management]] 
+				choice -- Staff in Staff list clicked --> staff-menu[[Staff Management]]
+				choice -- "`*Logout* chosen`" --> logout[Logout User] --> return[[Default Menu]]
 ```
 
+#### User Management
+```mermaid
+---
+title: Admin Panel - User Management
+---
+flowchart TD
+start([Start])
+--> usr-menu[/Selected user detail page/] 
+	 --> choice2{User choice}
+		choice2 -- 'Edit User' clicked --> edit[/Edit form/]
+			edit --> filled{Essential fields filled?} 
+				filled -- no --> edit
+				filled -- yes --> highlight-btn["`Enable *Next* button`"]
+					--> valid{Entries valid?} 
+						valid -- no --> invalid[/'Invalid entry'/] --> edit
+						valid -- yes --> update[(Updated User and linked staff entry)] --> usr-menu
+		choice2 -- 'Remove User' clicked --> confirm{Removal confirmed?}
+		confirm -- no --> usr-menu
+		confirm -- yes --> rem1[Remove User entry] --> db[(Updated user list)] 
+		--> staffrem{Remove linked staff entry too?} 
+			staffrem -- no --> menu[[Admin Panel]]
+			staffrem -- yes --> del2[Remove Linked Staff entry] --> db2[(Updated staff list)] --> menu
+```
+
+#### Staff Management
+
+
+```mermaid
+---
+title: Admin Panel - Staff Management
+---
+flowchart TD
+start([Start])
+--> staff-menu[/Staff detail page/] --> choice3{User choice}
+					choice3 -- 'Edit Staff' clicked --> edit[/Edit form/]
+						 --> filled{Essential fields filled?} 
+							 filled -- no --> edit
+							 filled -- yes --> highlight-btn["`Enable *Next* button`"]
+								--> valid{Entries valid?} 
+									valid -- no --> invalid[/"`*Invalid entry*`"/] --> edit
+									valid -- yes --> update[(Updated User and linked staff entry)] --> staff-menu
+					choice3 -- 'Reset Password' clicked --> newpass[/"`*Enter new password*`"/] 
+						--> validpass{"`New and confirm password fields **same** *and* **valid**?`"}
+							validpass -- no --> invalidpass[/'Passwords must both be same and valid'/] --> newpass
+							validpass -- yes --> update2[Update user entry] --> db[(Updated user list)]
+					choice3 -- 'Remove Staff' clicked --> confirm2{Removal confirmed?}
+						confirm2 -- no --> menu[[Admin Panel]] 
+						confirm2 -- yes --> rem2[Remove Staff entry] --> db2[(Updated staff list)]
+						--> linked{Staff entry linked to user?}
+							 linked -- no -->  menu
+							 linked -- yes --> userrem{Remove linked user too?} 
+								userrem -- no --> menu
+								userrem -- yes --> del3[Remove Linked User entry] --> db4[(Updated user list)] --> menu
+```
