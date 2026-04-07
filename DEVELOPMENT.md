@@ -553,24 +553,37 @@ This page would simply tell the staff user to get into contact with an administr
 
 This menu would manage 'bookings' made for repairs at the workshop. Operated by both student and lecturer volunteers.
 
-This is probably the most expansive part of the implementation which means it will be split up into multiple sections which will be further elaborated with respectively
+Here - users would be greeted with a list of bookings they can manage. At the very least - in compliance with the requirements of the brief, the system should allow staff, including student and lecturer volunteers to:
++ Add or modify existing repairs 'added' to the booking - which would include their associated information 
++ Add or modify existing lecturer(s) 'assigned' to supervise the repairs in the booking.
++ Automatically calculate the final cost of the booking from the repairs associated with this (elaborated further in 
++ Change motorist(owner) details associated with the booking, if necessary
++ Change vehicle details associated with the booking, if necessary
+
+This is probably the most expansive part of the implementation which lead to it being split up into multiple separate diagrams for the subprocesses involved.
 
 ```mermaid
 ---
-title: Booking Menu - Main Menu
+title: Booking Management - Main Menu
 ---
-flowchart TD 
-    start([Start])
-    --> menu[/Booking List/]
-        --> prompt1{User Choice}
-	        prompt1 -- Booking is searched for in search bar --> exists{Entry matches found in booking list?}
-			    exists -- no --> nomatch[/"`*No matches found*`"/] --> prompt1
-			    exists -- yes --> match[/Matches with entry/] -- entry selected --> details[[Booking Management]]
-	        prompt1 -- Booking in list is selected --> details
-	        prompt1 -- "`*+ Booking* selected`"  --> add[[Create Booking]]
-	        prompt1 -- "`*- Booking* selected`"  --> rem[[Remove Booking]]
+flowchart LR
+    start([Start]) --> menu[/List of current bookings/]
+    menu --> prompt1{User action}
+	    prompt1 -- "`*+ Booking* selected`" --> add[[Add Booking]]
+	    prompt1 -- "`*- Booking* selected`" --> del[[Remove Booking]]
+        prompt1 -- Booking in list selected --> details[/Booking details/]
+        prompt1 -- Booking entered in search --> exist{Booking matches?}
+            exist -- no --> nomatch[/"`*No matches for entered booking*`"/] --> menu
+            exist -- yes --> match[/Matching Bookings/] --> details
+				details --> repair-link{Repairs linked with booking?}
+				    repair-link -- yes --> total-cost[Calculate total cost from all associated repairs] --> show-repair[/List of linked repairs/] --> prompt2{User action}
+				    repair-link -- no --> no-repair[/"`*No repairs found*`"/] --> prompt2
+	        prompt2 -- "`Repair in list or *+ Repair* selected`" --> sel-repair@{shape: bow-rect, label: "Selected repair"} --> repair[[Repair Management]] 
+	        prompt2 -- "`*Edit Booking* selected`" --> edit-booking[[Manage Bookings]]
+	        prompt2 -- Linked motorist selected --> sel-motorist@{shape: bow-rect, label: "Selected motorist"} --> motorist[[Motorist Management]] 
+	        prompt2 -- Linked vehicle selected --> sel-vehicle@{shape: bow-rect, label: "Selected vehicle"} --> vehicle[[Vehicle Management]]
+	        prompt2 -- "`*Back* selected`" --> menu
 ```
-
 
 #### 'Welcome Page'
 
@@ -644,15 +657,19 @@ title: Booking Management - Booking Removal
 ---
 flowchart TD
 start([Start])
- --> del[/Enter bookings to remove/]
+--> menu[/Booking Deletion Form/]
+	 --> del[/Enter bookings to remove/]
 		del --> exist2{Entered booking exist?}
 			exist2 -- no --> error[/Error: Entered booking doesn't exist/] --> del
 			exist2 -- yes --> enable2[Highlight 'Confirm']
-				enable2 --> confirm[/Confirmation Screen/]
-					confirm --> prompt2{User choice}
-						prompt2 -- 'Back' selected --> del[Remove booking] --> update[(Update booking list)]
-						prompt2 -- 'Remove' selected --> remove[Remove specified motorist entries, linked vehicle and enrolment to classes] 
-						--> db3[(Updated motorist list and references in vehicle and class lists)] --> return[[Motorist Menu]] --> finish[(End)]
+					enable2 --> prompt2{Removal confirmed?}
+						prompt2 -- 'No' selected --> menu
+						prompt2 -- 'Yes' selected --> del[Remove booking] --> update[(Update booking list)]
+					--> cascade-rem{Remove linked vehicle and motorist as well?}
+						cascade-rem -- "`'*Vehicle only*'`" --> del[Remove linked vehicle] --> db1[(Updated vehicle list)] 
+						cascade-rem -- "`'*Motorist only*'`"  --> del[Remove linked motorist] --> db2[(Updated motorist list)]
+						cascade-rem -- "`'*Vehicle *and* Motorist*'`" --> del[Remove linked vehicle and motorist] --> db2[(Updated vehicle and motorist lists)]
+						cascade-rem -- "`'*No*'`" --> return[[Booking Main Menu]]
 ```
 
 
@@ -664,31 +681,6 @@ In this sub-menu - users would be greeted with a list of bookings they can manag
 + Automatically calculate the final cost of the booking from the repairs associated with this (elaborated further in 
 + Change motorist(owner) details associated with the booking, if necessary
 + Change vehicle details associated with the booking, if necessary
-
-```mermaid
----
-title: Booking Management - Main Menu
----
-flowchart LR
-    start([Start]) --> menu[/List of current bookings/]
-    menu --> prompt1{User action}
-	    prompt1 -- "`*+ Booking* selected`" --> add[[Add Booking]]
-	    prompt1 -- "`*- Booking* selected`" --> del[[Remove Booking]]
-        prompt1 -- Booking in list selected --> details[/Booking details/]
-        prompt1 -- Booking entered in search --> exist{Booking matches?}
-            exist -- no --> nomatch[/"`*No matches for entered booking*`"/] --> menu
-            exist -- yes --> match[/Matching Bookings/] --> details
-				details --> repair-link{Repairs linked with booking?}
-				    repair-link -- yes --> total-cost[Calculate total cost from all associated repairs] --> show-repair[/List of linked repairs/] --> prompt2{User action}
-				    repair-link -- no --> no-repair[/"`*No repairs found*`"/] --> prompt2
-	        prompt2 -- "`Repair in list or *+ Repair* selected`" --> sel-repair@{shape: bow-rect, label: "Selected repair"} --> repair[[Repair Management]] 
-	        prompt2 -- "`*Edit Booking* selected`" --> edit-booking[[Manage Bookings]]
-	        prompt2 -- Linked motorist selected --> sel-motorist@{shape: bow-rect, label: "Selected motorist"} --> motorist[[Motorist Management]] 
-	        prompt2 -- Linked vehicle selected --> sel-vehicle@{shape: bow-rect, label: "Selected vehicle"} --> vehicle[[Vehicle Management]]
-	        prompt2 -- "`*Back* selected`" --> menu
-```
-
-
 
 #### 'Vehicle Management'
 Alongside a list of booked repairs, on the same page users will be able to oversee a list of vehicles currently booked for repair in accordance to the requirements of the brief. This can be filtered via search bar with a given license plate - which acts as a unique ID for the vehicle as specified earlier in the UML implementation of the class. 
