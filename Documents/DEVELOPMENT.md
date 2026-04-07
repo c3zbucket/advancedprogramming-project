@@ -1,5 +1,16 @@
 # **Design** 
 
+## Contents
+<!-- TOC -->
+* [**Design**](#design-)
+  * [Contents](#contents)
+  * [UML Diagram](#uml-diagram)
+  * [Flowcharts](#flowcharts)
+* [**Implementation**](#implementation)
+  * [**Console**](#console)
+<!-- TOC -->
+
+
 The first step of the process involved designing the solution. 
 
 Alongside it being specified, an Object-Oriented approach was chosen as it allowed for the principles of SOLID () to be more stringently enforced. 

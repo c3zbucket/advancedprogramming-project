@@ -1,5 +1,19 @@
 # UML Diagram
 
+## Contents
+<!-- TOC -->
+* [UML Diagram](#uml-diagram)
+  * [Contents](#contents)
+  * [Initial Layout](#initial-layout)
+  * [Handling 'Foreign' Values](#handling-foreign-values)
+  * [Changing Data Types](#changing-data-types)
+  * [Defining Custom Types](#defining-custom-types)
+  * [Adding Interfaces](#adding-interfaces)
+  * [Final Diagram](#final-diagram)
+<!-- TOC -->
+
+## Initial Layout
+
 The first step was to create a UML Diagram of the solution. 
 Mermaid was chosen as it allowed for the creation of such a diagram through an intuitive markdown-based language. It also had an integration with Rider.
 

@@ -1,5 +1,33 @@
 # Flowcharts
 
+## Contents
+
+<!-- TOC -->
+* [Flowcharts](#flowcharts)
+  * [Contents](#contents)
+  * [Initial Page](#initial-page)
+  * [User Authentication](#user-authentication)
+    * [Login Page](#login-page)
+    * [Signup Page](#signup-page)
+  * ['Booking Menu'](#booking-menu)
+    * [**Create** Booking](#create-booking)
+    * [**Remove** Booking](#remove-booking)
+    * ['Vehicle Management'](#vehicle-management)
+  * [Repair Menu](#repair-menu)
+  * ['Motorist Management'](#motorist-management)
+    * [**Adding** a Motorist](#adding-a-motorist)
+    * [**Removing** a Motorist](#removing-a-motorist)
+  * [Training Class Menu](#training-class-menu)
+    * [Creating a Class](#creating-a-class)
+    * [Managing Enrolment](#managing-enrolment)
+    * [Modifying a Class](#modifying-a-class-)
+  * [Student Panel](#student-panel)
+  * [Lecturer Panel](#lecturer-panel)
+    * [Admin Panel](#admin-panel)
+    * [User Management](#user-management)
+    * [Staff Management](#staff-management)
+<!-- TOC -->
+
 ## Initial Page
 The next stage was to devise a flowchart to mainly display the flow of program logic. 
 
