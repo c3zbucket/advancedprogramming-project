@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DEVELOPMENT.md",
+                "file": "uml.md",
                 "mode": "source",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "DEVELOPMENT"
+              "title": "uml"
             }
           }
         ]
@@ -244,8 +244,8 @@
   },
   "active": "a3b84c9fd021742d",
   "lastOpenFiles": [
-    "DOCUMENTATION.md",
     "DEVELOPMENT.md",
+    "DOCUMENTATION.md",
     "FLOWCHART.md",
     "README.md",
     "UML.md",
