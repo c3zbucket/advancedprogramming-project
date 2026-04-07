@@ -642,12 +642,36 @@ n5store --> nBooking
 #### 'Manage Bookings'
 
 In this sub-menu - users would be greeted with a list of bookings they can manage. At the very least - in compliance with the requirements of the brief, the system should allow staff, including student and lecturer volunteers to:
-+ Add or modify existing repairs 'added' to the booking - which would include their associated information (elaborated in ![Manage Booking Repairs]) 
++ Add or modify existing repairs 'added' to the booking - which would include their associated information 
 + Add or modify existing lecturer(s) 'assigned' to supervise the repairs in the booking.
-+ Automatically calculate the final cost of the booking from the repairs associated with this (elaborated further in ![Manage Booking Repairs])
++ Automatically calculate the final cost of the booking from the repairs associated with this (elaborated further in 
 + Change motorist(owner) details associated with the booking, if necessary
 + Change vehicle details associated with the booking, if necessary
-+ 
+
+```mermaid
+---
+title: Booking Management - Main Menu
+---
+flowchart LR
+    start([Start]) --> menu[/List of current bookings/]
+    menu --> prompt1{User action}
+	    prompt1 -- "`*+ Booking* selected`" --> add[[Add Booking]]
+	    prompt1 -- "`*- Booking* selected`" --> del[[Remove Booking]]
+        prompt1 -- Booking in list selected --> details[/Booking details/]
+        prompt1 -- Booking entered in search --> exist{Booking matches?}
+            exist -- no --> nomatch[/"`*No matches for entered booking*`"/] --> menu
+            exist -- yes --> match[/Matching Bookings/] --> details
+				details --> repair-link{Repairs linked with booking?}
+				    repair-link -- yes --> total-cost[Calculate total cost from all associated repairs] --> show-repair[/List of linked repairs/] --> prompt2{User action}
+				    repair-link -- no --> no-repair[/"`*No repairs found*`"/] --> prompt2
+	        prompt2 -- "`Repair in list or *+ Repair* selected`" --> sel-repair@{shape: bow-rect, label: "Selected repair"} --> repair[[Repair Management]] 
+	        prompt2 -- "`*Edit Booking* selected`" --> edit-booking[[Manage Bookings]]
+	        prompt2 -- Linked motorist selected --> sel-motorist@{shape: bow-rect, label: "Selected motorist"} --> motorist[[Motorist Management]] 
+	        prompt2 -- Linked vehicle selected --> sel-vehicle@{shape: bow-rect, label: "Selected vehicle"} --> vehicle[[Vehicle Management]]
+	        prompt2 -- "`*Back* selected`" --> menu
+```
+
+
 
 #### 'Vehicle Management'
 Alongside a list of booked repairs, on the same page users will be able to oversee a list of vehicles currently booked for repair in accordance to the requirements of the brief. This can be filtered via search bar with a given license plate - which acts as a unique ID for the vehicle as specified earlier in the UML implementation of the class. 
@@ -711,7 +735,6 @@ flowchart TD
 		            exist -- yes --> update3[Remove repair from list]
 			            --> db3[(Updated repair list and booking entry)] --> return --> finish([End])
 ```
-
 
 
 ### 'Motorist Management'
