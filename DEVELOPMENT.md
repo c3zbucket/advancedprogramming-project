@@ -553,6 +553,7 @@ This page would simply tell the staff user to get into contact with an administr
 ---
 title: Signup Page
 ---
+flowchart TD
 start([Start])
 --> page[/Signup Disclaimer/]
 	--> choice{User choice}
@@ -1055,3 +1056,4 @@ start([Start])
 								userrem -- no --> menu
 								userrem -- yes --> del3[Remove Linked User entry] --> db4[(Updated user list)] --> menu
 ```
+
