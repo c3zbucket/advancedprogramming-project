@@ -1,6 +1,6 @@
 {
   "commitMessage": "Notes backup: {{date}}",
-  "autoCommitMessage": "Notes backup: {{date}}",
+  "autoCommitMessage": "Project auto-commit: {{date}}",
   "commitMessageScript": "",
   "commitDateFormat": "YYYY-MM-DD HH:mm:ss",
   "autoSaveInterval": 30,

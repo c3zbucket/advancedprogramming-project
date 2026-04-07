@@ -547,7 +547,20 @@ flowchart TD
 
 #### Signup Page
 
-This page would simply tell the staff user to get into contact with an administrator if they want to create an account, it could list general contact information such as an email associated with that user group. The only other option on this page would be to return to the home default page or to the login page.
+This page would simply tell the staff user to get into contact with an administrator if they want to create an account, it could list general contact information such as a dedicated email associated with that user group. The only other option on this page would be to return to the home default page or to the login page.'
+
+```mermaid
+---
+title: Signup Page
+---
+start([Start])
+--> page[/Signup Disclaimer/]
+	--> choice{User choice}
+		choice -- "`*Login* selected`" --> login[[Login Page]]
+		choice -- "`*Home* selected`" --> return[[Default Page]]
+```
+
+
 
 ### 'Booking Menu'
 
@@ -560,7 +573,7 @@ Here - users would be greeted with a list of bookings they can manage. At the ve
 + Change motorist(owner) details associated with the booking, if necessary
 + Change vehicle details associated with the booking, if necessary
 
-This is probably the most expansive part of the implementation which lead to it being split up into multiple separate diagrams for the subprocesses involved.
+This is probably the most expansive part of the implementation which lead to it being split up into multiple separate diagrams for the sub-processes involved.
 
 ```mermaid
 ---
@@ -585,23 +598,6 @@ flowchart LR
 	        prompt2 -- "`*Back* selected`" --> menu
 ```
 
-#### 'Welcome Page'
-
-```mermaid
----
-title: Booking Menu - Welcome Page
----
-flowchart LR 
-    n1@{shape: stadium, label: "Start"}
-        n1 --> n2@{shape: lean-r, label: "Menu options"}
-            n2 --> n3@{shape: comment, label: "Options: \n 1 - New Booking \n 2 - Current Bookings \n 3 - Motorist Record \n 4 - Vehicle Record \n 0 - Return"}
-            n2 --> n4@{shape: diamond, label: "Option selected:"}
-                n4 -- '0' --> n5@{shape: subproc, label: "Staff Portal"}
-                n4 -- '1' --> n6@{shape: subproc, label: "Create Booking"}
-                n4 -- '2' --> n7@{shape: subproc, label: "Manage Bookings"}
-                n4 -- '3' --> n8@{shape: subproc, label: "Motorist Records"}
-                n4 -- '4' --> n9@{shape: subproc, label: "Vehicle Records"}
-```
 #### **Create** Booking
 
 ```mermaid
@@ -666,24 +662,14 @@ start([Start])
 						prompt2 -- 'No' selected --> menu
 						prompt2 -- 'Yes' selected --> del[Remove booking] --> update[(Update booking list)]
 					--> cascade-rem{Remove linked vehicle and motorist as well?}
+						cascade-rem -- "`'*No*'`" --> return[[Booking Main Menu]]
 						cascade-rem -- "`'*Vehicle only*'`" --> del[Remove linked vehicle] --> db1[(Updated vehicle list)] 
 						cascade-rem -- "`'*Motorist only*'`"  --> del[Remove linked motorist] --> db2[(Updated motorist list)]
 						cascade-rem -- "`'*Vehicle *and* Motorist*'`" --> del[Remove linked vehicle and motorist] --> db2[(Updated vehicle and motorist lists)]
-						cascade-rem -- "`'*No*'`" --> return[[Booking Main Menu]]
 ```
 
-
-#### 'Manage Bookings'
-
-In this sub-menu - users would be greeted with a list of bookings they can manage. At the very least - in compliance with the requirements of the brief, the system should allow staff, including student and lecturer volunteers to:
-+ Add or modify existing repairs 'added' to the booking - which would include their associated information 
-+ Add or modify existing lecturer(s) 'assigned' to supervise the repairs in the booking.
-+ Automatically calculate the final cost of the booking from the repairs associated with this (elaborated further in 
-+ Change motorist(owner) details associated with the booking, if necessary
-+ Change vehicle details associated with the booking, if necessary
-
 #### 'Vehicle Management'
-Alongside a list of booked repairs, on the same page users will be able to oversee a list of vehicles currently booked for repair in accordance to the requirements of the brief. This can be filtered via search bar with a given license plate - which acts as a unique ID for the vehicle as specified earlier in the UML implementation of the class. 
+Alongside a list of booked repairs, on the same main menu users will be able to oversee a list of vehicles currently booked for repair in accordance to the requirements of the brief. This can be filtered via search bar with a given license plate - which acts as a unique ID for the vehicle as specified earlier in the UML implementation of the class. 
 
 Upon clicking a vehicle entry, they'll be presented with a details page listing associated bookings with it including repairs, which they can add/remove from, taking them to the [[#Repair Menu]] for the specific vehicle.
 
@@ -698,16 +684,23 @@ flowchart TD
     start([Start])
     --> menu[/Vehicle List/] --> prompt1{User action}
 	    prompt1 -- Vehicle license plate searched for in search bar --> exist{Vehicle matches with search?} 
-		exist -- no --> nomatch[/"No matches for entered vehicle"/] --> menu
+		exist -- no --> nomatch[/"`*No matches for entered vehicle*`"/] --> menu
 	    exist -- yes --> match[/Matching Vehicles/] --> details
 	    prompt1 -- Vehicle entry clicked  --> details[/Details page for Vehicle/]
 		    details --> prompt2{User action}
-			    prompt2 -- 'Manage Repairs' clicked --> repairs[[Repair Menu]]
-			    prompt2 -- 'Back' clicked --> menu
+			    prompt2 -- "`*Manage Vehicle* selected`" --> edit[/Vehicle edit form/] 
+				--> filled{Essential fields filled?}
+					filled -- no --> edit
+					filled -- yes --> enable-add["`Highlight *Add* button`"]
+						enable-add --> valid{"Entry valid?"}
+							valid -- no --> invalid[/"`*Error: Entry is invalid*`"/] --> edit
+							valid -- yes --> update[Update vehicle entry] --> db[(Updated vehicle records)] --> menu
+				prompt2 -- "`*Manage Motorist* selected`" --> sel-motorist@{shape: bow-rect, label: "Selected motorist"} --> motorist[[Motorist Managament]]
+			    prompt2 -- "`*Manage Repairs* selected`" --> sel-vehicle@{shape: bow-rect, label: "Selected vehicle"} --> repairs[[Repair Management]]
+			    prompt2 -- 'Back' selected --> menu
 ```
 
-
-If an entry is clicked on - the usual details page for the specific vehicle is shown, containing it's features alongside the linked owner to it with their contact details. Furthermore the currently assigned bookings to it will be shown where you can update the repair list(s) for them - this will immediately bring you to the 'Manage Repair' form for the booking for the vehicle pre-selected. 
+If an entry is clicked on - the usual details page for the specific vehicle is shown, containing it's features alongside the linked owner to it with their contact details. Furthermore the currently assigned bookings to it will be shown where you can update the repair list(s) for them - which will immediately bring you to the 'Manage Repair' form for the booking for the vehicle pre-selected when clicked.
 
 ### Repair Menu
 ```mermaid
@@ -783,7 +776,7 @@ flowchart TD
 ```
 
 
-#### Adding a Motorist
+#### **Adding** a Motorist
 ```mermaid
 ---
 title: Motorist Management - Motorist Addition
@@ -805,7 +798,7 @@ start([Start])
 										veh-exist -- yes --> link[Link to specified vehicle record] --> db2[(Updated vehicle record)]  --> return[[Motorist Menu]] --> finish[(End)]
 ```
 
-####  Removing a Motorist
+####  **Removing** a Motorist
 
 ```mermaid
 ---
