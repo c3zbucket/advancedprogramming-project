@@ -638,6 +638,23 @@ n5store --> nBooking
 
 #### **Remove** Booking
 
+```mermaid
+---
+title: Booking Management - Booking Removal
+---
+flowchart TD
+start([Start])
+ --> del[/Enter bookings to remove/]
+		del --> exist2{Entered booking exist?}
+			exist2 -- no --> error[/Error: Entered booking doesn't exist/] --> del
+			exist2 -- yes --> enable2[Highlight 'Confirm']
+				enable2 --> confirm[/Confirmation Screen/]
+					confirm --> prompt2{User choice}
+						prompt2 -- 'Back' selected --> del[Remove booking] --> update[(Update booking list)]
+						prompt2 -- 'Remove' selected --> remove[Remove specified motorist entries, linked vehicle and enrolment to classes] 
+						--> db3[(Updated motorist list and references in vehicle and class lists)] --> return[[Motorist Menu]] --> finish[(End)]
+```
+
 
 #### 'Manage Bookings'
 
