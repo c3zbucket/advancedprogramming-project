@@ -6,7 +6,7 @@
 Repository for the project for Advanced Programming (COM5401) 
 
 ## Documentation
-Documentation for use of the system can be found ![here](DOCUMENTATION.md)
+Documentation for use of the system can be found ![here](Documentation/DOCUMENTATION.md)
 
 ## Development Process
 For an in-depth look of the development process from problems encountered and how they were mitigated, click ![here](DEVELOPMENT.md)
