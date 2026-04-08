@@ -1,9 +1,12 @@
+using System.Data.Common;
+using System.Runtime.InteropServices.JavaScript;
+
 namespace GMMWSystem;
 
 public class Repair
 {
     private Booking ascBooking;
-
+    
     private string description;
 
     public List<Student> repairers;
@@ -12,27 +15,32 @@ public class Repair
 
     public List<Part> parts;
     
-    //public Decimal PartsCost { return parts }
+    public DateTime date;
     
-    private decimal labCost;
-    public Decimal LabCost { get => labCost; set => labCost = value; }
+    protected decimal labCost;
+    protected Decimal LabCost { get => labCost; set => labCost = value; }
+    
     private decimal totalCost;
+    private decimal TotalCost { get => totalCost;}
     
-    public decimal TotalCost { get => totalCost;}
-    
-    public Repair(Booking booking, String description)
+    public Repair(Booking ascBooking, string description, decimal partsCost, decimal labCost, IEnumerable<Student>repairers, IEnumerable<Part>parts)
     {
-        ascBooking = booking;
+        this.ascBooking = ascBooking;
+        this.description = description;
+        this.partsCost = partsCost;
+        this.labCost = labCost;
+        this.repairers = repairers.ToList();
+        this.parts = parts.ToList();
     }
-
-    public string addPart(string id)
+    
+    public bool addPart(string id)
     {
-        return "Part added";
+        return true;
     }
     
-    public string removePart(string id)
+    public bool removePart(string id)
     {
-        return "Part added";
+        return false;
     }
     
     public decimal updateLab(decimal newLab)
@@ -49,6 +57,4 @@ public class Repair
     {
         return "Repair";
     }
-    
-    
 }

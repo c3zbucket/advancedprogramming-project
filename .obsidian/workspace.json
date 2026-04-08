@@ -4,22 +4,6 @@
     "type": "split",
     "children": [
       {
-        "id": "c1a0aa97cad5af11",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "a3b84c9fd021742d",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          }
-        ]
-      },
-      {
         "id": "54f05bb71346f4c6",
         "type": "tabs",
         "children": [
@@ -27,10 +11,14 @@
             "id": "a5214b885af7e81f",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "Documents/DEVELOPMENT.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "DEVELOPMENT"
             }
           }
         ]
@@ -234,8 +222,20 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "a3b84c9fd021742d",
+  "active": "a5214b885af7e81f",
   "lastOpenFiles": [
+    "GMMWSystem/GMMWMenu.cs~",
+    "GMMWSystem/Repair.cs~",
+    "GMMWSystem/GMMWMenu.cs",
+    "GMMWSystem/TrainingClass.cs~",
+    "GMMWSystem/Part.cs~",
+    "GMMWSystem/Booking.cs~",
+    "GMMWSystem/Motorist.cs~",
+    "GMMWSystem/Vehicle.cs~",
+    "GMMWSystem/GMMWTesting.cs~",
+    "GMMWSystem/GMMWTesting.cs",
+    "GMMWSystem/TrainingClass.cs",
+    "Documents/UML.md",
     "DEVELOPMENT.md",
     "DOCUMENTATION.md",
     "FLOWCHART.md",
@@ -250,7 +250,6 @@
     "Year 2/{COM5401} Advanced Programming/Week 1/Session 1/Advanced Programming Intro.md",
     "Year 2/{COM5401} Advanced Programming/Week 1/Session 2/OOP Basics.md",
     "Year 2/{COM5401} Advanced Programming/Week 1/Session 2/Advanced Method Techniques.md",
-    "Notes Overview.base",
     "Year 2/{COM5401} Advanced Programming/Week 2/Session 1/SOLID Principles.md",
     "Year 2/{COM5401} Advanced Programming/Week 3/Session 1/Blazor Web App Tutorial.md",
     "Year 2/{COM5401} Advanced Programming/Week 3/Session 2/Untitled.md",
@@ -263,25 +262,14 @@
     "Excalidraw/Drawing 2026-03-26 14.28.30.excalidraw.svg",
     "Year 2/{COM5401} Advanced Programming/Assignments/Portfolio.md",
     "Year 2/{COM5401} Advanced Programming/Week 2/Session 1/Interface Inheritance.md",
-    "Year 2/{COM5401} Advanced Programming/Week 2/Session 1/Inheritance.md",
     "Attachments/image-221.png",
     "Attachments/image-220.png",
     "link-embed-images/dotnet-logo-41c4e37c.png",
-    "Attachments/Blazor Introduction 2026-03-24 18.26.49.excalidraw.md",
-    "Year 2/{COM5401} Advanced Programming/Visual CSharp How to Program (Paul Deitel, Harvey Deitel).pdf",
     "Attachments/Blazor Introduction 2026-03-24 18.26.49.excalidraw.svg",
-    "Year 2/{COM5401} Advanced Programming/Week 3/Session 2",
-    "Year 2/{COM5401} Advanced Programming/Week 3/Session 1",
-    "Year 2/{COM5401} Advanced Programming/Week 3",
     "link-embed-images/brickwall.jpeg",
-    "Untitled.base",
-    "Untitled 1.base",
     "link-embed-images/dot-net-cross-platform-6fd095a0.png",
     "link-embed-images/logo_csharp-b4d7308f.png",
     "Attachments/image-219.png",
-    "Attachments/image-218.png",
-    "Year 2/{COM5401} Advanced Programming/Week 2/Session 2",
-    "Year 2/{COM5401} Advanced Programming/Week 2/Session 1",
-    "Year 2/{COM5401} Advanced Programming/Week 2"
+    "Attachments/image-218.png"
   ]
 }

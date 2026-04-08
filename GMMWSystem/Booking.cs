@@ -1,26 +1,37 @@
+using System.Security.Principal;
+using System.Text;
+
 namespace GMMWSystem;
 
 public class Booking
 {
-    public string Id { get; private set; }
-    public Vehicle BookedVehicle { get; set; }
-    
-    public Motorist Owner { get; set; }
+    public string Id { get; private set; } 
+    public Vehicle bookedVehicle { get; set; }
 
     public string Description { get; set; }
     public DateTime Date { get; set; }
-    
+
     public TimeSpan Time { get; set; }
 
     public List<Repair> Repairs { get; set; } = new();
-
-
-    public Booking(string id, Motorist owner, Vehicle vehicle)
+    
+    public Booking(Vehicle vehicle, DateTime date)
     {
-        Id = id;
-        Owner = owner;
-        BookedVehicle = vehicle;
+        Id = idGen(vehicle,date);
+        bookedVehicle = vehicle;
+        Date = date;
     }
+
+    /**
+     * Generate a unique ID based on the registered vehicle's plate and time
+     */
+    public string idGen(Vehicle vehicle, DateTime date)
+    {
+        StringBuilder id = new();
+        id.AppendFormat($"ID-, {vehicle.Plate}, {date}");
+        return id.ToString();
+    }
+    
 
     public void AddRepair(Repair repair)
     {
@@ -36,7 +47,11 @@ public class Booking
             UpdateTotals();
         }
     }
-
+    /**
+     * Get details of the booked vehicle's owner
+     */
+    public Motorist getDetails() => bookedVehicle.owner;
+    
     private void UpdateTotals()
     {
         //TotalCost = TotalLab + TotalParts;
@@ -47,4 +62,5 @@ public class Booking
         //return $"Booking {Id}: {BookedVehicle.Model} for {Owner.Name} - Total: £{TotalCost}";
         return "Booking";
     }
+       
 }

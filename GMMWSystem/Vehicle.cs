@@ -10,7 +10,7 @@ public class Vehicle
         set => id = value;
     }
 
-    private Motorist owner;
+    public Motorist owner;
 
     private string plate;
 
@@ -50,6 +50,6 @@ public class Vehicle
 
     public override string ToString()
     {
-        return base.ToString();
+        return $"ID: {id} |  Owner: {owner} | Make: {make} | Year: {year} | Plate: {plate} | Tranmission: {transmission} |  Engine: {engine}";
     }
 }
