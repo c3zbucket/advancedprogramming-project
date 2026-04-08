@@ -1,15 +1,11 @@
 namespace GMMWSystem;
+using System.Text;
 
-public class Vehicle
+public class Vehicle : Record<Vehicle, Motorist>
 {
     private string id;
 
-    public string Id
-    {
-        get => id;
-        set => id = value;
-    }
-
+    public override string ID { get => id; }
     public Motorist owner;
 
     private string plate;
@@ -28,7 +24,7 @@ public class Vehicle
         set => make = value;
     }
 
-    private string model;
+    private string model = string.Empty;
 
     public string Model
     {
@@ -40,7 +36,7 @@ public class Vehicle
     
     private Engine engine;
     
-    private string year;
+    private string year = string.Empty;
     
     public string Year
     {
@@ -48,8 +44,41 @@ public class Vehicle
         set => year = value;
     }
 
-    public override string ToString()
+    public Vehicle()
     {
-        return $"ID: {id} |  Owner: {owner} | Make: {make} | Year: {year} | Plate: {plate} | Tranmission: {transmission} |  Engine: {engine}";
+        owner = new Motorist("M-UNKNOWN", "Unknown", "unknown@example.com", string.Empty);
+        transmission = Transmission.MANUAL;
+        engine = Engine.PETROL;
+        id = IDGen(this, owner);
     }
+
+    public Vehicle(Motorist owner, string plate, string make, string model, string year,
+        Transmission transmission = Transmission.MANUAL, Engine engine = Engine.PETROL)
+    {
+        this.owner = owner;
+        this.plate = plate;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.transmission = transmission;
+        this.engine = engine;
+        id = IDGen(this, owner);
+    }
+
+    public override string IDGen(Vehicle vehicle, Motorist m)
+    {
+        return IDGen(vehicle);
+    }
+    
+    
+    public string IDGen(Vehicle vehicle)
+    {
+        StringBuilder id = new();
+        id.AppendFormat($"V-{vehicle.Plate.Replace(" ", string.Empty).ToUpperInvariant()}");
+        return id.ToString();
+    }
+
+    public override string ToString() 
+        => $"Vehicle[{ID}] {Make} {Model} ({Year}) Plate={Plate} Owner={owner.Name} Transmission={transmission} Engine={engine}";
+    
 }

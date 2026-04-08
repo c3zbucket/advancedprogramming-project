@@ -26,7 +26,7 @@ public class SystemUser
         set => role = value;
     }
 
-    public SystemUser(IStaff member, String password)
+    public SystemUser(IStaff member, Role role, String password)
     {
         this.member = member;
         this.password = password;

@@ -29,8 +29,11 @@ public class Student : IStaff
         set => email = value;
     }
 
-    public Student(string  id, string name, string phoneNo, string email)
+    public Student(string id, string name, string phoneNo, string email)
     {
-        
+        this.id = id;
+        this.name = name;
+        this.phoneNo = phoneNo;
+        this.email = email;
     }
 }

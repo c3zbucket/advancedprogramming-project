@@ -1,10 +1,13 @@
 using System.Data.Common;
 using System.Runtime.InteropServices.JavaScript;
+using System.Text;
 
 namespace GMMWSystem;
 
-public class Repair
+public class Repair : Record<Booking,DateTime>
 {
+    public override string ID { get; }
+
     private Booking ascBooking;
     
     private string description;
@@ -15,7 +18,7 @@ public class Repair
 
     public List<Part> parts;
     
-    public DateTime date;
+    public DateTime Date;
     
     protected decimal labCost;
     protected Decimal LabCost { get => labCost; set => labCost = value; }
@@ -23,16 +26,19 @@ public class Repair
     private decimal totalCost;
     private decimal TotalCost { get => totalCost;}
     
-    public Repair(Booking ascBooking, string description, decimal partsCost, decimal labCost, IEnumerable<Student>repairers, IEnumerable<Part>parts)
+    public Repair(Booking ascBooking, string description, decimal partsCost, decimal labCost, IEnumerable<Student>repairers, IEnumerable<Part>parts, DateTime date)
     {
+        ID = IDGen(ascBooking,date);
         this.ascBooking = ascBooking;
         this.description = description;
         this.partsCost = partsCost;
         this.labCost = labCost;
         this.repairers = repairers.ToList();
         this.parts = parts.ToList();
+        this.Date = date;
+        this.totalCost = partsCost + labCost;
     }
-    
+
     public bool addPart(string id)
     {
         return true;
@@ -45,16 +51,26 @@ public class Repair
     
     public decimal updateLab(decimal newLab)
     {
-        return newLab;
+        labCost = newLab;
+        totalCost = partsCost + labCost;
+        return labCost;
     }
     
     public decimal updateTotal(decimal newTotal)
     {
-        return newTotal;
+        totalCost = newTotal;
+        return totalCost;
+    }
+
+    public override string IDGen(Booking booking, DateTime date)
+    {
+        StringBuilder id = new();
+        id.AppendFormat($"R-{booking.ID}-{date}");
+        return id.ToString();    
     }
 
     public override String ToString()
     {
-        return "Repair";
+        return $"Repair[{ID}] Booking={ascBooking.ID} Date={Date:yyyy-MM-dd} Desc={description} PartsCost={partsCost:C} Labour={labCost:C} Total={totalCost:C} Repairers={repairers.Count} Parts={parts.Count}";
     }
 }

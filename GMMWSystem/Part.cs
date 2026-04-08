@@ -1,12 +1,11 @@
+using System.Reflection;
+using System.Text;
+
 namespace GMMWSystem;
 
-public class Part
+public class Part : Record<String, PartType>
 {
-    private string id;
-    private string Id
-    {
-        get => id;
-    }
+    public override string ID { get; }
 
     private string make;
     private string Make
@@ -35,10 +34,21 @@ public class Part
         set => cost = value;
     }
 
-    public DateTime used;
-    public DateTime Used
+    public Part(string make, PartType type, decimal cost, string? desc)
     {
-        get => used;
-        protected set => used = value;
+        ID = IDGen(make,type);
+        this.make = make;
+        this.type = type;
+        this.cost = cost;
+        this.desc = desc ?? string.Empty;
     }
+
+    public override string IDGen(String make, PartType partType)
+    {
+        StringBuilder id = new();
+        id.AppendFormat($"P-{make}-{partType.GetTypeCode()}");
+        return id.ToString();        }
+
+    public override string ToString() =>
+        $"Part[{ID}] Make={make} Type={type} Cost={cost:C} Desc={desc}";
 }

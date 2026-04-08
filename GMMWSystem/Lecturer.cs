@@ -31,5 +31,9 @@ public class Lecturer : IStaff
 
     public Lecturer(string id, string name, string phoneNo, string email)
     {
-        
-    }}
+        this.id = id;
+        this.name = name;
+        this.phoneNo = phoneNo;
+        this.email = email;
+    }
+}

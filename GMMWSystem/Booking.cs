@@ -3,9 +3,10 @@ using System.Text;
 
 namespace GMMWSystem;
 
-public class Booking
+public class Booking : Record<Vehicle, DateTime>
 {
-    public string Id { get; private set; } 
+    private string id;
+    public override string ID { get; }
     public Vehicle bookedVehicle { get; set; }
 
     public string Description { get; set; }
@@ -15,25 +16,25 @@ public class Booking
 
     public List<Repair> Repairs { get; set; } = new();
     
+    /**
+     * Generate a unique ID based on the registered vehicle's plate and time
+     */
+    public override string IDGen(Vehicle vehicle, DateTime date)
+    {
+        
+        StringBuilder id = new();
+        id.AppendFormat($"BK-{vehicle.Plate}{date}");
+        return id.ToString();
+    }
+    
     public Booking(Vehicle vehicle, DateTime date)
     {
-        Id = idGen(vehicle,date);
+        id = IDGen(vehicle,date);
         bookedVehicle = vehicle;
         Date = date;
     }
 
-    /**
-     * Generate a unique ID based on the registered vehicle's plate and time
-     */
-    public string idGen(Vehicle vehicle, DateTime date)
-    {
-        StringBuilder id = new();
-        id.AppendFormat($"ID-, {vehicle.Plate}, {date}");
-        return id.ToString();
-    }
-    
-
-    public void AddRepair(Repair repair)
+    public void Add(Repair repair)
     {
         Repairs.Add(repair);
         UpdateTotals();
@@ -47,6 +48,11 @@ public class Booking
             UpdateTotals();
         }
     }
+
+    public void AddRepair(Repair repair)
+    {
+        Add(repair);
+    }
     /**
      * Get details of the booked vehicle's owner
      */
@@ -59,8 +65,6 @@ public class Booking
 
     public override string ToString()
     {
-        //return $"Booking {Id}: {BookedVehicle.Model} for {Owner.Name} - Total: £{TotalCost}";
-        return "Booking";
+        return $"Booking[{ID}] {Date:yyyy-MM-dd} {Time:hh\\:mm} Vehicle={bookedVehicle.Make} {bookedVehicle.Model} ({bookedVehicle.Plate}) Owner={bookedVehicle.owner.Name} Repairs={Repairs.Count} Desc={Description}";
     }
-       
 }

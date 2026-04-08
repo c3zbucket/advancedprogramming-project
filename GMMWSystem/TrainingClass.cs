@@ -1,15 +1,20 @@
-using System.Runtime.InteropServices.JavaScript;
+using System.Text;
 
 namespace GMMWSystem;
 
-public class TrainingClass
+public class TrainingClass : Record<ClassType,DateTime>
 {
-    private string id;
-    public string ID
+    public override string ID { get; }
+
+    public override string IDGen(ClassType type, DateTime date)
     {
-        get => id;
-        set => id = value;
+        StringBuilder id = new();
+        id.AppendFormat($"TC-{type}-{date:yyyyMMddHHmm}");
+        return id.ToString();            
     }
+    
+    public override string ToString() =>
+        $"TrainingClass[{ID}] Name={Name} Type={ClassType} Date={Date:yyyy-MM-dd HH:mm} Trainer={student.Name} Attendees={attendees.Count} Desc={Description}";
 
     private Student student;
 
@@ -28,11 +33,11 @@ public class TrainingClass
         set => classType = value;
     }
     
-    private string desc;
+    private string description;
     public string Description
     {
-        get => desc;
-        set => desc = value;
+        get => description;
+        set => description = value;
     }
 
     public List<Motorist> attendees;
@@ -45,9 +50,15 @@ public class TrainingClass
         set => date = value;
     }
 
-    public TrainingClass(string id, Student student, string name, DateTime date, IEnumerable<Motorist> motorists)
+    public TrainingClass(Student student, string name, ClassType classType, DateTime date, IEnumerable<Motorist> motorists, string? description)
     {
-        
+        ID = IDGen(classType, date);
+        this.student = student;
+        this.name = name;
+        this.classType = classType;
+        attendees = motorists.ToList();
+        this.date = date;
+        this.description = description ?? "No description"; //If no description is provided, set default description
     }
     
     public string register(Motorist motorist)
@@ -72,9 +83,8 @@ public class TrainingClass
         }
         catch (Exception e)
         {
-            Console.WriteLine("could not remove");
+            return "could not remove";
         }
-
         return "Motorist removed";
     }
     
