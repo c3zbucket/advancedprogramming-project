@@ -26,5 +26,10 @@ For a basic implementation, it was decided to start with a console app demonstra
 
 ## **Console**
 
+### Initialising Class Structure
+
+The first step was translating the UML defined structure to C# classes. In the midst of performing this, an improvement was identified with the manner in which the `Motorist` class was implemented. Initially despite being basically identical in contents of fields to implementations of the `IStaff`  class such as `Student` and `Lecturer`, it was declared as a separate class. 
+
+This was then changed to be an implementation of a new general `IPerson`  interface. Whilst the `Student` and `Lecturer` classes were still implementations of `IStaff`, now a sub-interface of `IPerson`. Thus allowing for stronger **interface segregation** - a core principle of SOLID. (citation).
 
 

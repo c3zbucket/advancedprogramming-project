@@ -1,7 +1,14 @@
 namespace GMMWSystem;
 
+/**
+ * Motorist class which implements the more general IPerson interface
+ * 
+ */
 public class Motorist : IPerson
 {
+    /*
+     * ID of the motorist
+     */
     private string id;
     public string ID
     {
@@ -9,7 +16,7 @@ public class Motorist : IPerson
         set => id = value;
     }
 
-    public string name;
+    private string name;
     public string Name
     {
         get => name;
@@ -27,6 +34,14 @@ public class Motorist : IPerson
     public string Email {
         get => email;
         set => email = value;
+    }
+    
+    public Motorist(string id, string name, string email, string? phoneNo)
+    {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.phoneNo = phoneNo;
     }
     
 }
