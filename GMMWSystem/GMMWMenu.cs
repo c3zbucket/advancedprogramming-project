@@ -17,5 +17,12 @@ public class GMMWMenu
     public List<TrainingClass> classesList;
     
     public  GMMWMenu() {}
-    
+
+
+    public static void main(String[] args)
+    {
+        GMMWMenu menu = new GMMWMenu();
+
+        Student mek = new Student("2424", "Me me", "07562399573", "adfdaf@gmail.com");
+    }
 }
