@@ -5,7 +5,7 @@ public class Booking
     public string Id { get; private set; }
     public Vehicle BookedVehicle { get; set; }
     
-    public Visitor Owner { get; set; }
+    public Motorist Owner { get; set; }
 
     public string Description { get; set; }
     public DateTime Date { get; set; }
@@ -15,7 +15,7 @@ public class Booking
     public List<Repair> Repairs { get; set; } = new();
 
 
-    public Booking(string id, Visitor owner, Vehicle vehicle)
+    public Booking(string id, Motorist owner, Vehicle vehicle)
     {
         Id = id;
         Owner = owner;
@@ -45,5 +45,6 @@ public class Booking
     public override string ToString()
     {
         //return $"Booking {Id}: {BookedVehicle.Model} for {Owner.Name} - Total: £{TotalCost}";
+        return "Booking";
     }
 }

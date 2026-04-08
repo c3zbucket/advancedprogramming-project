@@ -11,14 +11,10 @@
             "id": "a3b84c9fd021742d",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "uml.md",
-                "mode": "source",
-                "source": true
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "uml"
+              "title": "New tab"
             }
           }
         ]
@@ -31,14 +27,10 @@
             "id": "a5214b885af7e81f",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "DEVELOPMENT.md",
-                "mode": "preview",
-                "source": true
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "DEVELOPMENT"
+              "title": "New tab"
             }
           }
         ]

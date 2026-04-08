@@ -5,31 +5,28 @@ namespace GMMWSystem;
  */
 public interface IPerson
 {
-    private String id;
-    public String ID
+    public string ID
     {
-        get => id;
-        set => id = value;
+        get;
+        set;
     }
-    private String name;
-
-    public String Name
+    
+    public string Name
     {
-        get => name;
-        set => name = value;
+        get;
+        set;
     }
 
-    private String phoneNo;
-    public String PhoneNo 
+    public string PhoneNo
     {
-        get => phoneNo;
-        set => phoneNo = value;
+        get;
+        set;
     }
 
-    private String email;
-    public String Email {
-        get => email;
-        set => email = value;
+    public string Email
+    {
+        get;
+        set;
     }
     
 }

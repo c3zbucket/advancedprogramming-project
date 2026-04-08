@@ -1,35 +1,35 @@
 namespace GMMWSystem;
 
-public class Lecturer : IPerson
+public class Lecturer : IStaff
 {
-    private String _id;
-    public String ID
+    private string id;
+    public string ID
     {
-        get => _id;
-        set => _id = value;
+        get => id;
+        set => id = value;
     }
-    private String _name;
+    private string name;
 
-    public String Name
+    public string Name
     {
-        get => _name;
-        set => _name = value;
+        get => name;
+        set => name = value;
     }
 
-    private String _phoneNo;
-    public String PhoneNo 
+    private string phoneNo;
+    public string PhoneNo 
     {
-        get => _phoneNo;
-        set => _phoneNo = value;
+        get => phoneNo;
+        set => phoneNo = value;
     }
 
-    private String _email;
-    public String Email {
-        get => _email;
-        set => _email = value;
+    private string email;
+    public string Email {
+        get => email;
+        set => email = value;
     }
 
-    public Lecturer(string  id, string name, string phoneNo, string email)
+    public Lecturer(string id, string name, string phoneNo, string email)
     {
         
     }}

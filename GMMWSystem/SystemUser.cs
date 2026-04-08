@@ -2,19 +2,19 @@ using System.Security.AccessControl;
 
 namespace GMMWSystem;
 
-public class SystemUser : IStaff
+public class SystemUser 
 {
     private IStaff member;
 
-    private String password;
-    
+    private string password;
+
     public IStaff Member
     {
         get => member;
         set => member = value;
     }
-    
-    public String Password
+
+    public string Password
     {
         get => password;
         set => password = value;
@@ -25,7 +25,7 @@ public class SystemUser : IStaff
         get => role;
         set => role = value;
     }
-    
+
     public SystemUser(IStaff member, String password)
     {
         this.member = member;
@@ -41,18 +41,16 @@ public class SystemUser : IStaff
                 string newpass = Console.ReadLine();
                 Console.WriteLine("Confirm new password: ");
                 string confirm = Console.ReadLine();
-                Console.WriteLine(newpass = confirm : "nah" ? "no");
-                Console.WriteLine("Passsord changed");
-            case 2:
-                
-                
-            case 3:
-                
-                
-            case 4:
-                
-                
-            case 4:
+                if (newpass != confirm)
+                {
+                    Console.WriteLine("Passwords are incorrect, try again");
+                    password = newpass;
+                    Console.WriteLine("Password changed");
+                    return;
+                }
+                password = newpass;
+                Console.WriteLine("Password changed");
+                break;
         }
     }
 }

@@ -1,6 +1,6 @@
 namespace GMMWSystem;
 
-public class Student : IStaff
+public class Motorist : IPerson
 {
     private string id;
     public string ID
@@ -8,8 +8,8 @@ public class Student : IStaff
         get => id;
         set => id = value;
     }
-    private string name;
 
+    public string name;
     public string Name
     {
         get => name;
@@ -28,9 +28,5 @@ public class Student : IStaff
         get => email;
         set => email = value;
     }
-
-    public Student(string  id, string name, string phoneNo, string email)
-    {
-        
-    }
+    
 }
