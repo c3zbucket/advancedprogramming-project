@@ -80,7 +80,7 @@ When implementing the repair calculation logic, an improvement in the logic of t
 Before, the property would be recalculated everytime it was changed: for example, labour costs being manually modified. After which it would calculate the new one with the new labour cost and current part costs by calling an implemented `recalc()` method:
 
 ```csharp
-
+public decimal recalc()=> totalCost = labCost + partsCost;
 ```
 
 ### Initial Testing

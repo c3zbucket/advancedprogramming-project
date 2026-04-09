@@ -134,35 +134,22 @@ public class GMMWMenu
 
         // Training classes
         TrainingClass c1 = new TrainingClass(
-            "C001",
             studentA,
-            "Basic Maintenance",
+            "Advanced  Diagnostics",
+            ClassType.ADVANCED,
             new DateTime(2026, 4, 15, 10, 0, 0),
-            new List<Motorist> { m1, m2 }
-        )
-        {
-            Name = "Basic Maintenance",
-            ClassType = ClassType.MAINTENANCE,
-            Description = "Oil checks, tyre pressure, basic safety",
-            Date = new DateTime(2026, 4, 15, 10, 0, 0),
-            attendees = new List<Motorist> { m1, m2 }
-        };
+            new List<Motorist> { m1, m2 },
+            null
+        );
 
         TrainingClass c2 = new TrainingClass(
-            "C002",
             studentB,
             "Advanced Diagnostics",
+            ClassType.ADVANCED,
             new DateTime(2026, 4, 18, 13, 30, 0),
-            new List<Motorist> { m2, m3 }
-        )
-        {
-            Name = "Advanced Diagnostics",
-            ClassType = ClassType.ADVANCED,
-            Description = "Dashboard warnings and fault-finding workflow",
-            Date = new DateTime(2026, 4, 18, 13, 30, 0),
-            attendees = new List<Motorist> { m2, m3 }
-        };
-
+            new List<Motorist> { m2, m3 },
+            null
+        );
         menu.classesList.AddRange(new[] { c1, c2 });
 
         // Display test output
