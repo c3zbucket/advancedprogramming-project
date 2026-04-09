@@ -2,7 +2,7 @@ namespace GMMWSystem;
 
 public enum Transmission
 {
-    MANUAL,
-    AUTOMATIC,
-    SEMIAUTO
+    MANUAL=1,
+    AUTOMATIC=2,
+    SEMIAUTO=3
 }

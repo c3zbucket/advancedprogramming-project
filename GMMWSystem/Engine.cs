@@ -2,8 +2,8 @@ namespace GMMWSystem;
 
 public enum Engine
 {
-    PETROL,
-    DIESEL,
-    ELECTRIC,
-    HYBRID
+    PETROL = 1,
+    DIESEL = 2,
+    ELECTRIC = 3,
+    HYBRID = 4
 }
