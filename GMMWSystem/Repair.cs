@@ -6,34 +6,25 @@ public class Repair : Record<Booking,DateTime>
 {
     public override string ID { get; }
 
-    private Booking ascBooking;
-    
-    private string description;
-    public string Description => description;
-
-    public List<Student> repairers;
-
-    private decimal partsCost;
-    public decimal PartsCost => partsCost;
-
-    public List<Part?> parts;
-    
-    public DateTime Date;
-    
-    protected decimal labCost;
-    protected Decimal LabCost { get => labCost; set => labCost = value; }
-    public decimal TotalCost { get => partsCost + labCost;}
+    public Booking ascBooking { get; private set; }
+    public string Description { get; private set; }
+    public List<Student> repairers { get; private set; }
+    public decimal PartsCost { get; private set; }
+    public List<Part> parts { get; private set; }
+    public DateTime Date { get; private set; }
+    public decimal LabCost { get; protected set; }
+    public decimal TotalCost => PartsCost + LabCost;
     
     public Repair(Booking ascBooking, string description, decimal partsCost, decimal labCost, IEnumerable<Student>repairers, IEnumerable<Part>parts, DateTime date)
     {
-        ID = IDGen(ascBooking,date);
         this.ascBooking = ascBooking;
-        this.description = description;
-        this.partsCost = partsCost;
-        this.labCost = labCost;
+        Description = description;
+        PartsCost = partsCost;
+        LabCost = labCost;
         this.repairers = repairers.ToList();
         this.parts = parts.ToList();
         Date = date;
+        ID = IDGen(ascBooking, date);
     }
 
     public void addPart(Part part) { parts.Add(part);}
@@ -45,8 +36,8 @@ public class Repair : Record<Booking,DateTime>
     
     public decimal updateLab(decimal newLab)
     {
-        labCost = newLab;
-        return labCost;
+        LabCost = newLab;
+        return LabCost;
     }
 
     public override string IDGen(Booking booking, DateTime date)
@@ -58,6 +49,6 @@ public class Repair : Record<Booking,DateTime>
 
     public override string ToString()
     {
-        return $"[Repair ID: [{ID}] | Booking: {ascBooking.ID} | Date: [{Date:dd/MM/yyyy hh:mm} | Description: {description} | Total Cost: {TotalCost:C} - ( Of which:  Parts Cost: {partsCost:C}, Labour: {labCost:C} ) | Repairers involved: {repairers.Count} | Parts count: {parts.Count}]";
+        return $"[Repair ID: [{ID}] | Booking: {ascBooking.ID} | Date: [{Date:dd/MM/yyyy hh:mm} | Description: {Description} | Total Cost: {TotalCost:C} - ( Of which:  Parts Cost: {PartsCost:C}, Labour: {LabCost:C} ) | Repairers involved: {repairers.Count} | Parts count: {parts.Count}]";
     }
 }

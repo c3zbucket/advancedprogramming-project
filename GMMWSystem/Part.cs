@@ -6,40 +6,18 @@ public class Part : Record<String, PartType>
 {
     public override string ID { get; }
 
-    private string make;
-    private string Make
-    {
-        get => make;
-        set => make = value;
-    }
-
-    private string desc;
-    private string Description
-    {
-        get => desc;
-        set => desc = value;
-    }
-
-    private PartType type;
-    private PartType Type
-    {
-        get => type;
-    }
-    
-    private decimal cost;
-    public decimal Cost
-    {
-        get => cost;
-        set => cost = value;
-    }
+    public string Make { get; private set; }
+    public string Description { get; private set; }
+    public PartType Type { get; private set; }
+    public decimal Cost { get; set; }
 
     public Part(string make, PartType type, decimal cost, string? desc)
     {
-        ID = IDGen(make,type);
-        this.make = make;
-        this.type = type;
-        this.cost = cost;
-        this.desc = desc ?? string.Empty;
+        this.Make = make;
+        this.Type = type;
+        this.Cost = cost;
+        this.Description = desc ?? string.Empty;
+        ID = IDGen(make, type);
     }
 
     public override string IDGen(String make, PartType partType)
@@ -49,5 +27,5 @@ public class Part : Record<String, PartType>
         return id.ToString();        }
 
     public override string ToString() =>
-        $"Part[{ID}] | Make: {make} | Type={type} | Cost: {cost:C} | Desc: {desc}";
+        $"Part[{ID}] | Make: {Make} | Type={Type} | Cost: {Cost:C} | Desc: {Description}";
 }

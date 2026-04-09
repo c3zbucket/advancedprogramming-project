@@ -9,53 +9,26 @@ public class TrainingClass : Record<ClassType,DateTime>
     public override string IDGen(ClassType type, DateTime date)
     {
         StringBuilder id = new();
-        id.AppendFormat($"TC-{(int)type}{date:MMHHmm}");
+        id.AppendFormat($"TC-{type}-{date:yyyyMMddHHmm}");
         return id.ToString();            
     }
 
-    private Student student;
-
-    private string name;
-    public string Name
-    {
-        get => name;
-        set => name = value;
-    }
-
-    public ClassType classType;
-
-    public ClassType ClassType
-    {
-        get => classType;
-        set => classType = value;
-    }
-    
-    private string description;
-    public string Description
-    {
-        get => description;
-        set => description = value;
-    }
-
-    public List<Motorist> attendees;
-
-    public DateTime date;
-
-    public DateTime Date
-    {
-        get => date;
-        set => date = value;
-    }
+    public Student student { get; private set; }
+    public string Name { get; set; }
+    public ClassType ClassType { get; set; }
+    public string Description { get; set; }
+    public List<Motorist> attendees { get; private set; }
+    public DateTime Date { get; set; }
 
     public TrainingClass(Student student, string name, ClassType classType, DateTime date, IEnumerable<Motorist> motorists, string? description)
     {
-        ID = IDGen(classType, date);
         this.student = student;
-        this.name = name;
-        this.classType = classType;
-        attendees = motorists.ToList();
-        this.date = date;
-        this.description = description ?? "No description"; //If no description is provided, set default description
+        this.Name = name;
+        this.ClassType = classType;
+        this.attendees = motorists.ToList();
+        this.Date = date;
+        this.Description = description ?? "No description"; //If no description is provided, set default description
+        ID = IDGen(classType, date);
     }
     
     public string register(Motorist motorist)
@@ -89,7 +62,7 @@ public class TrainingClass : Record<ClassType,DateTime>
     {
         try
         {
-            date = newtime;
+            Date = newtime;
         }
         catch (Exception e)
         {

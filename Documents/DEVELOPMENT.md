@@ -182,3 +182,8 @@ Therefore the starting index should have been 4, which when changed to that, cor
 ![[image-4.png]]
 ### Initial Testing 
 
+For initial testing of functionality a back-box approach was followed where there would be different methods for both object instantiation and modification to them in accordance to the basic application requirements.
+
+Following this produced successful results for the 4 basic requirements.
+
+### Entity Framework Integration

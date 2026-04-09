@@ -2,38 +2,16 @@ namespace GMMWSystem;
 
 public class Lecturer : IStaff
 {
-    private string id;
-    public string ID
-    {
-        get => id;
-        set => id = value;
-    }
-    private string name;
-
-    public string Name
-    {
-        get => name;
-        set => name = value;
-    }
-
-    private string phoneNo;
-    public string PhoneNo 
-    {
-        get => phoneNo;
-        set => phoneNo = value;
-    }
-
-    private string email;
-    public string Email {
-        get => email;
-        set => email = value;
-    }
+    public string ID { get; set; }
+    public string Name { get; set; }
+    public string PhoneNo { get; set; }
+    public string Email { get; set; }
 
     public Lecturer(string id, string name, string phoneNo, string email)
     {
-        this.id = id;
-        this.name = name;
-        this.phoneNo = phoneNo;
-        this.email = email;
+        ID = id;
+        Name = name;
+        PhoneNo = phoneNo;
+        Email = email;
     }
 }
