@@ -9,7 +9,7 @@ public class TrainingClass : Record<ClassType,DateTime>
     public override string IDGen(ClassType type, DateTime date)
     {
         StringBuilder id = new();
-        id.AppendFormat($"TC-{type}-{date:yyyyMMddHHmm}");
+        id.AppendFormat($"TC-{(int)type}{date:MMHHmm}");
         return id.ToString();            
     }
 
