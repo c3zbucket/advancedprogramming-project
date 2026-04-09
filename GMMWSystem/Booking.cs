@@ -1,5 +1,3 @@
-using System.Globalization;
-using System.Security.Principal;
 using System.Text;
 
 namespace GMMWSystem;
@@ -23,7 +21,7 @@ public class Booking : Record<Vehicle, DateTime>
     {
         
         StringBuilder id = new();
-        id.AppendFormat($"BK-{vehicle.Plate.Remove(5,1)}-{date:ddMM}");
+        id.AppendFormat($"BK-{vehicle.Plate.Remove(4,1)}{date:ddMM}");
         return id.ToString();
     }
     
@@ -73,6 +71,6 @@ public class Booking : Record<Vehicle, DateTime>
 
     public override string ToString()
     {
-        return $"[Booking ID: [{ID}] \n Date: [{Date:dd/MM/yyyy} {TimeTaken:hh\\:mm}] \n Plate: {bookedVehicle.Plate.Trim()} \n Vehicle: {bookedVehicle.Make} {bookedVehicle.Model} \n Owner: {bookedVehicle.owner.Name} \n  Description: {Description} \n Repairs done: {Repairs.Count} | Details \n [ {LinkedRepairs()} ]";
+        return $"[Booking ID: [{ID}] \n Date: [{Date:dd/MM/yyyy} {TimeTaken:hh\\:mm}] \n Plate: {bookedVehicle} \n Vehicle: {bookedVehicle.Make} {bookedVehicle.Model} \n Owner: {bookedVehicle.owner.Name} \n  Description: {Description} \n Repairs done: {Repairs.Count} | Details \n [ {LinkedRepairs()} ]";
     }
 }

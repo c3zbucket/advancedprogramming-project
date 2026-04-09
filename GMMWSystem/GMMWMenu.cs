@@ -37,6 +37,7 @@ public class GMMWMenu
         // Vehicles
         Vehicle v1 = new Vehicle(m1, "AB12 CDE", "Toyota", "Yaris", "2018", Transmission.MANUAL, Engine.PETROL);
         Vehicle v2 = new Vehicle(m2, "XY99 ZZZ", "Ford", "Focus", "2016", Transmission.AUTOMATIC, Engine.DIESEL);
+        Vehicle v3 = new Vehicle(m3, "KJ99 KLO", "Nissan", "Micra", "2008", Transmission.MANUAL, Engine.DIESEL);
 
         menu.vehicleList.AddRange(new[] { v1, v2 });
 
@@ -44,16 +45,23 @@ public class GMMWMenu
         Booking b1 = new Booking(v1, new DateTime(2026, 4, 10))
         {
             Description = "General service and brake check",
-            Time = new TimeSpan(9, 30, 0)
+            TimeTaken = new TimeSpan(9, 30, 0)
         };
 
         Booking b2 = new Booking(v2, new DateTime(2026, 4, 11))
         {
             Description = "Engine warning light diagnosis",
-            Time = new TimeSpan(14, 0, 0)
+            TimeTaken = new TimeSpan(14, 0, 0)
         };
+        
+        Booking b3 = new Booking(v3, new DateTime(2026, 4, 11))
+        {
+            Description = "Wheel change",
+            TimeTaken = new TimeSpan(1, 0, 0)
+        };
+        
 
-        menu.bookingsList.AddRange(new[] { b1, b2 });
+        menu.bookingsList.AddRange(new[] { b1, b2, b3 });
 
         // Parts
         Part p1 = new Part("Bosch", PartType.SUSPENSION, 45.50m, "Brake pads");

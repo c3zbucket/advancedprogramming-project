@@ -9,10 +9,12 @@ public class Repair : Record<Booking,DateTime>
     private Booking ascBooking;
     
     private string description;
+    public string Description => description;
 
     public List<Student> repairers;
 
     private decimal partsCost;
+    public decimal PartsCost => partsCost;
 
     public List<Part?> parts;
     
@@ -20,7 +22,7 @@ public class Repair : Record<Booking,DateTime>
     
     protected decimal labCost;
     protected Decimal LabCost { get => labCost; set => labCost = value; }
-    private decimal TotalCost { get => partsCost + labCost;}
+    public decimal TotalCost { get => partsCost + labCost;}
     
     public Repair(Booking ascBooking, string description, decimal partsCost, decimal labCost, IEnumerable<Student>repairers, IEnumerable<Part>parts, DateTime date)
     {

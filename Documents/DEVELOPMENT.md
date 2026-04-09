@@ -1,5 +1,3 @@
-# **Design** 
-
 ## Contents
 <!-- TOC -->
 * [**Design**](#design-)
@@ -10,6 +8,7 @@
   * [**Console**](#console)
 <!-- TOC -->
 
+# **Design** 
 
 The first step of the process involved designing the solution. 
 
@@ -20,6 +19,7 @@ Most notably - the Liskov Substitution and Dependency Inversion Principles.
 
 ## [Flowcharts](FLOWCHART.md)
 
+---
 # **Implementation**
 
 For a basic implementation, it was decided to start with a console app demonstrating the core functionality including **ORM mapping** via .NET's **Entity Framework**. This was done so the foundation of the application would be resolute. 
@@ -83,6 +83,15 @@ Before, the property would be recalculated everytime it was changed: for example
 public decimal recalc()=> totalCost = labCost + partsCost;
 ```
 
+This can be greatly simplified and made to be done every time the total cost property is accessed like so:
+
+```csharp
+private decimal TotalCost { get => partsCost + labCost;}
+```
+
+---
+#### String formatted display
+
 Overidden `ToString()` methods were declared for each record object to provide a convenient way to access a formatted string representation of an entry, such as below for `TrainingClass` objects
 
 ```csharp
@@ -123,7 +132,53 @@ StringBuilder repairList = new();
 Repairs.ForEach(repair => repairList.AppendLine(repair.ToString())); 
 ```
 
-The `StringBuilder` object would now format each object to the class's own implementation of `ToString` on each new line thanks to `.AppendLine()` which skips the requirement of a newline argument such as `/n` or `Environment.NewLine` needing to be declared as well. Leading to a revi
+The `StringBuilder` object would now format each object to the class's own implementation of `ToString` on each new line thanks to `.AppendLine()` which skips the requirement of a newline argument such as `/n` or `Environment.NewLine` needing to be declared as well. Leading to a finalised form as below:
+
+```csharp
+public string LinkedRepairs()
+{
+	StringBuilder repairList = new();
+	Repairs.ForEach(repair => repairList.AppendLine(repair.ToString())); 
+	return repairList.ToString();
+}
+```
+
+Later on, a check was added to output if the linked repair list was empty at the very beginning, which would immediately return a message stating it was and not initialise the `StringBuilder` object.
+
+Back to ID generation - A problem realised later on was that the display of IDs generated using fields such as license plates (for example - `Booking` IDs) were created with spaces, which was not what was envisioned.
+
+![[image-2.png]]
+
+
+At first `.Remove()` from the String library was thought up as a solution. This allowed for the removal of white-space anywhere given an argument of which position to start from and the amount to remove by. 
+
+Since it was a String method to, it could be embedded within the `.AppendFormat()` call to the ID generating StringBuilder.
+
+Ergo, with the my current booking ID generated string looking like this:
+
+`BK-AB12 FCD1004`
+
+The logic required to remove the space between *2* and and *F* would resemble something like this:
+
+```csharp
+StringBuilder id = new();
+id.AppendFormat($"BK-{vehicle.Plate.Remove(7,1)}{date:ddMM}");
+return id.ToString();
+```
+
+Starting from index 7 which with 0-indexing would be the white-space space after 7th character - *2*
+
+Ideally as a result it would have produced a new string like this:
+
+`BK-AB12FCD1004`
+
+However it did not, instead removing the first character at the 2nd part of the license plate sub-string, which in this example would be removing F instead of the space, producing a string like this instead, preserving the white-space:
+
+![[image-3.png]]
+
+The fatal error was not realised until an hour later. Which being with `.Remove()` being called *within* the license plate subs-string, it was going to calculate the start of the 'index' from there rather than the string being produced for the StringBuilder. 
+
+Therefore the starting index should have been 4, which when changed to that, correctly removed the white-space:
+![[image-4.png]]
 ### Initial Testing 
 
-After restructuring the logic in the methods with 
