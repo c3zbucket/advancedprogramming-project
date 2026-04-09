@@ -1,5 +1,3 @@
-using System.Data.Common;
-using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 
 namespace GMMWSystem;
@@ -16,15 +14,13 @@ public class Repair : Record<Booking,DateTime>
 
     private decimal partsCost;
 
-    public List<Part> parts;
+    public List<Part?> parts;
     
     public DateTime Date;
     
     protected decimal labCost;
     protected Decimal LabCost { get => labCost; set => labCost = value; }
-    
-    private decimal totalCost;
-    private decimal TotalCost { get => totalCost;}
+    private decimal TotalCost { get => partsCost + labCost;}
     
     public Repair(Booking ascBooking, string description, decimal partsCost, decimal labCost, IEnumerable<Student>repairers, IEnumerable<Part>parts, DateTime date)
     {
@@ -35,31 +31,20 @@ public class Repair : Record<Booking,DateTime>
         this.labCost = labCost;
         this.repairers = repairers.ToList();
         this.parts = parts.ToList();
-        this.Date = date;
-        this.totalCost = partsCost + labCost;
+        Date = date;
     }
 
-    public bool addPart(string id)
-    {
-        return true;
-    }
+    public void addPart(Part part) { parts.Add(part);}
     
-    public bool removePart(string id)
+    public string removePart(Part pt)
     {
-        return false;
+        return !parts.Remove(parts.Find(part => part.ID == pt.ID)) ? $"Part with ID {pt.ID} not found in repair list." : $"Part with ID {pt.ID} removed from repair list.";
     }
     
     public decimal updateLab(decimal newLab)
     {
         labCost = newLab;
-        totalCost = partsCost + labCost;
         return labCost;
-    }
-    
-    public decimal updateTotal(decimal newTotal)
-    {
-        totalCost = newTotal;
-        return totalCost;
     }
 
     public override string IDGen(Booking booking, DateTime date)
@@ -71,6 +56,6 @@ public class Repair : Record<Booking,DateTime>
 
     public override string ToString()
     {
-        return $"[Repair ID: [{ID}] | Booking: {ascBooking.ID} | Date: [{Date:dd/MM/yyyy hh:mm} | Description: {description} | Total Cost: {totalCost:C} - ( Of which:  Parts Cost: {partsCost:C}, Labour: {labCost:C} ) | Repairers involved: {repairers.Count} | Parts count: {parts.Count}]";
+        return $"[Repair ID: [{ID}] | Booking: {ascBooking.ID} | Date: [{Date:dd/MM/yyyy hh:mm} | Description: {description} | Total Cost: {TotalCost:C} - ( Of which:  Parts Cost: {partsCost:C}, Labour: {labCost:C} ) | Repairers involved: {repairers.Count} | Parts count: {parts.Count}]";
     }
 }
