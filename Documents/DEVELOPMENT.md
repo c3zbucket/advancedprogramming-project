@@ -83,6 +83,16 @@ Before, the property would be recalculated everytime it was changed: for example
 public decimal recalc()=> totalCost = labCost + partsCost;
 ```
 
+Overidden `ToString()` methods were declared for each record object to provide a convenient way to access a formatted string representation of an entry, such as below for `TrainingClass` objects
+
+```csharp
+    public override string ToString() =>
+        $"Class ID: [{ID}] | Name: {Name} | Type: {ClassType} | Date: {Date:dd/MM/yyyy HH:mm} | Taught by: {student.Name} | Attendees: {attendees.Count} | Description: {Description}";
+```
+
+For handling the basic output of linked objects in collections, helper methods were created that utilised the `ToString()` methods to display details of every entry
+
+For instance, in the `Booking` class when viewing repairs linked to bookings, the method ``
 ### Initial Testing
 
 After restructuring the logic in the methods with 

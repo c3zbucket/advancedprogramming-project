@@ -17,54 +17,26 @@ public class GMMWMenu
         GMMWMenu menu = new GMMWMenu();
 
         // Add staff
-        Student studentA = new Student("S001", "Mek Student", "07562399573", "mek@example.com")
-        {
-            ID = "S001",
-            Name = "Mek Student",
-            PhoneNo = "07562399573",
-            Email = "mek@example.com"
-        };
-
-        Student studentB = new Student("S002", "Rob Student", "07511112222", "rob@example.com")
-        {
-            ID = "S002",
-            Name = "Rob Student",
-            PhoneNo = "07511112222",
-            Email = "rob@example.com"
-        };
-
-        Student studentC = new Student("S002", "Rob Student", "07511112222", "rob@example.com");
+        Student studentA = new Student("S001", "Mek Student", "07562399573", "mek@example.com");
+        Student studentB = new Student("S002", "Rob Student", "07511112222", "rob@example.com");
+        Student studentC = new Student("S003", "Tom Student", "07533334444", "tom@example.com");
+        Lecturer lecturerA = new Lecturer("L001", "Dr. Smith", "07555556666", "smithywithy@gmail.com");
 
         menu.staffList.Add(studentA);
         menu.staffList.Add(studentB);
+        menu.staffList.Add(studentC);
+        menu.staffList.Add(lecturerA);
 
         // Motorists
-        Motorist m1 = new Motorist("M001", "Alice Driver", "alice@drivers.com", "0700000001");
-        Motorist m2 = new Motorist("M002", "Ben Rider", "ben@drivers.com", "0700000002");
-        Motorist m3 = new Motorist("M003", "Cara Wheels", "cara@drivers.com", "0700000003");
+        Motorist m1 = new Motorist("M001", "Alice Driver", "alice@gmail.com", "07562389676");
+        Motorist m2 = new Motorist("M002", "Ben Rider", "ben@hotmail.com", "07506289634");
+        Motorist m3 = new Motorist("M003", "Cara Wheels", "cara@gmail.com", "07962365658");
 
         menu.motoristList.AddRange(new[] { m1, m2, m3 });
 
         // Vehicles
-        Vehicle v1 = new Vehicle
-        {
-            Id = "V001",
-            Plate = "AB12 CDE",
-            Make = "Toyota",
-            Model = "Yaris",
-            Year = "2018",
-            owner = m1
-        };
-
-        Vehicle v2 = new Vehicle
-        {
-            Id = "V002",
-            Plate = "XY99 ZZZ",
-            Make = "Ford",
-            Model = "Focus",
-            Year = "2016",
-            owner = m2
-        };
+        Vehicle v1 = new Vehicle(m1, "AB12 CDE", "Toyota", "Yaris", "2018", Transmission.MANUAL, Engine.PETROL);
+        Vehicle v2 = new Vehicle(m2, "XY99 ZZZ", "Ford", "Focus", "2016", Transmission.AUTOMATIC, Engine.DIESEL);
 
         menu.vehicleList.AddRange(new[] { v1, v2 });
 
@@ -84,46 +56,50 @@ public class GMMWMenu
         menu.bookingsList.AddRange(new[] { b1, b2 });
 
         // Parts
-        Part p1 = new Part { Cost = 45.50m };
-        Part p2 = new Part { Cost = 120.00m };
-        Part p3 = new Part { Cost = 30.00m };
+        Part p1 = new Part("Bosch", PartType.SUSPENSION, 45.50m, "Brake pads");
+        Part p2 = new Part("Denso", PartType.ELECTRICAL, 120.00m, "Sensor");
+        Part p3 = new Part("Castrol", PartType.ENGINE, 30.00m, "Oil Filter");
 
         menu.partsList.AddRange(new[] { p1, p2, p3 });
 
         Repair r1 = new Repair(
             b1,
             "Brake pads replacement",
-            partsCost: 45.50m,
-            labCost: 80.00m,
-            repairers: new List<Student> { studentA },
-            parts: new List<Part> { p1 }
+            45.50m,
+            80.00m,
+            new List<Student> { studentA },
+            new List<Part> { p1 },
+            new DateTime(2026, 4, 10)
         );
 
         Repair r2 = new Repair(
             b2,
             "Sensor replacement and diagnostics",
-            partsCost: 150.00m,
-            labCost: 110.00m,
-            repairers: new List<Student> { studentA, studentB },
-            parts: new List<Part> { p2, p3 }
+            150.00m,
+            110.00m,
+            new List<Student> { studentA, studentB },
+            new List<Part> { p2, p3 },
+            new DateTime(2026, 4, 11)
         );
         
         Repair r3 = new Repair(
             b1,
             "Oil change",
-            partsCost: 30.00m,
-            labCost: 50.00m,
-            repairers: new List<Student> { studentC },
-            parts: new List<Part> { p3 }
+            30.00m,
+            50.00m,
+            new List<Student> { studentC },
+            new List<Part> { p3 },
+            new DateTime(2026, 4, 10)
         );
         
         Repair r4 = new Repair(
             b2,
             "Oil change",
-            partsCost: 30.00m,
-            labCost: 50.00m,
-            repairers: new List<Student> { studentC },
-            parts: new List<Part> { p3 }
+            30.00m,
+            50.00m,
+            new List<Student> { studentC },
+            new List<Part> { p3 },
+            new DateTime(2026, 4, 11)
         );
         
 
@@ -152,21 +128,12 @@ public class GMMWMenu
         );
         menu.classesList.AddRange(new[] { c1, c2 });
 
-        // Display test output
         Console.WriteLine("==================================");
         Console.WriteLine("Bookings");
         Console.WriteLine("==================================");
         foreach (Booking booking in menu.bookingsList)
         {
-            Console.WriteLine($"Booking ID: {booking.Id}");
-            Console.WriteLine($"Date/Time : {booking.Date:yyyy-MM-dd} {booking.Time}");
-            Console.WriteLine(
-                $"Vehicle   : {booking.bookedVehicle.Make} {booking.bookedVehicle.Model} ({booking.bookedVehicle.Plate})");
-            Console.WriteLine(
-                $"Owner     : {booking.bookedVehicle.owner.Name} | {booking.bookedVehicle.owner.PhoneNo}");
-            Console.WriteLine($"Desc      : {booking.Description}");
-            Console.WriteLine($"Repairs   : {booking.Repairs.Count}");
-            Console.WriteLine();
+            Console.WriteLine(booking.ToString());
         }
 
         Console.WriteLine("==================================");
@@ -174,21 +141,11 @@ public class GMMWMenu
         Console.WriteLine("==================================");
         foreach (TrainingClass trainingClass in menu.classesList)
         {
-            Console.WriteLine($"Class ID   : {trainingClass.ID}");
-            Console.WriteLine($"Name       : {trainingClass.Name}");
-            Console.WriteLine($"Type       : {trainingClass.ClassType}");
-            Console.WriteLine($"Date       : {trainingClass.Date:yyyy-MM-dd HH:mm}");
-            Console.WriteLine($"Description: {trainingClass.Description}");
-            Console.WriteLine($"Attendees  : {trainingClass.Count()}");
-
-            if (trainingClass.attendees != null)
-            {
+            Console.WriteLine(trainingClass.ToString());
                 foreach (Motorist attendee in trainingClass.attendees)
                 {
                     Console.WriteLine($"  - {attendee.ID}: {attendee.Name} ({attendee.Email})");
                 }
-            }
-
             Console.WriteLine();
         }
 

@@ -50,5 +50,5 @@ public class Part : Record<String, PartType>
         return id.ToString();        }
 
     public override string ToString() =>
-        $"Part[{ID}] Make={make} Type={type} Cost={cost:C} Desc={desc}";
+        $"Part[{ID}] | Make: {make} | Type={type} | Cost: {cost:C} | Desc: {desc}";
 }

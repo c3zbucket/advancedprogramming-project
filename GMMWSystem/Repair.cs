@@ -69,8 +69,8 @@ public class Repair : Record<Booking,DateTime>
         return id.ToString();    
     }
 
-    public override String ToString()
+    public override string ToString()
     {
-        return $"Repair[{ID}] Booking={ascBooking.ID} Date={Date:yyyy-MM-dd} Desc={description} PartsCost={partsCost:C} Labour={labCost:C} Total={totalCost:C} Repairers={repairers.Count} Parts={parts.Count}";
+        return $"Repair ID: [{ID}] | Booking: {ascBooking.ID} | Date: [{Date:dd/MM/yyyy} Desc={description} Total Cost: {totalCost:C} - ( Of which:  Parts Cost: {partsCost:C}, Labour: {labCost:C} ) | Repairers involved: {repairers.Count} Parts count: {parts.Count}";
     }
 }

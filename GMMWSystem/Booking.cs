@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Security.Principal;
 using System.Text;
 
@@ -5,16 +6,15 @@ namespace GMMWSystem;
 
 public class Booking : Record<Vehicle, DateTime>
 {
-    private string id;
     public override string ID { get; }
-    public Vehicle bookedVehicle { get; set; }
+    public Vehicle bookedVehicle { get; }
 
     public string Description { get; set; }
     public DateTime Date { get; set; }
 
     public TimeSpan Time { get; set; }
 
-    public List<Repair> Repairs { get; set; } = new();
+    public List<Repair> Repairs { get; } = new();
     
     /**
      * Generate a unique ID based on the registered vehicle's plate and time
@@ -23,13 +23,13 @@ public class Booking : Record<Vehicle, DateTime>
     {
         
         StringBuilder id = new();
-        id.AppendFormat($"BK-{vehicle.Plate}{date}");
+        id.AppendFormat($"BK-{vehicle.Plate}-{date:ddMM}");
         return id.ToString();
     }
     
     public Booking(Vehicle vehicle, DateTime date)
     {
-        id = IDGen(vehicle,date);
+        ID = IDGen(vehicle,date);
         bookedVehicle = vehicle;
         Date = date;
     }
@@ -63,8 +63,15 @@ public class Booking : Record<Vehicle, DateTime>
         //TotalCost = TotalLab + TotalParts;
     }
 
+    public List<string> LinkedRepairs()
+    {
+        List<string> repairList = new();
+        foreach (Repair rep in Repairs ) { repairList.Add(rep.ToString()); }
+        return repairList;
+    }
+
     public override string ToString()
     {
-        return $"Booking[{ID}] {Date:yyyy-MM-dd} {Time:hh\\:mm} Vehicle={bookedVehicle.Make} {bookedVehicle.Model} ({bookedVehicle.Plate}) Owner={bookedVehicle.owner.Name} Repairs={Repairs.Count} Desc={Description}";
+        return $"Booking ID: [{ID}] \n Date: [{Date:dd/MM/yyyy} {Time:hh\\:mm}] \n Plate: {bookedVehicle.Plate.Trim()} \n Vehicle: {bookedVehicle.Make} {bookedVehicle.Model} \n Owner: {bookedVehicle.owner.Name} \n Repairs done: {Repairs} Desc={Description}";
     }
 }

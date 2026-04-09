@@ -12,9 +12,6 @@ public class TrainingClass : Record<ClassType,DateTime>
         id.AppendFormat($"TC-{type}-{date:yyyyMMddHHmm}");
         return id.ToString();            
     }
-    
-    public override string ToString() =>
-        $"TrainingClass[{ID}] Name={Name} Type={ClassType} Date={Date:yyyy-MM-dd HH:mm} Trainer={student.Name} Attendees={attendees.Count} Desc={Description}";
 
     private Student student;
 
@@ -104,4 +101,6 @@ public class TrainingClass : Record<ClassType,DateTime>
     
     public int Count() => attendees.Count;
 
+    public override string ToString() =>
+        $"Class ID: [{ID}] | Name: {Name} | Type: {ClassType} | Date: {Date:dd/MM/yyyy HH:mm} | Taught by: {student.Name} | Attendees: {attendees.Count} | Description: {Description}";
 }
