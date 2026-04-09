@@ -92,7 +92,38 @@ Overidden `ToString()` methods were declared for each record object to provide a
 
 For handling the basic output of linked objects in collections, helper methods were created that utilised the `ToString()` methods to display details of every entry
 
-For instance, in the `Booking` class when viewing repairs linked to bookings, the method ``
-### Initial Testing
+For instance, in the `Booking` class when viewing repairs linked to bookings, the method `LinkedRepairs()` was initially conceptualised to solve the problem:
+
+```csharp
+    public List<string> LinkedRepairs()
+    {
+        List<string> repairList = new();
+        foreach (Repair rep in Repairs ) { repairList.Add(rep.ToString()); }
+        return repairList;
+    }
+```
+
+Later improved using the `List.ForEach()` method to directly add every repair object in the list to a string list to be output. With the method being called at the end in the class's return statement in `ToString()` as so:
+```csharp
+    public override string ToString()
+    {
+        return $"Booking ID: [{ID}] \n Date: [{Date:dd/MM/yyyy} {Time:hh:mm}] \n Plate: {bookedVehicle.Plate.Trim()} \n Vehicle: {bookedVehicle.Make} {bookedVehicle.Model} \n Owner: {bookedVehicle.owner.Name} \n Repairs done: {LinkedRepairs()} | Description: {Description}";
+    }
+```
+
+This didn't work as during runtime it would return the object reference rather than the `ToString` representation of each repair object
+
+![[image-1.png]]
+
+Using `String.Join` to append all the entries to a string was explored initially, this would be declared in Booking's `ToString()` method. However, this required additional logic as now you needed both the `LinkedRepairs` method to output a string-formatted list of linked repairs and the String.Join when returning a `Booking` object string. 
+
+Eventually it was discovered that the `StringBuilder` class offered similar functionality with only two lines of code. This could be minimised to a single line excluding the declaration of a new `StringBuilder` object by using it in tandem with `List.ForEach()` like below:
+```csharp
+StringBuilder repairList = new();
+Repairs.ForEach(repair => repairList.AppendLine(repair.ToString())); 
+```
+
+The `StringBuilder` object would now format each object to the class's own implementation of `ToString` on each new line thanks to `.AppendLine()` which skips the requirement of a newline argument such as `/n` or `Environment.NewLine` needing to be declared as well. Leading to a revi
+### Initial Testing 
 
 After restructuring the logic in the methods with 

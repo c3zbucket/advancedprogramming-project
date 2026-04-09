@@ -105,8 +105,9 @@ public class GMMWMenu
 
         b1.AddRepair(r1);
         b2.AddRepair(r2);
+        b1.AddRepair(r3);
 
-        menu.repairsList.AddRange(new[] { r1, r2 });
+        menu.repairsList.AddRange(new[] { r1, r2, r3 });
 
         // Training classes
         TrainingClass c1 = new TrainingClass(
@@ -134,6 +135,7 @@ public class GMMWMenu
         foreach (Booking booking in menu.bookingsList)
         {
             Console.WriteLine(booking.ToString());
+            
         }
 
         Console.WriteLine("==================================");

@@ -224,19 +224,21 @@
   },
   "active": "a5214b885af7e81f",
   "lastOpenFiles": [
-    "GMMWSystem/Repair.cs~",
     "GMMWSystem/Booking.cs~",
+    "GMMWSystem/Repair.cs~",
+    "GMMWSystem/GMMWMenu.cs~",
+    "Attachments/image-1.png",
+    "Attachments/image.png",
+    "Attachments",
+    "GMMWSystem/Record.cs~",
     "GMMWSystem/Part.cs~",
     "GMMWSystem/Vehicle.cs~",
-    "GMMWSystem/GMMWMenu.cs~",
     "GMMWSystem/TrainingClass.cs~",
     "Documents/FLOWCHART.md",
     "Documents/DOCUMENTATION.md",
     "Documents/DEVELOPMENT.md",
-    "GMMWSystem/Record.cs~",
     "GMMWSystem/Lecturer.cs~",
     "GMMWSystem/Student.cs~",
-    "GMMWSystem/Record.cs",
     "Documents/UML.md",
     "DEVELOPMENT.md",
     "DOCUMENTATION.md",
@@ -267,8 +269,6 @@
     "Attachments/Blazor Introduction 2026-03-24 18.26.49.excalidraw.svg",
     "link-embed-images/brickwall.jpeg",
     "link-embed-images/dot-net-cross-platform-6fd095a0.png",
-    "link-embed-images/logo_csharp-b4d7308f.png",
-    "Attachments/image-219.png",
-    "Attachments/image-218.png"
+    "link-embed-images/logo_csharp-b4d7308f.png"
   ]
 }

@@ -71,6 +71,6 @@ public class Repair : Record<Booking,DateTime>
 
     public override string ToString()
     {
-        return $"Repair ID: [{ID}] | Booking: {ascBooking.ID} | Date: [{Date:dd/MM/yyyy} Desc={description} Total Cost: {totalCost:C} - ( Of which:  Parts Cost: {partsCost:C}, Labour: {labCost:C} ) | Repairers involved: {repairers.Count} Parts count: {parts.Count}";
+        return $"[Repair ID: [{ID}] | Booking: {ascBooking.ID} | Date: [{Date:dd/MM/yyyy hh:mm} | Description: {description} | Total Cost: {totalCost:C} - ( Of which:  Parts Cost: {partsCost:C}, Labour: {labCost:C} ) | Repairers involved: {repairers.Count} | Parts count: {parts.Count}]";
     }
 }

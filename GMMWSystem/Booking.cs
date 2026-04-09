@@ -63,15 +63,15 @@ public class Booking : Record<Vehicle, DateTime>
         //TotalCost = TotalLab + TotalParts;
     }
 
-    public List<string> LinkedRepairs()
+    public string LinkedRepairs()
     {
-        List<string> repairList = new();
-        foreach (Repair rep in Repairs ) { repairList.Add(rep.ToString()); }
-        return repairList;
+        StringBuilder repairList = new();
+        Repairs.ForEach(repair => repairList.AppendLine(repair.ToString())); 
+        return repairList.ToString();
     }
 
     public override string ToString()
     {
-        return $"Booking ID: [{ID}] \n Date: [{Date:dd/MM/yyyy} {Time:hh\\:mm}] \n Plate: {bookedVehicle.Plate.Trim()} \n Vehicle: {bookedVehicle.Make} {bookedVehicle.Model} \n Owner: {bookedVehicle.owner.Name} \n Repairs done: {Repairs} Desc={Description}";
+        return $"[Booking ID: [{ID}] \n Date: [{Date:dd/MM/yyyy} {Time:hh\\:mm}] \n Plate: {bookedVehicle.Plate.Trim()} \n Vehicle: {bookedVehicle.Make} {bookedVehicle.Model} \n Owner: {bookedVehicle.owner.Name} \n  Description: {Description} \n Repairs done: {Repairs.Count} | Details \n [ {LinkedRepairs()} ]";
     }
 }
