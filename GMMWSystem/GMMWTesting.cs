@@ -5,7 +5,7 @@ namespace GMMWSystem;
  */
 public class GMMWTesting
 {
-    
+    /**
     // Constructor to run tests
     public GMMWTesting(){}
     
@@ -164,4 +164,5 @@ public class GMMWTesting
         test.Test003();
         test.Test004();
     }
+    **/
 }

@@ -199,4 +199,19 @@ dotnet add package Microsoft.EntityFrameworkCore.Sqlite
 dotnet add package Microsoft.EntityFrameworkCore.Tools
 ```
 
-To start, an implementation of the DBContext class 
+To start, an implementation of the DBContext class was required, this is where `GMMWContext` comes in where the connection to EF and the properties are declared. 
+
+Next was creating a JSON configuration file for initialising the database connection. This was initially created manually and placed in the solution root, which was a mistake realised when creating the migration and it produced an error that it could not find the JSON file. 
+
+![[image-5.png]]
+
+The solution was to use Rider's tool through the project context menu, which placed it in the correct directory EF expects it in.
+
+After doing so, I encountered another error where the migration could not properly map properties with the existing constructor.
+
+
+![[image-7.png]]
+
+One solution proposed on this StackOverflow thread suggested simply declaring a blank constructor - https://stackoverflow.com/a/65179920, however upon further research that is not considered good practice or ideal with EF's database generation. This lead to a re-approach to class structure where I restructured the record-based classes as 'POCO' entities (https://learn.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/dd456853(v=vs.100)?redirectedfrom=MSDN) that simply contained properties with their accessors, any additional logic linked to the classes would be in separate classes that would be called later on.
+
+

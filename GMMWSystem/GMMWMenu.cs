@@ -2,6 +2,7 @@ namespace GMMWSystem;
 
 public class GMMWMenu
 {
+    /*
     public List<IStaff> staffList = new();
     public List<Motorist> motoristList = new();
     public List<Vehicle> vehicleList = new();
@@ -173,4 +174,5 @@ public class GMMWMenu
             i++;
         }
     }
+    */
 }
