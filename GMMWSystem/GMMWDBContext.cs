@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
-using System;
 
 namespace GMMWSystem;
 
@@ -13,9 +12,6 @@ public class GMMWDBContext : DbContext
     public DbSet<Repair> Repairs { get; set; }
     public DbSet<Booking> Bookings { get; set; }
     public DbSet<Part> Parts { get; set; }
-
-    // Constructor for Blazor's Dependency Injection
-    //public GMMWDBContext(DbContextOptions<GMMWDBContext> options) : base(options) { }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -45,11 +41,10 @@ public class GMMWDBContext : DbContext
         modelBuilder.Entity<Part>().HasKey(p => p.ID);
         modelBuilder.Entity<Booking>().HasKey(b => b.ID);
 
-        // Configure relationships (e.g., Vehicle has one Owner)
         modelBuilder.Entity<Vehicle>()
             .HasOne(v => v.owner)
-            .WithMany() // Assuming a motorist can have multiple vehicles
-            .HasForeignKey("OwnerId"); // EF Core will create this shadow property
+            .WithMany() 
+            .HasForeignKey("OwnerId"); 
     }
     
 }
