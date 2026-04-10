@@ -53,6 +53,12 @@ public class GMMWMenu
                 case 6:
                     TCMenu();
                     break;
+                case 7:
+                    UserMenu();
+                    break;
+                case 8:
+                    DebugMenu();
+                    break;
                 case 0:
                     exit = true;
                     Console.WriteLine("Exiting program...");
@@ -87,4 +93,12 @@ public class GMMWMenu
     private static void TCMenu()
     {
     }
+    private static void UserMenu()
+    {
+    }
+    
+    private static void DebugMenu()
+    {
+    }
+    
 }
