@@ -2,14 +2,17 @@ using System.Text;
 
 namespace GMMWSystem;
 
-public class Part : Record<String, PartType>
+public class Part
 {
-    public override string ID { get; }
+    public string ID { get; set; }
 
-    public string Make { get; private set; }
-    public string Description { get; private set; }
-    public PartType Type { get; private set; }
+    public string Make { get; set; }
+    public string Description { get; set; }
+    public PartType Type { get; set; }
     public decimal Cost { get; set; }
+
+    // Parameterless constructor for EF Core
+    public Part() {}
 
     public Part(string make, PartType type, decimal cost, string? desc)
     {
@@ -20,7 +23,7 @@ public class Part : Record<String, PartType>
         ID = IDGen(make, type);
     }
 
-    public override string IDGen(String make, PartType partType)
+    public string IDGen(String make, PartType partType)
     {
         StringBuilder id = new();
         id.AppendFormat($"P-{make}-{partType.GetTypeCode()}");

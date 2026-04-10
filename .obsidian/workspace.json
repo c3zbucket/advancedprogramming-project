@@ -225,16 +225,18 @@
   "active": "a5214b885af7e81f",
   "lastOpenFiles": [
     "GMMWSystem/Repair.cs~",
-    "GMMWSystem/TrainingClass.cs~",
-    "GMMWSystem/Vehicle.cs~",
-    "GMMWSystem/Part.cs~",
+    "Attachments/image-7.png",
+    "GMMWSystem/SystemUser.cs~",
     "GMMWSystem/Lecturer.cs~",
+    "Attachments/image-6.png",
     "GMMWSystem/Motorist.cs~",
-    "GMMWSystem/Student.cs~",
-    "GMMWSystem/Transmission.cs~",
-    "GMMWSystem/PartType.cs~",
-    "GMMWSystem/Engine.cs~",
-    "GMMWSystem/ClassType.cs~",
+    "GMMWSystem/Vehicle.cs~",
+    "GMMWSystem/TrainingClass.cs~",
+    "GMMWSystem/Part.cs~",
+    "GMMWSystem/Booking.cs~",
+    "GMMWSystem/GMMWDBContext.cs~",
+    "GMMWSystem/GMMWSystem.csproj~",
+    "Attachments/image-5.png",
     "Attachments/image-4.png",
     "Attachments/image-3.png",
     "Attachments/image-2.png",
@@ -267,9 +269,6 @@
     "Year 2/{COM5401} Advanced Programming/Week 1/Session 1/CSharp Fundamentals.md",
     "Year 2/{COM5407} Computer Systems Architecture/Week 2/Session 1/Pipelining.md",
     "Excalidraw/Drawing 2026-03-26 14.28.30.excalidraw.svg",
-    "Attachments/image-221.png",
-    "Attachments/image-220.png",
-    "link-embed-images/dotnet-logo-41c4e37c.png",
-    "Attachments/Blazor Introduction 2026-03-24 18.26.49.excalidraw.svg"
+    "Attachments/image-221.png"
   ]
 }

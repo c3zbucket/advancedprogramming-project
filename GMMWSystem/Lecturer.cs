@@ -6,6 +6,9 @@ public class Lecturer : IStaff
     public string Name { get; set; }
     public string PhoneNo { get; set; }
     public string Email { get; set; }
+    
+    // Parameterless constructor for EF Core
+    public Lecturer() {}
 
     public Lecturer(string id, string name, string phoneNo, string email)
     {

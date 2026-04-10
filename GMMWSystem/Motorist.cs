@@ -14,6 +14,9 @@ public class Motorist : IPerson
     public string PhoneNo { get; set; }
     public string Email { get; set; }
     
+    // Parameterless constructor for EF Core
+    public Motorist() {}
+
     public Motorist(string id, string name, string email, string? phoneNo)
     {
         ID = id;

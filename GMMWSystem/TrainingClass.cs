@@ -2,23 +2,26 @@ using System.Text;
 
 namespace GMMWSystem;
 
-public class TrainingClass : Record<ClassType,DateTime>
+public class TrainingClass
 {
-    public override string ID { get; }
+    public string ID { get; set; }
 
-    public override string IDGen(ClassType type, DateTime date)
+    public string IDGen(ClassType type, DateTime date)
     {
         StringBuilder id = new();
         id.AppendFormat($"TC-{type}-{date:yyyyMMddHHmm}");
         return id.ToString();            
     }
 
-    public Student student { get; private set; }
+    public Student student { get; set; }
     public string Name { get; set; }
     public ClassType ClassType { get; set; }
     public string Description { get; set; }
-    public List<Motorist> attendees { get; private set; }
+    public List<Motorist> attendees { get; set; }
     public DateTime Date { get; set; }
+
+    // Parameterless constructor for EF Core
+    public TrainingClass() {}
 
     public TrainingClass(Student student, string name, ClassType classType, DateTime date, IEnumerable<Motorist> motorists, string? description)
     {

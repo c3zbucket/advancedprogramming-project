@@ -1,10 +1,10 @@
 namespace GMMWSystem;
 using System.Text;
 
-public class Vehicle : Record<Vehicle, Motorist>
+public class Vehicle
 {
-    public override string ID { get; }
-    public Motorist owner { get; private set; }
+    public string ID { get; set; }
+    public Motorist owner { get; set; }
 
     public string Plate { get; set; }
     public string Make { get; set; }
@@ -18,7 +18,7 @@ public class Vehicle : Record<Vehicle, Motorist>
         owner = new Motorist("M-UNKNOWN", "Unknown", "unknown@example.com", string.Empty);
         transmission = Transmission.MANUAL;
         engine = Engine.PETROL;
-        ID = IDGen(this, owner);
+        ID = IDGen(this);
     }
 
     public Vehicle(Motorist owner, string plate, string make, string model, string year,
@@ -31,15 +31,9 @@ public class Vehicle : Record<Vehicle, Motorist>
         this.Year = year;
         this.transmission = transmission;
         this.engine = engine;
-        ID = IDGen(this, owner);
+        ID = IDGen(this);
     }
 
-    public override string IDGen(Vehicle vehicle, Motorist m)
-    {
-        return IDGen(vehicle);
-    }
-    
-    
     public string IDGen(Vehicle vehicle)
     {
         StringBuilder id = new();

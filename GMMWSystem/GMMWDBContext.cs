@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Diagnostics;
 using System;
 
 namespace GMMWSystem;
@@ -18,8 +19,8 @@ public class GMMWDBContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        IConfiguration Configuration = new ModelConfigurationBuilder
-            .AddJsonFile("appsettings.json")
+        IConfiguration Configuration = new ConfigurationBuilder()
+            .AddJsonFile("settings.json")
             .Build();
 
         var folder = Environment.SpecialFolder.LocalApplicationData;
@@ -28,7 +29,8 @@ public class GMMWDBContext : DbContext
 
         optionsBuilder
             .UseSqlite($"DataSource={dbPath}")
-            .EnableSensitiveDataLogging()
+            // Enable verbose logging for debug - remove in prod branch
+            .EnableSensitiveDataLogging() 
             .LogTo(x => Debug.WriteLine(x));
     }
 
@@ -49,4 +51,5 @@ public class GMMWDBContext : DbContext
             .WithMany() // Assuming a motorist can have multiple vehicles
             .HasForeignKey("OwnerId"); // EF Core will create this shadow property
     }
+    
 }

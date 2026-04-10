@@ -2,19 +2,23 @@ using System.Text;
 
 namespace GMMWSystem;
 
-public class Repair : Record<Booking,DateTime>
+public class Repair
 {
-    public override string ID { get; }
+    public string ID { get; set; }
 
-    public Booking ascBooking { get; private set; }
-    public string Description { get; private set; }
-    public List<Student> repairers { get; private set; }
-    public decimal PartsCost { get; private set; }
-    public List<Part> parts { get; private set; }
-    public DateTime Date { get; private set; }
-    public decimal LabCost { get; protected set; }
+    public Booking ascBooking { get; set; }
+    public string Description { get; set; }
+    public List<Student> repairers { get; set; }
+    public decimal PartsCost { get; set; }
+    public List<Part> parts { get; set; }
+    public DateTime Date { get; set; }
+    public decimal LabCost { get; set; }
     public decimal TotalCost => PartsCost + LabCost;
     
+    
+    // Parameterless constructor for EF Core
+    public Repair() {}
+
     public Repair(Booking ascBooking, string description, decimal partsCost, decimal labCost, IEnumerable<Student>repairers, IEnumerable<Part>parts, DateTime date)
     {
         this.ascBooking = ascBooking;
@@ -40,7 +44,7 @@ public class Repair : Record<Booking,DateTime>
         return LabCost;
     }
 
-    public override string IDGen(Booking booking, DateTime date)
+    public string IDGen(Booking booking, DateTime date)
     {
         StringBuilder id = new();
         id.AppendFormat($"R-{booking.ID}-{date}");

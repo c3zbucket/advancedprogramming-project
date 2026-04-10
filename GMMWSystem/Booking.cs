@@ -2,22 +2,25 @@ using System.Text;
 
 namespace GMMWSystem;
 
-public class Booking : Record<Vehicle, DateTime>
+public class Booking
 {
-    public override string ID { get; }
-    public Vehicle bookedVehicle { get; }
+    public string ID { get; set; }
+    public Vehicle bookedVehicle { get; set; }
 
     public string Description { get; set; }
     public DateTime Date { get; set; }
 
     public TimeSpan TimeTaken { get; set; }
 
-    public List<Repair> Repairs { get; } = new();
+    public List<Repair> Repairs { get; set; } = new();
     
+    // Parameterless constructor for EF Core
+    public Booking() {}
+
     /**
      * Generate a unique ID based on the registered vehicle's plate and time
      */
-    public override string IDGen(Vehicle vehicle, DateTime date)
+    public string IDGen(Vehicle vehicle, DateTime date)
     {
         
         StringBuilder id = new();

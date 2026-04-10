@@ -26,6 +26,9 @@ public class SystemUser
         set => role = value;
     }
 
+    // Parameterless constructor for EF Core
+    public SystemUser() {}
+
     public SystemUser(IStaff member, Role role, String password)
     {
         this.member = member;
