@@ -12,6 +12,10 @@ public class GMMWDBContext : DbContext
     public DbSet<Repair> Repairs { get; set; }
     public DbSet<Booking> Bookings { get; set; }
     public DbSet<Part> Parts { get; set; }
+    public DbSet<TrainingClass> TrainingClass { get; set; }
+    public DbSet<Staff> Staff { get; set; }
+    public DbSet<SystemUser> Users { get; set; }
+    
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -25,26 +29,8 @@ public class GMMWDBContext : DbContext
 
         optionsBuilder
             .UseSqlite($"DataSource={dbPath}")
-            // Enable verbose logging for debug - remove in prod branch
+            // Enable verbose logging for debug - remember remove in prod branch
             .EnableSensitiveDataLogging() 
             .LogTo(x => Debug.WriteLine(x));
     }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
-
-        // Declare which records are primary keys
-        modelBuilder.Entity<Vehicle>().HasKey(v => v.ID);
-        modelBuilder.Entity<Motorist>().HasKey(m => m.ID);
-        modelBuilder.Entity<Repair>().HasKey(r => r.ID);
-        modelBuilder.Entity<Part>().HasKey(p => p.ID);
-        modelBuilder.Entity<Booking>().HasKey(b => b.ID);
-
-        modelBuilder.Entity<Vehicle>()
-            .HasOne(v => v.owner)
-            .WithMany() 
-            .HasForeignKey("OwnerId"); 
-    }
-    
 }

@@ -8,6 +8,6 @@ public class Booking
     public Vehicle bookedVehicle { get; set; }
     public string Description { get; set; }
     public DateTime Date { get; set; }
-    public TimeSpan TimeTaken { get; set; }
+    public TimeSpan? TimeTaken { get; set; }
     public List<Repair> Repairs { get; set; } = new();
 }

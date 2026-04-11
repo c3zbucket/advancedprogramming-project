@@ -214,4 +214,39 @@ After doing so, I encountered another error where the migration could not proper
 
 One solution proposed on this StackOverflow thread suggested simply declaring a blank constructor - https://stackoverflow.com/a/65179920, however upon further research that is not considered good practice or ideal with EF's database generation. This lead to a re-approach to class structure where I restructured the record-based classes as 'POCO' entities (https://learn.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/dd456853(v=vs.100)?redirectedfrom=MSDN) that simply contained properties with their accessors, any additional logic linked to the classes would be in separate classes that would be called later on.
 
+After the process, including revising the `GMMWMenu` class to now be the new static entry point, the migration executed successfuly:
 
+![[image-8.png|847]]
+Subsequently, updating the database also successfully executed the generated creation code
+
+The next step was to test the display of these. This was tested using the revised `GMMWMenu` using a simple number-based menu system. The input of a number would bring you to the corresponding function that would display the respective entities. To fill the database, the previous Testing class's instantiation logic was reused and reworked.
+
+Initially, to access the data stored in the mapped database, methods such as simple `foreach` loops were utilised to iterate over every entries in the database through opening a new 'connection' through the implementation of the DbContext class, like below:
+
+```csharp
+    private static void MotoristMenu()
+    {
+        using var context = new GMMWDBContext();
+        var motorists = context.Motorists.ToList();
+        Console.WriteLine("\n--- Registered Motorists ---");
+        foreach (var m in motorists)
+        {
+            Console.WriteLine($"ID: {m.ID} | Name: {m.Name} | Phone: {m.PhoneNo} | Email: {m.Email}");
+        }
+    }
+```
+
+This was relatively simple and effective for meeting the basic requirements until it came to implementing the more complicated ones - specifically centring around entries with linked objects for fields such as Bookings or T. This is where LINQ began to be utilised as a querying language in the form of lambda-styled expressions. Which for meeting the initial requirements of basic display was able to be completed with relative ease. `.Include` was utilised similar to a join from SQL where 'sub-queries' where included to additionally display details relating to connected objects.
+
+One problem encountered was for the display of 'staff' at the workshop as EF did not accept a DbSet created with the `IStaff` interface as a type as it violated the usage of an interface, producing the following exception on runtime:
+
+![[image-9.png]]
+
+The solution as deducted from this [StackOverflow thread]([EF .net6 Migration "must be a non-interface reference type to be used as an entity type."](https://stackoverflow.com/questions/73479568/ef-net6-migration-must-be-a-non-interface-reference-type-to-be-used-as-an-enti)) required for the `IStaff` child interface of the general `IPerson` interface which all people objects implement to be an abstract class instead declaring the common fields for both Students and Lecturer employee records.
+
+After which I got the error of 'circular dependencies' - which was hypothesised being from only writing the changes at the very end of the debug method when every table was created. Changing the method to save after every table creation fixed this.
+
+Thus finally producing functioning display of the stored records in the database.
+## **Blazor Web**
+
+With basic functionality 
