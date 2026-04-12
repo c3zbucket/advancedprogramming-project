@@ -253,4 +253,4 @@ Subsequently, to address the issues with `SystemUser` entries in the table ident
 Thus finally producing functioning display of the stored records in the database.
 ## **Blazor Web**
 
-With basic functionality now implemented with functioning EF ORM mapping, it was time to begin the transition to Blazor Web.
+With basic functionality now implemented with functioning EF ORM mapping, it was time to begin the transition to Blazor Web. The finalised EF codebase can be merged to main branch. The blazor-dev branch was then subsequently created 
