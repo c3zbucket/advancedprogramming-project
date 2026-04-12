@@ -246,7 +246,11 @@ The solution as deducted from this [StackOverflow thread]([EF .net6 Migration "m
 
 After which I got the error of 'circular dependencies' - which was hypothesised being from only writing the changes at the very end of the debug method when every table was created. Changing the method to save after every table creation fixed this.
 
+This lead to me also discovering that I had made a fatal flaw with the People class structure - since `SystemUser` had a dependency on `Staff` since it composed of a `Member` object that would link the account to an existing employee record, 'dedicated' Admins - which as the brief stated could be people who are not volunteers such as students or lecturers but rather individuals who are solely there for the administration of the system at the workshop, could not create accounts. This was fixed by adding a dedicated `Admin` class which inherited from the `Staff` abstract class.
+
+Subsequently, to address the issues with `SystemUser` entries in the table identifying staff IDs as foreign keys, a dedicated `ID` property was added for it  through which`OnModelCreating` method was called to manually specify the relationship, therefore leading to the instantiation requiring the linked Staff object's ID to be declared as well.
+
 Thus finally producing functioning display of the stored records in the database.
 ## **Blazor Web**
 
-With basic functionality 
+With basic functionality now implemented with functioning EF ORM mapping, it was time to begin the transition to Blazor Web.

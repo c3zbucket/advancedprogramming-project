@@ -161,6 +161,12 @@ public class GMMWMenu
         {
             Console.WriteLine($"Staff ID: {s.ID} | Name: {s.Name} | Phone: {s.PhoneNo} | Email: {s.Email}");
         }
+        Console.WriteLine("\n--- System Users ---");
+        var userList = context.Users.ToList();
+        foreach (var u in userList)
+        {
+            Console.WriteLine($"Linked Staff ID: {u.ID} | Linked Staff Name: {u.Member.Name} | System Role : {u.Role} | Phone No.: {u.Member.PhoneNo} | Email: {u.Member.Email}");
+        }
     }
     
     private static void DebugMenu()
@@ -173,15 +179,39 @@ public class GMMWMenu
 
         Console.WriteLine("\n Adding debug entities...");
         var students = new List<Student>
-        {
-            new Student { ID = "S001", Name = "Oliver Smith", PhoneNo = "07700900001", Email = "o.smith@example.co.uk" },
-            new Student { ID = "S002", Name = "George Jones", PhoneNo = "07700900002", Email = "g.jones@example.co.uk" },
-            new Student { ID = "S003", Name = "Harry Taylor", PhoneNo = "07700900003", Email = "h.taylor@example.co.uk" },
-            new Student { ID = "S004", Name = "Jack Brown", PhoneNo = "07700900004", Email = "j.brown@example.co.uk" },
-            new Student { ID = "S005", Name = "Jacob Williams", PhoneNo = "07700900005", Email = "j.williams@example.co.uk" },
-            new Student { ID = "S006", Name = "Noah Davies", PhoneNo = "07700900006", Email = "n.davies@example.co.uk" }
+        { new Student { ID = "S001", Name = "Oliver Smith", PhoneNo = "07700900001", Email = "o.smith@outlook.com" },
+            new Student { ID = "S002", Name = "George Jones", PhoneNo = "07700900002", Email = "g.jones@gmail.com" },
+            new Student { ID = "S003", Name = "Harry Taylor", PhoneNo = "07700900003", Email = "h.taylor@outlook.com" },
+            new Student { ID = "S004", Name = "Jack Brown", PhoneNo = "07700900004", Email = "j.brown@gmail.com" },
+            new Student { ID = "S005", Name = "Jacob Williams", PhoneNo = "07700900005", Email = "j.williams@outlook.com" },
+            new Student { ID = "S006", Name = "Noah Davies", PhoneNo = "07700900006", Email = "n.davies@gmail.com" }
         };
         context.AddRange(students);
+        context.SaveChanges();
+
+        var lecturers = new List<Lecturer>
+        {
+            new Lecturer { ID = "L001", Name = "Alice Johnson", PhoneNo = "07700900101", Email = "a.johnson@gmail.com" },
+            new Lecturer { ID = "L002", Name = "Rob Youblind", PhoneNo = "07700900102", Email = "r.youblind@outlook.com" }
+        };
+        context.AddRange(lecturers);
+        context.SaveChanges();
+
+        var admins = new Admin { ID = "A001", Name = "Greg Adminny", PhoneNo = "07700900999", Email = "greg.a@outlook.com" };
+        context.AddRange(admins);
+        context.SaveChanges();
+
+        var users = new List<SystemUser>
+        {
+            new SystemUser { ID = lecturers[0].ID, Member = lecturers[0], Password = "password123", Role = Role.LECTURER },
+            new SystemUser { ID = lecturers[1].ID, Member = lecturers[1], Password = "password123", Role = Role.LECTURER },
+            new SystemUser {ID = students[0].ID, Member = students[0], Password = "admin123", Role = Role.ADMIN },
+            new SystemUser {ID = students[1].ID, Member = students[1], Password = "password123", Role = Role.STUDENT },
+            new SystemUser {ID = students[2].ID, Member = students[2], Password = "password123", Role = Role.STUDENT },
+            new SystemUser {ID = students[3].ID, Member = students[3], Password = "password123", Role = Role.STUDENT },
+            new SystemUser {ID = admins.ID, Member = admins, Password = "admin", Role = Role.ADMIN }
+        };
+        context.Users.AddRange(users);
         context.SaveChanges();
 
         var motorists = new List<Motorist>

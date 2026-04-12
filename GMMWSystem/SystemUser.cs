@@ -4,14 +4,12 @@ namespace GMMWSystem;
 
 public class SystemUser 
 {
-    private Staff member;
+    public string ID { get; set;}
+    
+    public Staff Member { get; set; }
 
-    private string password;
+    public string Password { get; set; }
 
-    public Staff Member { get => member; set => member = value; }
-
-    public string Password { get => password; set => password = value; }
-
-    public Role role { get; set; }
+    public Role Role { get; set; }
     
 }

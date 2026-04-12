@@ -16,6 +16,9 @@ public class GMMWDBContext : DbContext
     public DbSet<Staff> Staff { get; set; }
     public DbSet<SystemUser> Users { get; set; }
     
+    public DbSet<Student> Students { get; set; }
+    public DbSet<Lecturer> Lecturers { get; set; }
+    public DbSet<Admin> Admins { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -33,4 +36,14 @@ public class GMMWDBContext : DbContext
             .EnableSensitiveDataLogging() 
             .LogTo(x => Debug.WriteLine(x));
     }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<SystemUser>().HasDiscriminator().IsComplete(false);
+    
+    modelBuilder.Entity<SystemUser>()
+        .HasOne(u => u.Member)
+        .WithOne()
+        .HasForeignKey<SystemUser>(u => u.ID);
+}
 }
