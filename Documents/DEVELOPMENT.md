@@ -187,3 +187,70 @@ For initial testing of functionality a back-box approach was followed where ther
 Following this produced successful results for the 4 basic requirements.
 
 ### Entity Framework Integration
+
+The next step was laying out the migration to Entity Framework which would automate the process of object-relational mapping.
+
+For best practice, a new branch - `ef-dev` was created which would contain the development and integration of EF until it's satisfactory feature-complete according to the specifications and safe to be merged to the main branch.
+
+Before starting, an environment that could support EFCore - the version of EF used was required, therefore requiring additional nuGet packages to add. These were added with ease using the .NET CLI using the `dotnet add package` command. From this the following two packages were added to the application:
+
+```csharp
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+dotnet add package Microsoft.EntityFrameworkCore.Tools
+```
+
+To start, an implementation of the DBContext class was required, this is where `GMMWContext` comes in where the connection to EF and the properties are declared. 
+
+Next was creating a JSON configuration file for initialising the database connection. This was initially created manually and placed in the solution root, which was a mistake realised when creating the migration and it produced an error that it could not find the JSON file. 
+
+![[image-5.png]]
+
+The solution was to use Rider's tool through the project context menu, which placed it in the correct directory EF expects it in.
+
+After doing so, I encountered another error where the migration could not properly map properties with the existing constructor.
+
+
+![[image-7.png]]
+
+One solution proposed on this StackOverflow thread suggested simply declaring a blank constructor - https://stackoverflow.com/a/65179920, however upon further research that is not considered good practice or ideal with EF's database generation. This lead to a re-approach to class structure where I restructured the record-based classes as 'POCO' entities (https://learn.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/dd456853(v=vs.100)?redirectedfrom=MSDN) that simply contained properties with their accessors, any additional logic linked to the classes would be in separate classes that would be called later on.
+
+After the process, including revising the `GMMWMenu` class to now be the new static entry point, the migration executed successfuly:
+
+![[image-8.png|847]]
+Subsequently, updating the database also successfully executed the generated creation code
+
+The next step was to test the display of these. This was tested using the revised `GMMWMenu` using a simple number-based menu system. The input of a number would bring you to the corresponding function that would display the respective entities. To fill the database, the previous Testing class's instantiation logic was reused and reworked.
+
+Initially, to access the data stored in the mapped database, methods such as simple `foreach` loops were utilised to iterate over every entries in the database through opening a new 'connection' through the implementation of the DbContext class, like below:
+
+```csharp
+    private static void MotoristMenu()
+    {
+        using var context = new GMMWDBContext();
+        var motorists = context.Motorists.ToList();
+        Console.WriteLine("\n--- Registered Motorists ---");
+        foreach (var m in motorists)
+        {
+            Console.WriteLine($"ID: {m.ID} | Name: {m.Name} | Phone: {m.PhoneNo} | Email: {m.Email}");
+        }
+    }
+```
+
+This was relatively simple and effective for meeting the basic requirements until it came to implementing the more complicated ones - specifically centring around entries with linked objects for fields such as Bookings or T. This is where LINQ began to be utilised as a querying language in the form of lambda-styled expressions. Which for meeting the initial requirements of basic display was able to be completed with relative ease. `.Include` was utilised similar to a join from SQL where 'sub-queries' where included to additionally display details relating to connected objects.
+
+One problem encountered was for the display of 'staff' at the workshop as EF did not accept a DbSet created with the `IStaff` interface as a type as it violated the usage of an interface, producing the following exception on runtime:
+
+![[image-9.png]]
+
+The solution as deducted from this [StackOverflow thread]([EF .net6 Migration "must be a non-interface reference type to be used as an entity type."](https://stackoverflow.com/questions/73479568/ef-net6-migration-must-be-a-non-interface-reference-type-to-be-used-as-an-enti)) required for the `IStaff` child interface of the general `IPerson` interface which all people objects implement to be an abstract class instead declaring the common fields for both Students and Lecturer employee records.
+
+After which I got the error of 'circular dependencies' - which was hypothesised being from only writing the changes at the very end of the debug method when every table was created. Changing the method to save after every table creation fixed this.
+
+This lead to me also discovering that I had made a fatal flaw with the People class structure - since `SystemUser` had a dependency on `Staff` since it composed of a `Member` object that would link the account to an existing employee record, 'dedicated' Admins - which as the brief stated could be people who are not volunteers such as students or lecturers but rather individuals who are solely there for the administration of the system at the workshop, could not create accounts. This was fixed by adding a dedicated `Admin` class which inherited from the `Staff` abstract class.
+
+Subsequently, to address the issues with `SystemUser` entries in the table identifying staff IDs as foreign keys, a dedicated `ID` property was added for it  through which`OnModelCreating` method was called to manually specify the relationship, therefore leading to the instantiation requiring the linked Staff object's ID to be declared as well.
+
+Thus finally producing functioning display of the stored records in the database.
+## **Blazor Web**
+
+With basic functionality now implemented with functioning EF ORM mapping, it was time to begin the transition to Blazor Web. The finalised EF codebase can be merged to main branch. The blazor-dev branch was then subsequently created 
