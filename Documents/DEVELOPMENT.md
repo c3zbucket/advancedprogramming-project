@@ -254,3 +254,67 @@ Thus finally producing functioning display of the stored records in the database
 ## **Blazor Web**
 
 With basic functionality now implemented with functioning EF ORM mapping, it was time to begin the transition to Blazor Web. The finalised EF codebase can be merged to main branch. The blazor-dev branch was then subsequently created 
+
+Initially it was thought of creating it as a project linked to the existing GMMWSystem class, sharing the same solution file. This was done through the context menu in Rider rather than the 'Create new Project' which allowed you to create a linked project without a `.sln` solution file
+![[image-11.png]]
+
+After going with the approach it was realised in the long-term it would be hard to maintain with the standard template Blazor offering you being equipped to store POCO classes in a *Models* - in this case called: *Records*. So it was decided that a new project would be created and the code required from the previous one would be manually migrated, which with search and replace tools in Blazor, was manageable.
+
+The records classes were stored under the *Data* directory that came with Blazor.
+
+Then came migrating the record classes and making the needed adjustments alongside the core logic migrated to their respective `Services` classes 
+
+On the first debug everything seemed fine, until an entry in the navmenu was replaced to link to a staff management page, which when clicked would simply hang - stating that there was an error:
+![[image-13.png]]
+
+
+
+The issue identified was with the blazor server still relying on the default `AppDbContext` file rather than the `GMMWDBContext` one I wanted to replace it with. This would be initially triggered on startup in the `Program.cs`  file in the root directory:
+
+```csharp
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite(connectionString));
+```
+
+This was changed to GWWDBContext, alongside the `AddDbContextFactory` method rather than the standard `AddDbContext` to automate a more efficient implementation of DB contexts.
+
+```csharp
+builder.Services.AddDbContextFactory<GMMWDBContext>(options =>
+    options.UseSqlite(connectionString));
+```
+
+After applying those changes the error still persisted - turns out that actual underlying issue was relying on a static settings json file for initialising the connection for the context factory rather than relying on dependency injection from the `Program.cs` file which was already created on startup to handle it:
+
+```csharp title:Program.cs
+
+// Initialise DB connection, return exception if not found
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
+                       throw new InvalidOperationException("Connection string not found.");
+
+// Create context factory from this
+builder.Services.AddDbContextFactory<GMMWDBContext>(options =>
+    options.UseSqlite(connectionString));
+
+```
+
+Leading to the duplicate logic not needed in the `OnConfiguring` method, with the new `OnConfiguring` implementation being below:
+
+```csharp title:GMMWDBContext
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        // Only configure if not already configured by DI from Program.cs
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder
+                // Enable verbose logging for debug - remember remove in prod branch
+                .EnableSensitiveDataLogging()
+                .LogTo(x => Debug.WriteLine(x));
+        }
+    }
+```
+
+To access this, the db context class would take a constructor with the context and associated options passed as parameters.
+
+```csharp
+public GMMWDBContext(DbContextOptions<GMMWDBContext> options) : base(options) { }
+```
