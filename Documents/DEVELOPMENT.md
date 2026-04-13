@@ -318,3 +318,31 @@ To access this, the db context class would take a constructor with the context a
 ```csharp
 public GMMWDBContext(DbContextOptions<GMMWDBContext> options) : base(options) { }
 ```
+
+After adjusting this, the Staff page finally loaded with the table event to store staff entries:
+![[image-14.png|708]]
+
+To test for the display of added records, `.HasData` in the debug context class was used for a quick and simple way to add entries to the database.
+
+```csharp title:GMMWDBContext
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<SystemUser>().HasDiscriminator().IsComplete(false);
+
+        modelBuilder.Entity<SystemUser>()
+            .HasOne(u => u.Member)
+            .WithOne()
+            .HasForeignKey<SystemUser>(u => u.ID);
+
+        // Add debug data for Staff (Students and lecturers)
+        modelBuilder.Entity<Student>().HasData(
+            new Student { ID = "S001", Name = "Oliver Smith", PhoneNo = "07700900001", Email = "o.smith@outlook.com" },
+            .....
+            }
+```
+
+With a new migration created to test the addition of this safely.
+
+Thus leading to functioning output of staff entries:
+
+![[image-15.png|844]]

@@ -5,10 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 public abstract class Staff : IPerson
 {
+    [Required]
     public string ID { get; set; }
     [Required]
     public string Name { get; set; }
-    [Required]
     [DisplayName("Phone Number")]
     public string PhoneNo { get; set; }
     [Required]

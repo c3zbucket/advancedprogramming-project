@@ -1,0 +1,54 @@
+@page "/managestaff"
+@using GMMWWeb.Services
+@using GMMWWeb.Data.Records
+@using GMMWWeb.Components
+@inject StaffService staff
+
+<PageTitle>Manage Staff</PageTitle>
+<h1>Staff</h1>
+
+@if (staffList == null)
+{
+    <p>Loading Staff and Users...</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th><DisplayName For="@(() => staffList.FirstOrDefault().ID)" /></th>
+                <th>Name</th>
+                <th>Email</th>
+                <th><DisplayName For="@(() => staffList.FirstOrDefault().PhoneNo)" /></th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (staffList.Count == 0)
+        {
+            <tr>
+                <td colspan="5">No staff found in records.</td>
+            </tr>
+        }
+        @foreach (var s in staffList)
+        {
+            <tr>
+                <td>@s.ID</td>
+                <td>@s.Name</td>
+                <td>@s.Email</td>
+                <td>@s.PhoneNo</td>
+                <td>@s.GetType().Name</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IList<Staff>? staffList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        staffList = await staff.GetStaff();
+    }
+}
