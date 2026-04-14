@@ -1,0 +1,61 @@
+@page "/managebookings"
+@using GMMWWeb.Services
+@using GMMWWeb.Data.Records
+@inject BookingService BookingService
+
+<PageTitle>Manage Bookings</PageTitle>
+<h1>Bookings</h1>
+
+@if (_bookingList == null)
+{
+    <p>Loading Bookings...</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Vehicle</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Time Taken</th>
+                <th>Repairs</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (_bookingList.Count == 0)
+        {
+            <tr>
+                <td colspan="6">No bookings found in records.</td>
+            </tr>
+        }
+        @foreach (var b in _bookingList)
+        {
+            <tr>
+                <td>@b.ID</td>
+                <td> (@b.bookedVehicle.ID) @b.bookedVehicle.Make @b.bookedVehicle.Model</td>
+                <td>@b.Date.ToString("dd/MM/yyyy")</td>
+                <td>@b.Description</td>
+                <td>@b.TimeTaken?.ToString(@"hh\:mm")</td>
+                <td>@b.Repairs.Count</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IList<Booking>? _bookingList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _bookingList = await BookingService.GetBookings();
+    }
+}
+
+
+
+
+
+

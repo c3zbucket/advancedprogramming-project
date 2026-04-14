@@ -1,0 +1,57 @@
+@page "/manageparts"
+@using GMMWWeb.Services
+@using GMMWWeb.Data.Records
+@inject PartService PartService
+
+<PageTitle>Manage Parts</PageTitle>
+<h1>Parts</h1>
+
+@if (_partList == null)
+{
+    <p>Loading Parts...</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Make</th>
+                <th>Type</th>
+                <th>Cost</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (_partList.Count == 0)
+        {
+            <tr>
+                <td colspan="5">No parts found in records.</td>
+            </tr>
+        }
+        @foreach (var p in _partList)
+        {
+            <tr>
+                <td>@p.ID</td>
+                <td>@p.Make</td>
+                <td>@p.Type</td>
+                <td>@p.Cost.ToString("C")</td>
+                <td>@p.Description</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IList<Part>? _partList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _partList = await PartService.GetParts();
+    }
+}
+
+
+
+

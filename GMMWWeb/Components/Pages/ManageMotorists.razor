@@ -1,0 +1,55 @@
+@page "/managemotorists"
+@using GMMWWeb.Services
+@using GMMWWeb.Data.Records
+@inject MotoristService MotoristService
+
+<PageTitle>Manage Motorists</PageTitle>
+<h1>Motorists</h1>
+
+@if (_motoristList == null)
+{
+    <p>Loading Motorists...</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (_motoristList.Count == 0)
+        {
+            <tr>
+                <td colspan="4">No motorists found in records.</td>
+            </tr>
+        }
+        @foreach (var m in _motoristList)
+        {
+            <tr>
+                <td>@m.ID</td>
+                <td>@m.Name</td>
+                <td>@m.Email</td>
+                <td>@m.PhoneNo</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IList<Motorist>? _motoristList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _motoristList = await MotoristService.GetMotorists();
+    }
+}
+
+
+
+

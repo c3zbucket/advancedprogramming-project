@@ -5,6 +5,8 @@ namespace GMMWWeb.Data.Records;
 public class Repair
 {
     public string ID { get; set; }
+    
+    public string ascID { get; set; }
     public Booking ascBooking { get; set; }
     public string Description { get; set; }
     public List<Student> repairers { get; set; }

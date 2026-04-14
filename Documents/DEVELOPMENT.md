@@ -346,3 +346,40 @@ With a new migration created to test the addition of this safely.
 Thus leading to functioning output of staff entries:
 
 ![[image-15.png|844]]
+
+With the basic display nailed down - it had to be done to the other pages before moving onto the more advanced requirements utilising LINQ querying for filtering or searching.
+
+On the way - `Vehicle`'s primary key was decided to be changed to it's registration plate - `Plate` as the additional `VehicleID` was found redundant. When updating the database however to reflect this change after already defining `.HasKey`  in its model creation for EF - it returned an error that an 'ID' was null:
+![[image-16.png]]
+
+After investigating, even after declaring the `Plate` property with the `[Key]` attribute above it additionally as stated [in this StackOverflow answer](https://stackoverflow.com/questions/13607512/how-to-specify-primary-key-name-in-ef-code-first#13612347) , it still returned errors and expected an `ID` field in the schema. It was at this point this was abandoned and instead a `Display` attribute was declared so in output to the user through the use of a class that obtains the `DisplayName` of the property - the 'ID' would show as the 'registration plate' while logically it would still be referred to as a `Vehicle` object's ID like below:
+
+```csharp
+<table>
+	<thead>
+	<tr>
+		<th>
+			<DisplayName For="@(() => _vehicleList.FirstOrDefault().ID)"/>
+		</th>
+		<th> <DisplayName For="@(() => _vehicleList.FirstOrDefault().owner)"/> </th>
+		<th>Transmission</th>
+		//... Other properties..
+	</tr>
+	</thead>
+	<tbody>
+	        @foreach (var v in _vehicleList)
+        {
+            <tr>
+                <td>@v.ID</td>
+                <td>@v.owner.Name</td>
+				//... Other properties..
+            </tr>
+        }
+	</tbody>
+</table>
+```
+
+Leading to an output on its page like so:
+![[image-17.png]]
+
+No issues were encountered until approaching the `Repairs` table. Here there are multiple list types for properties including `repairers` and `parts` . This would be fine in creation normally - declaring them as 'navigation properties', but utilising `.HasData` via the context class did not allow this. Therefore this was left for when implementing the input form.

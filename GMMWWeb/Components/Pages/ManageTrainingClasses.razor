@@ -1,0 +1,63 @@
+@page "/managetrainingclasses"
+@using GMMWWeb.Services
+@using GMMWWeb.Data.Records
+@inject TrainingClassService TrainingClassService
+
+<PageTitle>Manage Training Classes</PageTitle>
+<h1>Training Classes</h1>
+
+@if (_trainingClassList == null)
+{
+    <p>Loading Training Classes...</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Instructor</th>
+                <th>Date</th>
+                <th>Attendees</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (_trainingClassList.Count == 0)
+        {
+            <tr>
+                <td colspan="7">No training classes found in records.</td>
+            </tr>
+        }
+        @foreach (var tc in _trainingClassList)
+        {
+            <tr>
+                <td>@tc.ID</td>
+                <td>@tc.Name</td>
+                <td>@tc.ClassType</td>
+                <td>@tc.student.Name</td>
+                <td>@tc.Date.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@tc.attendees.Count</td>
+                <td>@tc.Description</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IList<TrainingClass>? _trainingClassList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _trainingClassList = await TrainingClassService.GetTrainingClasses();
+    }
+}
+
+
+
+
+
+

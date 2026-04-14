@@ -1,0 +1,67 @@
+@page "/managerepairs"
+@using GMMWWeb.Services
+@using GMMWWeb.Data.Records
+@inject RepairService RepairService
+
+<PageTitle>Manage Repairs</PageTitle>
+<h1>Repairs</h1>
+
+@if (_repairList == null)
+{
+    <p>Loading Repairs...</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Booking</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Parts Cost</th>
+                <th>Labour Cost</th>
+                <th>Total Cost</th>
+                <th>Repairers</th>
+                <th>Parts</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (_repairList.Count == 0)
+        {
+            <tr>
+                <td colspan="9">No repairs found in records.</td>
+            </tr>
+        }
+        @foreach (var r in _repairList)
+        {
+            <tr>
+                <td>@r.ID</td>
+                <td>@r.ascBooking.ID</td>
+                <td>@r.Description</td>
+                <td>@r.Date.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@r.PartsCost.ToString("C")</td>
+                <td>@r.LabCost.ToString("C")</td>
+                <td>@r.TotalCost.ToString("C")</td>
+                <td>@r.repairers.Count ?? 0</td>
+                <td>@r.parts.Count ?? 0</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IList<Repair>? _repairList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _repairList = await RepairService.GetRepairs();
+    }
+}
+
+
+
+
+
+

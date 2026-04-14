@@ -1,0 +1,65 @@
+@page "/managevehicles"
+@using GMMWWeb.Services
+@using GMMWWeb.Data.Records
+@inject VehicleService VehicleService
+
+<PageTitle>Manage Vehicles</PageTitle>
+<h1>Vehicles</h1>
+
+@if (_vehicleList == null)
+{
+    <p>Loading Vehicles...</p>
+}
+else
+{
+    <table>
+        <thead>
+        <tr>
+            <th>
+                <DisplayName For="@(() => _vehicleList.FirstOrDefault().ID)"/>
+            </th>
+            <th> <DisplayName For="@(() => _vehicleList.FirstOrDefault().owner)"/> </th>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Year</th>
+            <th>Transmission</th>
+            <th>Engine</th>
+        </tr>
+        </thead>
+        <tbody>
+        @if (_vehicleList.Count == 0)
+        {
+            <tr>
+                <td colspan="8">No vehicles found in records.</td>
+            </tr>
+        }
+        @foreach (var v in _vehicleList)
+        {
+            <tr>
+                <td>@v.ID</td>
+                <td>@v.owner.Name</td>
+                <td>@v.Make</td>
+                <td>@v.Model</td>
+                <td>@v.Year</td>
+                <td>@v.transmission</td>
+                <td>@v.engine</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IList<Vehicle>? _vehicleList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _vehicleList = await VehicleService.GetVehicles();
+    }
+
+}
+
+
+
+
+
