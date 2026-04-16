@@ -383,3 +383,60 @@ Leading to an output on its page like so:
 ![[image-17.png]]
 
 No issues were encountered until approaching the `Repairs` table. Here there are multiple list types for properties including `repairers` and `parts` . This would be fine in creation normally - declaring them as 'navigation properties', but utilising `.HasData` via the context class did not allow this. Therefore this was left for when implementing the input form.
+
+### Taking Input
+
+With basic display fully functioning, the next step was to implement a working system to take the input of new entries to the records from users. The most ideal solution that was decided on was Microsoft's own *EditForm* class.
+
+The motorist form was created first as that has no 'dependencies' with it's properties.
+
+A basic form was created in the class `NewMotorist` which on a valid submission would call an async `Task` method which would call the injected service class to add a motorist entry.
+
+The next step was to add necessary validation - this was especially important for phone numbers which must be strings containing 11 characters that are exclusively digits and begin with 07 usually. 
+
+Initially, this was thought of simply using `inputNumber` to immediately parse the input as an integer, however on deeper research it was realised that `inputNumber` values drop the leading zero, additionally it would not be very ideal to have the motorist service class parse the the input to a stringbuilder to add a leading zero as well as perform the strength validation when utilising the field's setter.
+
+With existing familiarity with regex it was then thought that were must be a constraint that allowed for inputs to be compared to this and after some research it was found there was using the `RegularExpression` attribute - leading to a declaration like below in the Motorist record class. Where it would return an error if the input number did not match this regex string.
+
+```csharp
+    // Entered phone number must be 11 digits and begin with 01/2 for landline or 07 for mobile phone
+    [RegularExpression(@"^0[127]\d{9}$", ErrorMessage = "Phone number be valid UK phone number")]
+    public string PhoneNo { get; set; }
+
+```
+
+This was similarly applied to the email field to ensure only valid emails were entered.
+
+Finally leading to an input form like this with valid validation in each field:
+
+![[image-19.png]]
+
+Additionally it was decided to implement logic to the button so it would be un-highlighted and be un-clickable until all fields were filled with valid information. This proved harder than initially thought as it wasn't as simple as using *EditContext* and checking the state of the form via *StateChange*. After research on the topic on checking the state of the model to rerun validation whenever the change in state of *EditContext* from user input was detected as discussed [here](https://stackoverflow.com/questions/29309803/asp-net-mvc-modelstate-how-to-re-run-validation#29316061). 
+
+From this an implementation arose where the current state of the *EditContext* was checked using the object's own `Validate` method and alerting the form about the state of the change - which was declared on the creation of the submission button utilising the standard *disabled* html rule with the `@` to trigger the execution of the 'checker' method.
+
+(use uuid for IDs and authentication)
+
+Logically, the code resembled something like this:
+```csharp
+editContext.OnValidationStateChanged += (_, _) => // Call method with blank messages to disregard required parameters
+{
+    validField = editContext.Validate();  // Validate current editContext status
+    StateHasChanged(); // Alert that state has changed
+};
+```
+
+When implemented, this did not work and instead produced a `StackOverflow` exception which was realised from `.Validate()` essentially being called an infinite number of times everytime the state of `EditContext()` changed.
+
+The fix was to instead read if any validation messages had been producing during the current edit context and notify the targeted component which would change its state live. This was then added to an overridden `OnInitialized` method to check for this and reset the validation check whenever a change was detected in the current edit context. Which would in turn update the status of the `disabled` tag in the button element - essentially leading to a functioning implementation as shown below:
+
+ ![[image-21.png|269]]
+With invalid inputs - the button would be greyed out and un-clickable. 
+
+![[image-22.png|281]]
+With valid ones - the button would be highlighted and thus clickable.
+
+Thus leading to a new record being added:
+![[image-24.png|465]]
+
+From this template it was relatively intuitive to adapt this for the other records.

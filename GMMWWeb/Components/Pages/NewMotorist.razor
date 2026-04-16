@@ -1,0 +1,63 @@
+@page "/managemotorists/new"
+@using GMMWWeb.Data.Records
+@using GMMWWeb.Services
+@using Microsoft.AspNetCore.Components.Sections
+@inject MotoristService motoristService
+@inject GMMWWeb.Data.GMMWDBContext _context
+
+<PageTitle>Create Motorist</PageTitle>
+
+<h1>Create new Motorist</h1>
+
+<div class="createMotorist">
+    <EditForm FormName="createMotorist" EditContext="editContext" OnValidSubmit="HandleMotoristSubmit">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+        <div class="mb-3">
+            <label for="motoristName" class="form-label">Name</label>
+            <InputText id="motoristName" class="form-control" @bind-Value="newMotorist.Name"/>
+            <ValidationMessage For="() => newMotorist.Name"/>
+        </div>
+        <div class="mb-3">
+            <label for="motoristEmail" class="form-label">Email</label>
+            <InputText id="motoristEmail" class="form-control" @bind-Value="newMotorist.Email"/>
+            <ValidationMessage For="() => newMotorist.Email"/>
+        </div>
+        <div class="mb-3">
+            <label for="motoristPhone" class="form-label">Phone Number</label>
+            <InputText id="motoristPhone" class="form-control" @bind-Value="newMotorist.PhoneNo"/>
+            <ValidationMessage For="() => newMotorist.PhoneNo"/>
+        </div>
+        <button type="submit" class="btn btn-primary" disabled="@(!validField)">Register Motorist</button>
+    </EditForm>
+</div>
+
+@code {
+    private Motorist newMotorist = new();
+    private EditContext editContext = null!;
+    private bool validField;
+
+    protected override void OnInitialized()
+    {
+        ResetCheck();
+    }
+
+    private void ResetCheck()
+    {
+        newMotorist = new();
+        editContext = new EditContext(newMotorist);
+        editContext.OnValidationStateChanged += (_, _) =>
+        {
+            validField = !editContext.GetValidationMessages().Any();
+            StateHasChanged();
+        };
+        validField = false;
+    }
+
+    private async Task HandleMotoristSubmit()
+    {
+        await motoristService.Add(newMotorist);
+        ResetCheck();
+    }
+
+}

@@ -64,6 +64,11 @@ public class GMMWDBContext : DbContext
             .WithMany()
             .HasForeignKey(b => b.bookedPlate);
         
+        mb.Entity<Booking>()
+            .HasMany(b => b.Repairs)
+            .WithOne(r => r.ascBooking)
+            .HasForeignKey(r => r.ascID);
+        
         mb.Entity<TrainingClass>()
             .HasOne(b => b.student)
             .WithMany()
@@ -91,19 +96,21 @@ public class GMMWDBContext : DbContext
         */
 
         mb.Entity<Motorist>().HasData(
-            new Motorist { ID = "M001", Name = "Amelia Evans", Email = "amelia.evans@gmail.com", PhoneNo = "07700900011" },
-            new Motorist { ID = "M002", Name = "Olivia Wilson", Email = "olivia.w@hotmail.co.uk", PhoneNo = "07700900012" },
-            new Motorist { ID = "M003", Name = "Isla Thomas", Email = "isla.thom@gmail.com", PhoneNo = "07700900013" },
-            new Motorist { ID = "M004", Name = "Ava Roberts", Email = "ava.r@yahoo.co.uk", PhoneNo = "07700900014" },
-            new Motorist { ID = "M005", Name = "Emily Johnson", Email = "emily.j@outlook.com", PhoneNo = "07700900015" },
-            new Motorist { ID = "M006", Name = "Mia Wright", Email = "mia.w@gmail.com", PhoneNo = "07700900016" },
-            new Motorist { ID = "M007", Name = "Grace Robinson", Email = "grace.rob@gmail.com", PhoneNo = "07700900017" },
-            new Motorist { ID = "M008", Name = "Sophia Thompson", Email = "sophia.t@yahoo.co.uk", PhoneNo = "07700900018" }
+            new Motorist { ID = "1001", Name = "Amelia Evans", Email = "amelia.evans@gmail.com", PhoneNo = "07700900011" },
+            new Motorist { ID = "1002", Name = "Olivia Wilson", Email = "olivia.w@hotmail.co.uk", PhoneNo = "07700900012" },
+            new Motorist { ID = "1003", Name = "Isla Thomas", Email = "isla.thom@gmail.com", PhoneNo = "07700900013" },
+            new Motorist { ID = "1004", Name = "Ava Roberts", Email = "ava.r@yahoo.co.uk", PhoneNo = "07700900014" },
+            new Motorist { ID = "1005", Name = "Emily Johnson", Email = "emily.j@outlook.com", PhoneNo = "07700900015" },
+            new Motorist { ID = "1006", Name = "Mia Wright", Email = "mia.w@gmail.com", PhoneNo = "07700900016" },
+            new Motorist { ID = "1007", Name = "Grace Robinson", Email = "grace.rob@gmail.com", PhoneNo = "07700900017" },
+            new Motorist { ID = "1008", Name = "Sophia Thompson", Email = "sophia.t@yahoo.co.uk", PhoneNo = "07700900018" }
         );
 
         mb.Entity<Part>().HasData(
+        
             new Part { ID = "P-BOSCH3", Make = "Bosch", Type = PartType.SUSPENSION, Cost = 55.00m, Description = "Brake pads front" },
             new Part { ID = "P-MICHELIN5", Make = "Michelin", Type = PartType.BODY, Cost = 25.00m, Description = "Wiper blade set" },
+        
             new Part { ID = "P-NGK1", Make = "NGK", Type = PartType.ENGINE, Cost = 12.50m, Description = "Spark plug" },
             new Part { ID = "P-CASTROL1", Make = "Castrol", Type = PartType.ENGINE, Cost = 35.00m, Description = "5W-30 Engine Oil 5L" },
             new Part { ID = "P-BOSCH2", Make = "Bosch", Type = PartType.ELECTRICAL, Cost = 85.00m, Description = "Alternator" },
@@ -113,16 +120,16 @@ public class GMMWDBContext : DbContext
         );
 
         mb.Entity<Vehicle>().HasData(
-            new { ID = "LN15 XYA", ownerID = "M001", Make = "Ford", Model = "Fiesta", Year = "2015", transmission = Transmission.MANUAL, engine = Engine.PETROL },
-            new { ID = "BD51 SMR", ownerID = "M002", Make = "Vauxhall", Model = "Corsa", Year = "2001", transmission = Transmission.MANUAL, engine = Engine.PETROL },
-            new { ID = "GL19 ABC", ownerID = "M003", Make = "Volkswagen", Model = "Golf", Year = "2019", transmission = Transmission.AUTOMATIC, engine = Engine.DIESEL },
-            new { ID = "RO20 DFG", ownerID = "M004", Make = "Nissan", Model = "Qashqai", Year = "2020", transmission = Transmission.MANUAL, engine = Engine.HYBRID },
-            new { ID = "YK14 PQR", ownerID = "M005", Make = "Toyota", Model = "Yaris", Year = "2014", transmission = Transmission.AUTOMATIC, engine = Engine.HYBRID },
-            new { ID = "SN68 LMN", ownerID = "M006", Make = "BMW", Model = "1 Series", Year = "2018", transmission = Transmission.AUTOMATIC, engine = Engine.DIESEL },
-            new { ID = "WV22 TUV", ownerID = "M007", Make = "Audi", Model = "A3", Year = "2022", transmission = Transmission.AUTOMATIC, engine = Engine.PETROL },
-            new { ID = "FE16 GHK", ownerID = "M008", Make = "Mini", Model = "Hatch", Year = "2016", transmission = Transmission.MANUAL, engine = Engine.PETROL },
-            new { ID = "CB67 WXY", ownerID = "M001", Make = "Mercedes-Benz", Model = "A-Class", Year = "2017", transmission = Transmission.AUTOMATIC, engine = Engine.DIESEL },
-            new { ID = "MA21 ZZZ", ownerID = "M002", Make = "Kia", Model = "Puma", Year = "2021", transmission = Transmission.MANUAL, engine = Engine.ELECTRIC }
+            new { ID = "LN15 XYA", ownerID = "1001", Make = "Ford", Model = "Fiesta", Year = "2015", transmission = Transmission.MANUAL, engine = Engine.PETROL },
+            new { ID = "BD51 SMR", ownerID = "1002", Make = "Vauxhall", Model = "Corsa", Year = "2001", transmission = Transmission.MANUAL, engine = Engine.PETROL },
+            new { ID = "GL19 ABC", ownerID = "1003", Make = "Volkswagen", Model = "Golf", Year = "2019", transmission = Transmission.AUTOMATIC, engine = Engine.DIESEL },
+            new { ID = "RO20 DFG", ownerID = "1004", Make = "Nissan", Model = "Qashqai", Year = "2020", transmission = Transmission.MANUAL, engine = Engine.HYBRID },
+            new { ID = "YK14 PQR", ownerID = "1005", Make = "Toyota", Model = "Yaris", Year = "2014", transmission = Transmission.AUTOMATIC, engine = Engine.HYBRID },
+            new { ID = "SN68 LMN", ownerID = "1006", Make = "BMW", Model = "1 Series", Year = "2018", transmission = Transmission.AUTOMATIC, engine = Engine.DIESEL },
+            new { ID = "WV22 TUV", ownerID = "1007", Make = "Audi", Model = "A3", Year = "2022", transmission = Transmission.AUTOMATIC, engine = Engine.PETROL },
+            new { ID = "FE16 GHK", ownerID = "1008", Make = "Mini", Model = "Hatch", Year = "2016", transmission = Transmission.MANUAL, engine = Engine.PETROL },
+            new { ID = "CB67 WXY", ownerID = "1001", Make = "Mercedes-Benz", Model = "A-Class", Year = "2017", transmission = Transmission.AUTOMATIC, engine = Engine.DIESEL },
+            new { ID = "MA21 ZZZ", ownerID = "1002", Make = "Kia", Model = "Puma", Year = "2021", transmission = Transmission.MANUAL, engine = Engine.ELECTRIC }
         );
 
         mb.Entity<Booking>().HasData(
