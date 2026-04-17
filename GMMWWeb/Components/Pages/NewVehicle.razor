@@ -1,0 +1,90 @@
+@page "/managevehicles/new"
+@using GMMWWeb.Data.Enums
+@using GMMWWeb.Data.Records
+@using GMMWWeb.Services
+@using Microsoft.AspNetCore.Components.Sections
+@inject VehicleService vehicleService
+@inject GMMWWeb.Data.GMMWDBContext _context
+@inject NavigationManager navman
+
+<PageTitle>Register Vehicle</PageTitle>
+
+<h1>Register new Vehicle</h1>
+
+<div class="createVehicle">
+    <EditForm FormName="createVehicle" EditContext="editContext" OnValidSubmit="HandleVehicleSubmit">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+        <div class="mb-3">
+            <label for="vehicleName" class="form-label">
+                <DisplayName For="@(() => newVehicle.owner)"/>
+            </label>
+            <InputText id="vehicleName" class="form-control" @bind-Value="newVehicle.ID"/>
+            <ValidationMessage For="() => newVehicle.ID"/>
+        </div>
+        <div class="mb-3">
+            <label for="vehicleMake" class="form-label">Make</label>
+            <InputText id="vehicleMake" class="form-control" @bind-Value="newVehicle.Make"/>
+            <ValidationMessage For="() => newVehicle.Make"/>
+        </div>
+        <div class="mb-3">
+            <label for="vehicleModel" class="form-label">Model</label>
+            <InputText id="vehicleModel" class="form-control" @bind-Value="newVehicle.Model"/>
+            <ValidationMessage For="() => newVehicle.Model"/>
+        </div>
+        <div class="mb-3">
+            <label for="vehicleTrans" class="form-label">Transmission</label>
+            <InputSelect id="vehicleTrans" class="form-control" @bind-Value="newVehicle.transmission"/>
+            <option selected disabled value="">Transmission:</option>
+            @foreach (var e in Enum.GetValues(typeof(Transmission)))
+            {
+                <option value="@e">@e</option>
+            }
+            <ValidationMessage For="() => newVehicle.transmission"/>
+        </div>
+        <div class="mb-3"> <label for="vehicleEngine" class="form-label">Engine</label>
+            <InputSelect id="vehicleEngine" class="form-control" @bind-Value="newVehicle.engine"/>
+            <option selected disabled value="">Engine Type:</option>
+            @foreach (var e in Enum.GetValues(typeof(Engine)))
+            {
+                <option value="@e">@e</option>
+            }
+            <ValidationMessage For="() => newVehicle.engine"/>
+        </div>
+        <div class="mb-3"> <label for="vehicleYear" class="form-label">Year</label>
+            <DateOnly  Max="2009" id="vehicleYear" class="form-control" @bind-Value="newVehicle.Year"/>
+            <ValidationMessage For="() => newVehicle.Year"/>
+        </div>
+        <button type="submit" class="btn btn-primary" onclick="" disabled="@(!validField)">Register Vehicle</button>
+    </EditForm>
+</div>
+
+@code {
+    private Vehicle newVehicle = new();
+    private EditContext editContext = null!;
+    private bool validField;
+
+    protected override void OnInitialized()
+    {
+        ResetCheck();
+    }
+
+    private void ResetCheck()
+    {
+        newVehicle = new Vehicle();
+        editContext = new EditContext(newVehicle);
+        editContext.OnValidationStateChanged += (_, _) =>
+        {
+            validField = !editContext.GetValidationMessages().Any();
+            StateHasChanged();
+        };
+        validField = false;
+    }
+
+    private async Task HandleVehicleSubmit()
+    {
+        await vehicleService.Add(newVehicle);
+        ResetCheck();
+    }
+
+}
