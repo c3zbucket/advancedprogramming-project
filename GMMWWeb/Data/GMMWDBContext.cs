@@ -120,16 +120,16 @@ public class GMMWDBContext : DbContext
         );
 
         mb.Entity<Vehicle>().HasData(
-            new { ID = "LN15 XYA", ownerID = "1001", Make = "Ford", Model = "Fiesta", Year = "2015", transmission = Transmission.MANUAL, engine = Engine.PETROL },
-            new { ID = "BD51 SMR", ownerID = "1002", Make = "Vauxhall", Model = "Corsa", Year = "2001", transmission = Transmission.MANUAL, engine = Engine.PETROL },
-            new { ID = "GL19 ABC", ownerID = "1003", Make = "Volkswagen", Model = "Golf", Year = "2019", transmission = Transmission.AUTOMATIC, engine = Engine.DIESEL },
-            new { ID = "RO20 DFG", ownerID = "1004", Make = "Nissan", Model = "Qashqai", Year = "2020", transmission = Transmission.MANUAL, engine = Engine.HYBRID },
-            new { ID = "YK14 PQR", ownerID = "1005", Make = "Toyota", Model = "Yaris", Year = "2014", transmission = Transmission.AUTOMATIC, engine = Engine.HYBRID },
-            new { ID = "SN68 LMN", ownerID = "1006", Make = "BMW", Model = "1 Series", Year = "2018", transmission = Transmission.AUTOMATIC, engine = Engine.DIESEL },
-            new { ID = "WV22 TUV", ownerID = "1007", Make = "Audi", Model = "A3", Year = "2022", transmission = Transmission.AUTOMATIC, engine = Engine.PETROL },
-            new { ID = "FE16 GHK", ownerID = "1008", Make = "Mini", Model = "Hatch", Year = "2016", transmission = Transmission.MANUAL, engine = Engine.PETROL },
-            new { ID = "CB67 WXY", ownerID = "1001", Make = "Mercedes-Benz", Model = "A-Class", Year = "2017", transmission = Transmission.AUTOMATIC, engine = Engine.DIESEL },
-            new { ID = "MA21 ZZZ", ownerID = "1002", Make = "Kia", Model = "Puma", Year = "2021", transmission = Transmission.MANUAL, engine = Engine.ELECTRIC }
+            new { ID = "LN15 XYA", ownerID = "1001", Make = "Ford", Model = "Fiesta", Year = 2015, transmission = Transmission.MANUAL, engine = Engine.PETROL },
+            new { ID = "BD51 SMR", ownerID = "1002", Make = "Vauxhall", Model = "Corsa", Year = 2001, transmission = Transmission.MANUAL, engine = Engine.PETROL },
+            new { ID = "GL19 ABC", ownerID = "1003", Make = "Volkswagen", Model = "Golf", Year = 2019, transmission = Transmission.AUTOMATIC, engine = Engine.DIESEL },
+            new { ID = "RO20 DFG", ownerID = "1004", Make = "Nissan", Model = "Qashqai", Year = 2020, transmission = Transmission.MANUAL, engine = Engine.HYBRID },
+            new { ID = "YK14 PQR", ownerID = "1005", Make = "Toyota", Model = "Yaris", Year = 2014, transmission = Transmission.AUTOMATIC, engine = Engine.HYBRID },
+            new { ID = "SN68 LMN", ownerID = "1006", Make = "BMW", Model = "1 Series", Year = 2018, transmission = Transmission.AUTOMATIC, engine = Engine.DIESEL },
+            new { ID = "WV22 TUV", ownerID = "1007", Make = "Audi", Model = "A3", Year = 2022, transmission = Transmission.AUTOMATIC, engine = Engine.PETROL },
+            new { ID = "FE16 GHK", ownerID = "1008", Make = "Mini", Model = "Hatch", Year = 2016, transmission = Transmission.MANUAL, engine = Engine.PETROL },
+            new { ID = "CB67 WXY", ownerID = "1001", Make = "Mercedes-Benz", Model = "A-Class", Year = 2017, transmission = Transmission.AUTOMATIC, engine = Engine.DIESEL },
+            new { ID = "MA21 ZZZ", ownerID = "1002", Make = "Kia", Model = "Puma", Year = 2021, transmission = Transmission.MANUAL, engine = Engine.ELECTRIC }
         );
 
         mb.Entity<Booking>().HasData(

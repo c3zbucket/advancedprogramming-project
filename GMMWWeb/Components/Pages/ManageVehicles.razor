@@ -2,9 +2,12 @@
 @using GMMWWeb.Services
 @using GMMWWeb.Data.Records
 @inject VehicleService VehicleService
+@inject NavigationManager navman
 
 <PageTitle>Manage Vehicles</PageTitle>
 <h1>Vehicles</h1>
+
+<button class="btn btn-primary" @onclick='@(() => navman.NavigateTo("/managevehicles/new"))'>Register New Vehicle</button>
 
 @if (_vehicleList == null)
 {

@@ -1,14 +1,16 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using GMMWWeb.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 
 namespace GMMWWeb.Data.Records;
 using Enums;
 
 public class Vehicle
 {
-    [Required]
     [Display(Name = "Registration Plate")]
+    [RegularExpression(@"^[A-Z]{2}\d{2}\s[A-Z]{3}$", ErrorMessage = "Registration plate must be in the format 'AB12-CDE'")]
     public string ID { get; set; }
     [Required]
     public string ownerID { get; set; }
@@ -22,5 +24,7 @@ public class Vehicle
     [Required]
     public Engine engine { get; set; }
     [Required]
-    public string Year { get; set; }
+    
+    [YearHelper(1990)]
+    public int Year { get; set; }
 }

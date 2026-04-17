@@ -440,3 +440,120 @@ Thus leading to a new record being added:
 ![[image-24.png|465]]
 
 From this template it was relatively intuitive to adapt this for the other records.
+
+For example, for registering vehicles - inputs `InputSelect` dropdowns were chosen as the most ideal to present a preset of options - specifically from Enum classessuch as `Engine` and `Transmission` specifically for vehicle records. A `foreach` loop was then used to iterate over all the 'types' of Engines under the class to display as individual options. 
+
+```csharp
+<InputSelect id="vehicleEngine" class="form-control" @bind-Value="newVehicle.engine"/>
+<option selected disabled value="">Engine Type:</option>
+@foreach (var e in Enum.GetValues(typeof(Engine)))
+{
+	<option value="@e">@e</option>
+}
+<ValidationMessage For="() => newVehicle.engine"/>
+```
+
+For getting year, `DateOnly` was initially thought of with the `Vehicle` record class being adjusted for validation for the year field. Initially this was achieved simply with a  range from 1990 to 2025:
+
+```csharp
+[Required]
+[Range(1990, 2025, ErrorMessage = "Car must be manufactured between 1990 and 2025")]
+public DateOnly Year { get; set; }
+```
+
+This became a pain as it was realised that DateOnly still would need an assigned month and day, as there is not a year-only date picker in the native component library. 
+
+As a result, a much more robust implementation was chosen instead with calculating the current system time's year using `{csharp}DateTime.UtcNow.Year`  through a helper class that inherits from the [RangeAttribute](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations.rangeattribute?view=net-10.0) class that allows for custom specification of range constraints. This would allow for the calculation of the current year to be used to be compared with a given 'minimum year' with rather than a static year that would need to be maintained throughout the codebase.
+
+```csharp
+public class YearHelper : RangeAttribute
+{
+    public YearHelper(int minYear) : base(minYear, DateTime.UtcNow.Year){}
+}
+```
+
+This would then be called as an attribute to the year property(triggering the class's constructor), with the given minimum year like so:
+```csharp
+[YearHelper(1990)]
+public int Year { get; set; }
+```
+
+The problem that now arose was that an error message now could not be assigned as the `Range` attribute requires 2 arguments at least. 
+
+Fortunately, the `RangeAttribute` class allows for a given error message to be specified too, so the entire validation logic was moved there. 
+
+```csharp
+public class YearHelper : RangeAttribute
+{
+    public YearHelper(int minYear) : base(minYear, DateTime.UtcNow.Year) => ErrorMessage = $"Year must be between {minYear} and {DateTime.UtcNow.Year}";
+} 
+```
+
+The benefit was that this logic can now be used for any year in a date's validation to ensure it is not over the current year and therefore invalid.
+
+Upon loading the page at first the options with the drop-downs displayed outside the *InputSelect* box:
+![[image-25.png|371]]
+
+The mistake realised was that the element was closed prematurely in it's initial declaration in the header like below, causing it to not include the output of the foreach loop over the `Transmission` enum
+```csharp             
+<InputSelect id="vehicleTrans" class="form-select" @bind-Value="newVehicle.transmission"/>
+```
+When it should have been closed after all the logic, like so:
+
+```csharp
+<InputSelect id="vehicleTrans" class="form-select" @bind-Value="newVehicle.transmission">
+	<option selected disabled value="">Transmission:</option>
+	@foreach (var e in Enum.GetValues(typeof(Transmission)))
+	{
+		<option value="@e">@e</option>
+	}
+</InputSelect>
+```
+
+Which fixed the display with results now fitting inside the drop-down when clicked.
+
+The registration plate field was improved further by using a known html `span` rule where you can style multiple given properties, which in this case allowed 2 split fields to better display the input of a registration plate as well as placing a dash between the two fields. 
+
+![[image-26.png]]
+
+For this to work, additional string properties binding the input value for each part were needed, these would then combine the two parts on submission.
+
+Forcing input to always be uppercase for easier formatting afterwords was very easy using the html event tag `oninput`
+
+
+For linking an owner with the vehicle, another `InputSelect` dropdown was used to iterate through the collection using the inject service class of Motorists and bind the selection to the ownerID as a foreign key.
+```csharp
+<div class="mb-3">
+	<label for="vehicleOwner" class="form-label"><DisplayName For="@(() => newVehicle.owner)"/></label>
+	<InputSelect id="vehicleOwner" class="form-select" @bind-Value="newVehicle.ownerID">
+	<option selected disabled value="">[Linked Owner]</option>
+	@foreach (var owner in ownerService.GetMotorists().Result.Select(m => m.Name))
+	{
+		<option value="@owner">@owner</option>
+	}
+</InputSelect>
+</div>
+```
+
+On the page, this worked initially:
+
+![[image-27.png|553]]
+
+However, on submission an exception was raised with the 'foreign key constraint failing':
+![[image-28.png|1037]]
+
+Upon closer look the issue was that while the variable *owner* was assigned to display every motorist name in the linked collection, it was also being used as a reference for the user's choice to assign to the value of the `bind-Value` tag for the `InputSelect` element - which was the Owner ID. Meaning, the user's selection would send the owner's name rather than their ID which would immediately fail the constraint for the `ownerID` foreign key in the `Vehicle` record.
+
+The fix was to retain the full result of the iteration over the collection to the variable *owner*, but filter it down to display the name for label while selecting the ID associated with the output entry, like so:
+
+```csharp
+@foreach (var owner in ownerService.GetMotorists().Result)
+{
+	<option value="@owner.ID">@owner.Name</option>
+}
+```
+
+Leading to functioning entry of new vehicle entries:
+![[image-29.png|374]]
+
+![[image-30.png|552]]

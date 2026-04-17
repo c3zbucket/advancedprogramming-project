@@ -1,9 +1,12 @@
 @page "/managevehicles/new"
+@using System.ComponentModel.DataAnnotations
+@using System.Text
 @using GMMWWeb.Data.Enums
 @using GMMWWeb.Data.Records
 @using GMMWWeb.Services
 @using Microsoft.AspNetCore.Components.Sections
 @inject VehicleService vehicleService
+@inject MotoristService ownerService
 @inject GMMWWeb.Data.GMMWDBContext _context
 @inject NavigationManager navman
 
@@ -16,11 +19,31 @@
         <DataAnnotationsValidator/>
         <ValidationSummary/>
         <div class="mb-3">
-            <label for="vehicleName" class="form-label">
-                <DisplayName For="@(() => newVehicle.owner)"/>
+            <label for="vehicleOwner" class="form-label"><DisplayName For="@(() => newVehicle.owner)"/></label>
+            <InputSelect id="vehicleOwner" class="form-select" @bind-Value="newVehicle.ownerID">
+            <option selected disabled value="">[Linked Owner]</option>
+            @foreach (var owner in ownerService.GetMotorists().Result)
+            {
+                <option value="@owner.ID">@owner.Name</option>
+            }
+        </InputSelect>
+        </div>
+        <ValidationMessage For="() => newVehicle.transmission"/>
+        <div class="mb-3">
+            <label for="split-plate" class="form-label">
+                <DisplayName For="@(() => newVehicle.ID)"/>
             </label>
-            <InputText id="vehicleName" class="form-control" @bind-Value="newVehicle.ID"/>
-            <ValidationMessage For="() => newVehicle.ID"/>
+            <div id="split-plate">
+                <InputText maxlength="4" oninput="this.value=this.value.toUpperCase()" @bind-Value="plateStart"
+                           placeholder="AB12" class="plate-field"/>
+                <ValidationMessage For="() => plateStart"/>
+                <span class="dash">-</span>
+                <InputText maxlength="3" oninput="this.value=this.value.toUpperCase()" @bind-Value="plateEnd"
+                           placeholder="CDE" class="plate-field"/>
+                <ValidationMessage For="() => plateEnd"/>
+            </div>
+            <ValidationMessage For="() => plateStart"/>
+            <ValidationMessage For="() => plateEnd"/>
         </div>
         <div class="mb-3">
             <label for="vehicleMake" class="form-label">Make</label>
@@ -34,34 +57,45 @@
         </div>
         <div class="mb-3">
             <label for="vehicleTrans" class="form-label">Transmission</label>
-            <InputSelect id="vehicleTrans" class="form-control" @bind-Value="newVehicle.transmission"/>
-            <option selected disabled value="">Transmission:</option>
-            @foreach (var e in Enum.GetValues(typeof(Transmission)))
-            {
-                <option value="@e">@e</option>
-            }
+            <InputSelect id="vehicleTrans" class="form-select" @bind-Value="newVehicle.transmission">
+                <option selected disabled value="">[Transmission]</option>
+                @foreach (var e in Enum.GetValues(typeof(Transmission)))
+                {
+                    <option value="@e">@e</option>
+                }
+            </InputSelect>
             <ValidationMessage For="() => newVehicle.transmission"/>
         </div>
-        <div class="mb-3"> <label for="vehicleEngine" class="form-label">Engine</label>
-            <InputSelect id="vehicleEngine" class="form-control" @bind-Value="newVehicle.engine"/>
-            <option selected disabled value="">Engine Type:</option>
-            @foreach (var e in Enum.GetValues(typeof(Engine)))
-            {
-                <option value="@e">@e</option>
-            }
+        <div class="mb-3"><label for="vehicleEngine" class="form-label">Engine Type</label>
+            <InputSelect id="vehicleEngine" class="form-select" @bind-Value="newVehicle.engine">
+                <option selected disabled value="">[Engine Type]</option>
+                @foreach (var e in Enum.GetValues(typeof(Engine)))
+                {
+                    <option value="@e">@e</option>
+                }
+            </InputSelect>
             <ValidationMessage For="() => newVehicle.engine"/>
         </div>
-        <div class="mb-3"> <label for="vehicleYear" class="form-label">Year</label>
-            <DateOnly  Max="2009" id="vehicleYear" class="form-control" @bind-Value="newVehicle.Year"/>
+        <div class="mb-3"><label for="vehicleYear" class="form-label">Year</label>
+            <InputNumber id="vehicleYear" class="form-control" @bind-Value="newVehicle.Year"/>
             <ValidationMessage For="() => newVehicle.Year"/>
         </div>
-        <button type="submit" class="btn btn-primary" onclick="" disabled="@(!validField)">Register Vehicle</button>
+        <button type="submit" class="btn btn-primary" 
+                disabled="@(!validField)">Register Vehicle
+        </button>
     </EditForm>
 </div>
 
 @code {
     private Vehicle newVehicle = new();
     private EditContext editContext = null!;
+
+    [Required] [RegularExpression(@"^[A-Z]{2}\d{2}$", ErrorMessage = "Registration plate must be in the format AB12-CDE")]
+    protected String plateStart;
+
+    [Required] [RegularExpression("^[A-Z]{3}$", ErrorMessage = "Registration plate must be in the format AB12-CDE")]
+    protected String plateEnd;
+
     private bool validField;
 
     protected override void OnInitialized()
@@ -69,6 +103,13 @@
         ResetCheck();
     }
 
+    private String ValidPlate(string plateStart, string plateEnd)
+    {
+        StringBuilder sb = new();
+        sb.AppendFormat($"{plateStart}-{plateEnd}");
+        return sb.ToString();
+    }
+    
     private void ResetCheck()
     {
         newVehicle = new Vehicle();
@@ -83,6 +124,7 @@
 
     private async Task HandleVehicleSubmit()
     {
+        newVehicle.ID = ValidPlate(plateStart, plateEnd);
         await vehicleService.Add(newVehicle);
         ResetCheck();
     }
